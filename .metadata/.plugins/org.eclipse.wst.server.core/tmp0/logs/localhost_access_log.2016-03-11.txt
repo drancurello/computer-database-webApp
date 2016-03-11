@@ -1,0 +1,15 @@
+127.0.0.1 - - [11/Mar/2016:16:52:42 +0100] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [11/Mar/2016:16:52:42 +0100] "GET /computer-database-webApp/views/addComputer.html HTTP/1.1" 200 2549
+127.0.0.1 - - [11/Mar/2016:16:52:42 +0100] "GET /computer-database-webApp/css/bootstrap.min.css HTTP/1.1" 200 113498
+127.0.0.1 - - [11/Mar/2016:16:52:42 +0100] "GET /computer-database-webApp/css/font-awesome.css HTTP/1.1" 200 26651
+127.0.0.1 - - [11/Mar/2016:16:52:42 +0100] "GET /computer-database-webApp/css/main.css HTTP/1.1" 200 418
+127.0.0.1 - - [11/Mar/2016:17:07:17 +0100] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [11/Mar/2016:17:07:18 +0100] "GET /computer-database-webApp/testServlet HTTP/1.1" 200 107
+127.0.0.1 - - [11/Mar/2016:17:25:03 +0100] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [11/Mar/2016:17:25:03 +0100] "GET /computer-database-webApp/testServlet HTTP/1.1" 500 49
+127.0.0.1 - - [11/Mar/2016:17:27:14 +0100] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [11/Mar/2016:17:27:15 +0100] "GET /computer-database-webApp/testServlet HTTP/1.1" 500 49
+127.0.0.1 - - [11/Mar/2016:17:57:13 +0100] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [11/Mar/2016:17:57:13 +0100] "GET /computer-database-webApp/testServlet HTTP/1.1" 500 49
+127.0.0.1 - - [11/Mar/2016:17:58:18 +0100] "GET / HTTP/1.1" 404 1005
+127.0.0.1 - - [11/Mar/2016:17:58:19 +0100] "GET /computer-database-webApp/testServlet HTTP/1.1" 500 49

@@ -1,27 +1,34 @@
 package com.excilys.computerDatabase.connection;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class ConnectionMySQL {
-
-	private static String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
-
-	private static String user = "admincdb";
-
-	private static String password = "qwerty1234";
 
 	private static Connection conn = null;
 
 	public static Connection getInstance() {
+		
+			Properties properties = new Properties();
 
 			try {
-				conn = DriverManager.getConnection(url, user, password);
+				InputStream input = ConnectionMySQL.class.getClassLoader().getResourceAsStream("db_config.properties");
+				
+				properties.load(input);
+				conn = DriverManager.getConnection(properties.getProperty("url"), properties.getProperty("user"), properties.getProperty("password"));
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
