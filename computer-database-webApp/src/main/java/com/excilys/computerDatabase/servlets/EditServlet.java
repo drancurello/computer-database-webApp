@@ -112,14 +112,8 @@ public class EditServlet extends HttpServlet {
 			response.sendRedirect("index");
 			
 		} else {
-			ComputerDTO computerdto = ComputerService.findComputer(id);
 			request.setAttribute("erreurs", erreurs);
-			List<Company> companies = CompanyService.findAllCompanies();
-			request.setAttribute("companies", companies);
-			request.setAttribute("name", computerdto.getName());
-			request.setAttribute("introduced", computerdto.getIntroduced());
-			request.setAttribute("discontinued", computerdto.getDiscontinued());
-			this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(request, response);
+			doGet(request, response);
 		}
 		
 	}

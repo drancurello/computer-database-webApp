@@ -21,11 +21,16 @@ public class ValidationComputer {
 	public static void introducedValidation(String introduced) throws Exception {
 		if(!introduced.equals("")) {
 			try {
-				LocalDate.parse(introduced);
+				LocalDate.parse(introduced);			
 			}
 			catch(DateTimeParseException e) {
 				throw new Exception("introduced is not a date");
 			}
+			
+			if (!introduced.equals("") && LocalDate.parse(introduced).getYear() < 1970) {
+				throw new Exception("entered date is to old (can't be before 1970)");
+			}
+			
 		}
 	}
 	
@@ -39,6 +44,10 @@ public class ValidationComputer {
 				throw new Exception("discontinued is not a date");
 			}
 		}	
+		
+		if (!discontinued.equals("") && LocalDate.parse(discontinued).getYear() < 1970) {
+			throw new Exception("entered date is to old (can't be before 1970)");
+		}
 		
 		if(!discontinued.equals("") && !introduced.equals("")) {
 			if(LocalDate.parse(discontinued).isBefore(LocalDate.parse(introduced))) {

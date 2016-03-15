@@ -102,9 +102,7 @@ public class AddComputerServlet extends HttpServlet {
 			
 		} else {
 			request.setAttribute("erreurs", erreurs);
-			List<Company> companies = CompanyService.findAllCompanies();	
-			request.setAttribute("companies", companies);
-			this.getServletContext().getRequestDispatcher("/addComputer.jsp").forward(request, response);
+			doGet(request, response);
 		}
 	}
 
