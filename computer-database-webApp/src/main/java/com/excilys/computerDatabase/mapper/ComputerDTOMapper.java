@@ -6,8 +6,17 @@ import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.ComputerDTO;
 
+/**
+ * The Class ComputerDTOMapper.
+ */
 public class ComputerDTOMapper {
 
+	/**
+	 * To computerDTO.
+	 *
+	 * @param A computer 
+	 * @return A computerDTO
+	 */
 	public static ComputerDTO toComputerDTO(Computer computer) {
 		ComputerDTO computerDTO = new ComputerDTO();
 		
@@ -29,6 +38,12 @@ public class ComputerDTOMapper {
 		return computerDTO;
 	}
 	
+	/**
+	 * To computer.
+	 *
+	 * @param A computerDTO
+	 * @return A computer
+	 */
 	public static Computer toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
 		

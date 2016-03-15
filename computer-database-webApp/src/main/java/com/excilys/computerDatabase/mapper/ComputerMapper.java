@@ -8,8 +8,18 @@ import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyService;
 
+/**
+ * The Class ComputerMapper.
+ */
 public class ComputerMapper {
 
+	/**
+	 * Result to computer.
+	 *
+	 * @param A resultSet
+	 * @return A computer
+	 * @throws SQLException
+	 */
 	public static Computer resultToComputer(ResultSet rs) throws SQLException {
 		Computer computer = new Computer();
 		computer.setId(rs.getInt("id"));
