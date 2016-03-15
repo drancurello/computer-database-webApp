@@ -21,6 +21,7 @@ public class ConnectionMySQL {
 			Properties properties = new Properties();
 
 			try {
+				Class.forName("com.mysql.jdbc.Driver");
 				InputStream input = ConnectionMySQL.class.getClassLoader().getResourceAsStream("db_config.properties");
 				
 				properties.load(input);
@@ -29,6 +30,9 @@ public class ConnectionMySQL {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
