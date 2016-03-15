@@ -35,7 +35,7 @@ public class Page {
 	}
 	
 	/**
-	 * go to the previous page.
+	 * Go to the previous page.
 	 */
 	public void previousPage()
 	{
@@ -46,7 +46,7 @@ public class Page {
 	}
 	
 	/**
-	 * go to the next page.
+	 * Go to the next page.
 	 */
 	public void nextPage()
 	{
