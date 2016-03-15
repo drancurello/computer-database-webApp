@@ -16,7 +16,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.jsp"> Application - Computer Database </a>
+            <a class="navbar-brand" href="index"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -86,11 +86,11 @@
 	                            <input type="checkbox" name="cb" class="cb" value="0">
 	                        </td>
 	                        <td>
-	                            <a href="editComputer.html" onclick="">${computer.name}</a>
+	                            <a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a>
 	                        </td>
-	                        <td>${computer.introducedTime}</td>
-	                        <td>${computer.discontinuedTime}</td>
-	                        <td>${computer.company.name}</td>
+	                        <td>${computer.introduced}</td>
+	                        <td>${computer.discontinued}</td>
+	                        <td>${computer.companyName}</td>
 	                    </tr>
                 	</c:forEach>
                     
@@ -119,8 +119,8 @@
 	            	</c:when>
 	            	<c:otherwise>
 	              		<li><a href="?page=${i}&nbComputersPage=${nbComputersPage}">${i}</a></li>
-	            	</c:otherwise>	
-              	</c:choose>       
+	            	</c:otherwise>
+              	</c:choose>
               </c:forEach>
               <li>
                 <a href="?page=${currentPage + 1}&nbComputersPage=${nbComputersPage}" aria-label="Next">

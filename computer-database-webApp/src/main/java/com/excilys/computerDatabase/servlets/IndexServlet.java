@@ -1,7 +1,6 @@
 package com.excilys.computerDatabase.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -10,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.model.ComputerDTO;
 import com.excilys.computerDatabase.service.ComputerService;
 
 /**
@@ -55,7 +54,7 @@ public class IndexServlet extends HttpServlet {
 			}
 		}
 		
-		List<Computer> computers = ComputerService.findPageComputers(page, nbComputersPage);
+		List<ComputerDTO> computers = ComputerService.findPageComputers(page, nbComputersPage);
 		
 		RequestDispatcher rd = null;
 		

@@ -43,7 +43,7 @@ public class ComputerDAO implements CrudService<Computer> {
 				obj.setCompany(company);
 				prepare.setString(4, null);
 			} else {
-				prepare.setInt(4, obj.getCompany().getId());
+				prepare.setLong(4, obj.getCompany().getId());
 			}
 			prepare.executeUpdate();
 			resultId = prepare.getGeneratedKeys();
@@ -53,7 +53,6 @@ public class ComputerDAO implements CrudService<Computer> {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -90,7 +89,7 @@ public class ComputerDAO implements CrudService<Computer> {
 				obj.setCompany(company);
 				ps.setString(4, null);
 			} else {
-				ps.setInt(4, obj.getCompany().getId());
+				ps.setLong(4, obj.getCompany().getId());
 			}
 			ps.executeUpdate();
 
@@ -117,7 +116,6 @@ public class ComputerDAO implements CrudService<Computer> {
 			result = stmt.executeUpdate(query);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -150,7 +148,6 @@ public class ComputerDAO implements CrudService<Computer> {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -180,7 +177,6 @@ public class ComputerDAO implements CrudService<Computer> {
 				computerList.add(computer);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -235,7 +231,6 @@ public class ComputerDAO implements CrudService<Computer> {
 				nbEntries = rs.getInt("COUNT(*)");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -243,7 +238,6 @@ public class ComputerDAO implements CrudService<Computer> {
 		}
 		
 		return nbEntries;
-		
 	}
 
 }

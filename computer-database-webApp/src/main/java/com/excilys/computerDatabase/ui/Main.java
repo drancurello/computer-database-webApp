@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.model.ComputerDTO;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
@@ -62,9 +62,9 @@ public class Main {
 	}
 
 	public static void listAllComputer() {
-		List<Computer> listComputer = new ArrayList<Computer>();
+		List<ComputerDTO> listComputer = new ArrayList<ComputerDTO>();
 		listComputer = ComputerService.findAllComputers();
-		for (Computer c : listComputer) {
+		for (ComputerDTO c : listComputer) {
 			System.out.println(c.toString());
 		}
 	}
@@ -78,7 +78,7 @@ public class Main {
 	}
 
 	public static void listComputerByPage() {
-		List<Computer> pListComputer = new ArrayList<Computer>();
+		List<ComputerDTO> pListComputer = new ArrayList<ComputerDTO>();
 		System.out.println("Combien de materiels vouolez vous afficher ?");
 		String nbEntries = sc.nextLine();
 		while (Integer.parseInt(nbEntries) < 0) {
@@ -97,7 +97,7 @@ public class Main {
 
 		pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
 
-		for (Computer c : pListComputer) {
+		for (ComputerDTO c : pListComputer) {
 			System.out.println(c.toString());
 		}
 
@@ -110,14 +110,14 @@ public class Main {
 			case "1":
 				page.previousPage();
 				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				for (ComputerDTO c : pListComputer) {
 					System.out.println(c.toString());
 				}
 				break;
 			case "2":
 				page.nextPage();
 				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				for (ComputerDTO c : pListComputer) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -127,7 +127,7 @@ public class Main {
 				page.setNbEntriesByPage(Integer.parseInt(nbEntries));
 				page.setPageNumber(1);
 				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				for (ComputerDTO c : pListComputer) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -136,7 +136,7 @@ public class Main {
 				nbEntries = sc.nextLine();
 				page.setPageNumber(Integer.parseInt(nbEntries));
 				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				for (ComputerDTO c : pListComputer) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -157,7 +157,9 @@ public class Main {
 			System.out.println("Veuillez saisir un nom : ");
 			aName = sc.nextLine();
 		}
-		Computer aComputer = new Computer(aName);
+		ComputerDTO aComputer = new ComputerDTO();
+		
+		aComputer.setName(aName);
 
 		String aIntro = null;
 		while (aIntro == null) {
@@ -165,11 +167,12 @@ public class Main {
 			aIntro = sc.nextLine();
 			if (!aIntro.equals("")) {
 				try {
-					aComputer.setIntroducedTime(LocalDate.parse(aIntro));
+					LocalDate.parse(aIntro);
 				} catch (DateTimeParseException e) {
 					System.out.println("mauvais format");
 					aIntro = null;
 				}
+				aComputer.setIntroduced(aIntro);
 			}
 		}
 
@@ -180,23 +183,26 @@ public class Main {
 
 			if (!aDisc.equals("")) {
 				try {
-					aComputer.setDiscontinuedTime(LocalDate.parse(aDisc));
+					LocalDate.parse(aDisc);
 					if (LocalDate.parse(aDisc).isBefore(LocalDate.parse(aIntro))) {
 						System.out.println("La date de fin doit etre apres la date d'introduction");
 						aDisc = null;
-						aComputer.setDiscontinuedTime(null);
+						aComputer.setDiscontinued(null);
 					}
 				} catch (DateTimeParseException e) {
 					System.out.println("Date au mauvais format : yyyy-mm-dd");
 					aDisc = null;
 				}
+				aComputer.setDiscontinued(aDisc);
 			}
-		}
+		}	
+		
 		System.out.println("Entrez l'id d'un fabricant : ");
 		String aManufacturer = sc.nextLine();
 		if (!aManufacturer.equals("")) {
-			Company mCompany = new Company(Integer.parseInt(aManufacturer));
-			aComputer.setCompany(mCompany);
+			Company mCompany = CompanyService.findCompany(Integer.parseInt(aManufacturer));
+			aComputer.setCompanyId(mCompany.getId());
+			aComputer.setCompanyName(mCompany.getName());
 		}
 		ComputerService.addComputer(aComputer);
 		System.out.println("materiel ajoute");
@@ -206,7 +212,7 @@ public class Main {
 		String id;
 		System.out.println("Entrez l'id du materiel a chercher : ");
 		id = sc.nextLine();
-		Computer fComputer = new Computer();
+		ComputerDTO fComputer = new ComputerDTO();
 		fComputer = ComputerService.findComputer(Integer.parseInt(id));
 		if (fComputer == null) {
 			System.out.println("Le materiel recherche n'est pas dans la base");
@@ -218,9 +224,10 @@ public class Main {
 	public static void updateComputer() {
 		System.out.println("Entrez l'id du computer a modifier : ");
 		String uId = sc.nextLine();
-		System.out.println("Entrez un nouveau nom pour le computer : ");
+		System.out.println("Entrez un nouveau nom pour le materiel : ");
 		String uName = sc.nextLine();
-		Computer upComputer = new Computer(uName);
+		ComputerDTO upComputer = new ComputerDTO();
+		upComputer.setName(uName);
 		upComputer.setId(Integer.parseInt(uId));
 		String uIntro = null;
 
@@ -230,11 +237,12 @@ public class Main {
 
 			if (!uIntro.equals("")) {
 				try {
-					upComputer.setIntroducedTime(LocalDate.parse(uIntro));
+					LocalDate.parse(uIntro);
 				} catch (DateTimeParseException e) {
 					System.out.println("date au mauvais format : yyyy-mm-dd");
 					uIntro = null;
 				}
+				upComputer.setIntroduced(uIntro);
 			}
 		}
 
@@ -245,23 +253,26 @@ public class Main {
 
 			if (!uDisc.equals("")) {
 				try {
-					upComputer.setDiscontinuedTime(LocalDate.parse(uDisc));
+					LocalDate.parse(uDisc);
 					if (LocalDate.parse(uDisc).isBefore(LocalDate.parse(uIntro))) {
 						System.out.println("La date de fin doit etre apres la date d'introduction");
 						uDisc = null;
-						upComputer.setDiscontinuedTime(null);
+						upComputer.setDiscontinued(null);
 					}
 				} catch (DateTimeParseException e) {
 					System.out.println("Date au mauvais format : yyyy-mm-dd");
 					uDisc = null;
 				}
+				upComputer.setDiscontinued(uDisc);
 			}
 		}
 		System.out.println("Entrez l'id d'un nouveau fabricant : ");
 		String uManufacturer = sc.nextLine();
 		if (!uManufacturer.equals("")) {
-			Company upCompany = new Company(Integer.parseInt(uManufacturer));
-			upComputer.setCompany(upCompany);
+			Company upCompany = CompanyService.findCompany(Integer.parseInt(uManufacturer));
+			upComputer.setCompanyId(upCompany.getId());
+			upComputer.setCompanyName(upCompany.getName());
+			
 		}
 		ComputerService.updateComputer(upComputer);
 		System.out.println("Le materiel a bien ete midifie");

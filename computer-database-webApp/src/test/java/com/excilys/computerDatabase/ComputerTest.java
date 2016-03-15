@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import org.junit.Test;
 
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.model.ComputerDTO;
 import com.excilys.computerDatabase.service.ComputerService;
 
 public class ComputerTest {
@@ -15,9 +15,18 @@ public class ComputerTest {
 	@Test
 	public void computerTest()
 	{
-		Computer computer = new Computer("Iphone 6");
+		ComputerDTO computer = new ComputerDTO();
 		
-		computer.setIntroducedTime(LocalDate.parse("2015-02-26"));
+		computer.setName("iphone 6s");
+		
+		computer.setIntroduced("2015-02-26");
+		
+		Company company = new Company();
+		company.setId(1);
+		company.setName("Apple Inc.");
+		
+		computer.setCompanyId(company.getId());
+		computer.setCompanyName(company.getName());
 		
 		int nbComputers = ComputerService.getNbComputers();
 		
@@ -31,23 +40,19 @@ public class ComputerTest {
 		
 		assertEquals(nbComputers+1,ComputerService.getNbComputers());
 		
-		assertEquals(LocalDate.parse("2015-02-26"),computer.getIntroducedTime());
+		assertEquals(LocalDate.parse("2015-02-26"),LocalDate.parse(computer.getIntroduced()));
 		
-		assertNull(computer.getDiscontinuedTime());
+		assertNull(computer.getDiscontinued());
 		
 		ComputerService.findComputer(computer.getId());
 		
-		Company company = new Company(1);
+		computer.setName("iphone 6");
 		
-		computer.setCompany(company);
-		
-		assertEquals(computer,ComputerService.updateComputer(computer));
+		ComputerService.updateComputer(computer);
 		
 		ComputerService.deleteComputer(computer.getId());
 		
 		assertEquals(nbComputers,ComputerService.getNbComputers());
-		
-		
 		
 	}
 	

@@ -1,33 +1,73 @@
 package com.excilys.computerDatabase.model;
 
+/**
+ * The Class Company.
+ */
 public class Company {
 
-	private int id;
+	/** The id. */
+	private long id;
+	
+	/** The name. */
 	private String name;
 
+	/**
+	 * Instantiates a new company with a name.
+	 *
+	 * @param name the name
+	 */
 	public Company(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Instantiates a new company.
+	 *
+	 * @param id the id
+	 */
 	public Company(int id) {
 		this.id = id;
+		this.name = null;
 	}
 
+	/**
+	 * Instantiates a new company.
+	 */
 	public Company() {
 	}
 
-	public int getId() {
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}

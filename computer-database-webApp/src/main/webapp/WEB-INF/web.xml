@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
@@ -8,20 +7,28 @@
     <servlet-name>IndexServlet</servlet-name>
     <servlet-class>com.excilys.computerDatabase.servlets.IndexServlet</servlet-class>
   </servlet>
+    <servlet>
+    <description></description>
+    <display-name>EditServlet</display-name>
+    <servlet-name>EditServlet</servlet-name>
+    <servlet-class>com.excilys.computerDatabase.servlets.EditServlet</servlet-class>
+  </servlet>
   <servlet>
     <description></description>
     <display-name>AddComputerServlet</display-name>
     <servlet-name>AddComputerServlet</servlet-name>
     <servlet-class>com.excilys.computerDatabase.servlets.AddComputerServlet</servlet-class>
   </servlet>
-  
-  
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>AddComputerServlet</servlet-name>
+    <servlet-name>EditServlet</servlet-name>
+    <url-pattern>/editComputer</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddComputerServlet</servlet-name>
     <url-pattern>/addComputer</url-pattern>
   </servlet-mapping>
 </web-app>
