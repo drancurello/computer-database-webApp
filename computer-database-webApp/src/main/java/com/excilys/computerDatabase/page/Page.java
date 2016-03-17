@@ -31,7 +31,11 @@ public class Page {
 		this.pageNumber = pageNumber;
 		this.nbEntriesByPage = nbEntries;
 		this.nbComputers = ComputerService.getNbComputers();
-		this.nbPage =(int) Math.ceil(nbComputers/nbEntriesByPage);
+		if (nbComputers%nbEntriesByPage == 0) {
+			nbPage = nbComputers/nbEntriesByPage;
+		} else {
+			nbPage = (nbComputers/nbEntriesByPage) + 1;
+		}
 	}
 	
 	/**

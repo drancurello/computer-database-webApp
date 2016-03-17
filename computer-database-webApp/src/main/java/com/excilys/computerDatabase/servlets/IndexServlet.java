@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerDatabase.model.ComputerDTO;
+import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.ComputerService;
 
 /**
@@ -32,39 +33,38 @@ public class IndexServlet extends HttpServlet {
 		
 		int page = 1;
 		int nbComputersPage = 50;
-		int nbComputers = ComputerService.findAllComputers().size();
 		
 		if(request.getParameter("nbComputersPage") != null) {
 			nbComputersPage = Integer.parseInt(request.getParameter("nbComputersPage"));
 		}
 		
-		int nbPage = ( nbComputers / nbComputersPage) + 1;
-		
 		if(request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page"));
-			
-			if (page > nbPage)
-			{
-				page = nbPage;
-			}
-			else {
-				if (page < 1) {
-					page = 1;
-				}
+		}
+		
+		Page indexPage = new Page(page,nbComputersPage);
+		
+		if (indexPage.getPageNumber() > indexPage.getNbPage())
+		{
+			indexPage.setPageNumber(indexPage.getNbPage()); 
+		}
+		else {
+			if (indexPage.getPageNumber() < 1) {
+				indexPage.setPageNumber(1);
 			}
 		}
 		
-		List<ComputerDTO> computers = ComputerService.findPageComputers(page, nbComputersPage);
+		List<ComputerDTO> computers = ComputerService.findPageComputers(indexPage.getPageNumber(), indexPage.getNbEntriesByPage());
 		
 		RequestDispatcher rd = null;
 		
 		
 		request.setAttribute("computers", computers);
-		request.setAttribute("nbPage",nbPage);
-		request.setAttribute("currentPage", page);
-		request.setAttribute("nbComputers", nbComputers);
-		request.setAttribute("nbComputersPage", nbComputersPage);
-		
+		request.setAttribute("nbPage",indexPage.getNbPage());
+		request.setAttribute("currentPage", indexPage.getPageNumber());
+		request.setAttribute("nbComputers", indexPage.getNbComputers());
+		request.setAttribute("nbComputersPage", indexPage.getNbEntriesByPage());
+				
 		rd = getServletContext().getRequestDispatcher("/index.jsp");
 		rd.forward(request, response);
 	}
