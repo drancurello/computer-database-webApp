@@ -11,6 +11,9 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script src="js/validation.js"></script>
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
@@ -27,7 +30,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="editComputer" method="POST">
+                    <form action="editComputer" method="POST" id="formComputer">
                         <input type="hidden" value="0"/>
                         <fieldset>
                             <div class="form-group">
