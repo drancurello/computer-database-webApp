@@ -18,7 +18,7 @@
               		<c:when test="${currentPage eq i}">
 	              		<li><a style="color:red">${i}</a></li>
 	            	</c:when>
-	            	<c:when test="${nbComputersPage eq 10}">
+	            	<c:when test="${nbPage > 20}">
 	            		<c:if test="${i eq currentPage}">
 	            			<li><a>${i}</a></li>
 	            		</c:if>
