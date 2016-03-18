@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.ComputerDTO;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
@@ -27,7 +27,7 @@ public class Main {
 			str = sc.nextLine();
 
 			switch (str) {
-			case "1": 
+			case "1":
 				Main.listAllComputer();
 				break;
 			case "2":
@@ -158,7 +158,7 @@ public class Main {
 			aName = sc.nextLine();
 		}
 		ComputerDTO aComputer = new ComputerDTO();
-		
+
 		aComputer.setName(aName);
 
 		String aIntro = null;
@@ -195,8 +195,8 @@ public class Main {
 				}
 				aComputer.setDiscontinued(aDisc);
 			}
-		}	
-		
+		}
+
 		System.out.println("Entrez l'id d'un fabricant : ");
 		String aManufacturer = sc.nextLine();
 		if (!aManufacturer.equals("")) {
@@ -272,7 +272,7 @@ public class Main {
 			Company upCompany = CompanyService.findCompany(Integer.parseInt(uManufacturer));
 			upComputer.setCompanyId(upCompany.getId());
 			upComputer.setCompanyName(upCompany.getName());
-			
+
 		}
 		ComputerService.updateComputer(upComputer);
 		System.out.println("Le materiel a bien ete midifie");
