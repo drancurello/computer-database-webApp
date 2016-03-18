@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.ComputerDTO;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validation.ValidationComputer;
@@ -23,7 +23,7 @@ import com.excilys.computerDatabase.validation.ValidationComputer;
 @WebServlet("/EditServlet")
 public class EditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private static int id;
+    private static int id = 0;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,7 +38,9 @@ public class EditServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		id = Integer.parseInt(request.getParameter("id"));
+		if (request.getParameter("id") != null) {
+			id = Integer.parseInt(request.getParameter("id"));
+		}
 		
 		ComputerDTO computerdto = ComputerService.findComputer(id);
 		
