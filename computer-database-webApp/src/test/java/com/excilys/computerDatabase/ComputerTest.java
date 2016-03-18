@@ -6,8 +6,8 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.ComputerDTO;
 import com.excilys.computerDatabase.service.ComputerService;
 
 public class ComputerTest {
