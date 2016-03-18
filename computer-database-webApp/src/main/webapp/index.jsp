@@ -87,11 +87,11 @@
 	                            <input type="checkbox" name="cb" class="cb" value="${computer.id}">
 	                        </td>
 	                        <td>
-	                            <a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a>
+	                            <a href="editComputer?id=${computer.id}" onclick=""><c:out value="${computer.name}"></c:out></a>
 	                        </td>
-	                        <td>${computer.introduced}</td>
-	                        <td>${computer.discontinued}</td>
-	                        <td>${computer.companyName}</td>
+	                        <td><c:out value="${computer.introduced}"></c:out></td>
+	                        <td><c:out value="${computer.discontinued}"></c:out></td>
+	                        <td><c:out value="${computer.companyName}"></c:out></td>
 	                    </tr>
                 	</c:forEach>
                 </tbody>
