@@ -13,7 +13,12 @@ public class ValidationComputer {
 			throw new Exception("Enter a name please");
 		} else {
 			if (name.length() < 2) {
-				throw new Exception("Enter a name of at least 2 characters");
+				throw new Exception("Your name must be at least 2 characters long");
+			}
+			else {
+				if (name.trim().length() == 0) {
+					throw new Exception("Enter a valid name please");
+				}
 			}
 		}
 	}
@@ -27,7 +32,7 @@ public class ValidationComputer {
 				throw new Exception("introduced is not a date");
 			}
 			
-			if (!introduced.equals("") && LocalDate.parse(introduced).getYear() < 1970) {
+			if (!introduced.equals("") && (introduced.equals("1970-01-01") || LocalDate.parse(introduced).getYear() < 1970)) {
 				throw new Exception("entered date is to old (can't be before 1970)");
 			}
 			
@@ -45,7 +50,7 @@ public class ValidationComputer {
 			}
 		}	
 		
-		if (!discontinued.equals("") && LocalDate.parse(discontinued).getYear() < 1970) {
+		if (!discontinued.equals("") && (discontinued.equals("1970-01-01") || LocalDate.parse(discontinued).getYear() < 1970)) {
 			throw new Exception("entered date is to old (can't be before 1970)");
 		}
 		
