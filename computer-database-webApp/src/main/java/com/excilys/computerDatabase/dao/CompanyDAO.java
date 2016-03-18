@@ -9,6 +9,9 @@ import java.util.List;
 import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.model.Company;
 
+/**
+ * The Class CompanyDAO.
+ */
 public class CompanyDAO implements CrudService<Company> {
 
 	@Override
@@ -26,6 +29,10 @@ public class CompanyDAO implements CrudService<Company> {
 		return 0;
 	}
 
+	/**
+	 * @param the id of a company
+	 * @return a company
+	 */
 	@Override
 	public Company find(long id) {
 		String query = "SELECT * FROM company WHERE id = " + id;
@@ -51,6 +58,9 @@ public class CompanyDAO implements CrudService<Company> {
 		return company;
 	}
 
+	/** 
+	 * @return the list of all companies
+	 */
 	@Override
 	public List<Company> findAll() {
 
@@ -80,6 +90,9 @@ public class CompanyDAO implements CrudService<Company> {
 		return companyList;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.computerDatabase.dao.CrudService#findPage(int, int)
+	 */
 	@Override
 	public List<Company> findPage(int nPage, int nComputer) {
 		return null;

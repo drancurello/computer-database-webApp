@@ -10,10 +10,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+/**
+ * The Class ConnectionMySQL.
+ */
 public class ConnectionMySQL {
 
+	/** The connection */
 	private static Connection conn = null;
 
+	/**
+	 * Gets the single instance of ConnectionMySQL.
+	 *
+	 * @return single instance of ConnectionMySQL
+	 */
 	public static Connection getInstance() {
 		
 			Properties properties = new Properties();
@@ -25,19 +34,23 @@ public class ConnectionMySQL {
 				properties.load(input);
 				conn = DriverManager.getConnection(properties.getProperty("url"), properties.getProperty("user"), properties.getProperty("password"));
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		return conn;
 	}
 
+	/**
+	 * Close connection.
+	 *
+	 * @param result a ResultSet
+	 * @param stmt a Statement
+	 * @param prstmt a preparedStatement
+	 */
 	public static void CloseConnection(ResultSet result, Statement stmt, PreparedStatement prstmt) {
 		
 		try {
