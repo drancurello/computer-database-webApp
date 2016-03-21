@@ -1,48 +1,72 @@
 package com.excilys.computerDatabase.connection;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
+
 /**
  * The Class ConnectionMySQL.
  */
 public class ConnectionMySQL {
 
-	/** The connection */
-	private static Connection conn = null;
+    private static final String PROPERTIES_FILE = "db_config.properties";
+    private static final String PROPERTY_URL       = "url";
+    private static final String PROPERTY_USER 	   = "user";
+    private static final String PROPERTY_PASSWORD  = "password";
+    
+    private BoneCP connectionPool;
+    
+    private static ConnectionMySQL connectionMySQL;
 
-	/**
-	 * Gets the single instance of ConnectionMySQL.
-	 *
-	 * @return single instance of ConnectionMySQL
-	 */
-	public static Connection getInstance() {
+	private ConnectionMySQL() throws DAOConfigurationException{
 		
 			Properties properties = new Properties();
-
+			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				InputStream input = ConnectionMySQL.class.getClassLoader().getResourceAsStream("db_config.properties");
 				
-				properties.load(input);
-				conn = DriverManager.getConnection(properties.getProperty("url"), properties.getProperty("user"), properties.getProperty("password"));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+				properties.load(ConnectionMySQL.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE));
+				BoneCPConfig config = new BoneCPConfig();
 
-		return conn;
+	            config.setJdbcUrl(properties.getProperty(PROPERTY_URL));
+	            config.setUsername(properties.getProperty(PROPERTY_USER));
+	            config.setPassword(properties.getProperty(PROPERTY_PASSWORD));
+
+	            config.setMinConnectionsPerPartition(2);
+	            config.setMaxConnectionsPerPartition(10);
+	            config.setPartitionCount(2);
+
+	            connectionPool = new BoneCP(config);		
+			
+			} catch (SQLException e) {
+				throw new DAOConfigurationException("Pool configuration failed", e);
+			} catch (IOException e) {
+				throw new DAOConfigurationException("fail to load the properties file", e);
+			} catch (ClassNotFoundException e) {
+				throw new DAOConfigurationException("jdbc driver not found", e);
+			}
 	}
+	
+    public static ConnectionMySQL getInstance() throws DAOConfigurationException{
+        if (connectionMySQL == null) {
+            connectionMySQL = new ConnectionMySQL();
+            return connectionMySQL;
+        } else {
+            return connectionMySQL;
+        }
+    }
+	
+    public Connection getConnection() throws SQLException {
+        return connectionPool.getConnection();
+    }
 
 	/**
 	 * Close connection.
@@ -51,9 +75,12 @@ public class ConnectionMySQL {
 	 * @param stmt a Statement
 	 * @param prstmt a preparedStatement
 	 */
-	public static void CloseConnection(ResultSet result, Statement stmt, PreparedStatement prstmt) {
+	public static void CloseConnection(Connection connection, ResultSet result, Statement stmt, PreparedStatement prstmt) {
 		
 		try {
+			if (connection != null) {
+				connection.close();
+			}
 			if (result != null) {
 				result.close();
 			}
@@ -64,11 +91,8 @@ public class ConnectionMySQL {
 				prstmt.close();
 			}
 		}
-		catch(SQLException e) {
-			
+		catch(SQLException e) {		
 		}
-		
-
 	}
 
 }

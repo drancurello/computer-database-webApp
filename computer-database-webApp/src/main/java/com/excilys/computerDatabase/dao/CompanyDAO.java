@@ -1,5 +1,6 @@
 package com.excilys.computerDatabase.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -7,7 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerDatabase.connection.ConnectionMySQL;
+import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
+import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.Computer;
 
 /**
  * The Class CompanyDAO.
@@ -30,19 +34,23 @@ public class CompanyDAO implements CrudService<Company> {
 	}
 
 	/**
+	 * find a company by its id
+	 * 
 	 * @param the id of a company
 	 * @return a company
+	 * @throws DAOConfigurationException 
 	 */
 	@Override
-	public Company find(long id) {
+	public Company find(long id) throws DAOConfigurationException {
 		String query = "SELECT * FROM company WHERE id = " + id;
 
 		ResultSet rs = null;
-		;
+		Connection connection = null;
 		Statement stmt = null;
 		Company company = new Company();
 
 		try {
+			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
@@ -53,25 +61,65 @@ public class CompanyDAO implements CrudService<Company> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionMySQL.CloseConnection(rs, stmt, null);
+			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
 		}
 		return company;
 	}
+	
+	/**
+	 * find the id of a company by its name
+	 * 
+	 * @param the name of the company
+	 * @return the id of the company
+	 * @throws DAOConfigurationException 
+	 */
+	
+	public int findIdByName(String name) throws DAOConfigurationException {
+		String query = "SELECT id FROM company WHERE name LIKE '%" + name + "%' ";
+		
+		ResultSet rs = null;
+		Statement stmt = null;
+		Connection connection = null;
+		
+		try {
+			connection = ConnectionMySQL.getInstance().getConnection();
+			stmt = connection.createStatement();
+			rs = stmt.executeQuery(query);
+
+			if (rs.next()) {
+				return rs.getInt("id");
+
+			} else {
+				return 0;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
+		}
+		return 0;
+	}
 
 	/** 
+	 * find all the companies
 	 * @return the list of all companies
+	 * @throws DAOConfigurationException 
 	 */
 	@Override
-	public List<Company> findAll() {
+	public List<Company> findAll() throws DAOConfigurationException {
 
 		String query = "SELECT * FROM company";
 
 		List<Company> companyList = new ArrayList<Company>();
 
+		Connection connection = null;
 		ResultSet rs = null;
 		Statement stmt = null;
 
 		try {
+			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
@@ -86,13 +134,10 @@ public class CompanyDAO implements CrudService<Company> {
 			e.printStackTrace();
 		}
 
-		ConnectionMySQL.CloseConnection(rs, stmt, null);
+		ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
 		return companyList;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.computerDatabase.dao.CrudService#findPage(int, int)
-	 */
 	@Override
 	public List<Company> findPage(int nPage, int nComputer) {
 		return null;
