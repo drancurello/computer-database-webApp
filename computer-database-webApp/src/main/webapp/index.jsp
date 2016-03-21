@@ -28,7 +28,7 @@
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+                    <form id="searchForm" action="search" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <form id="deleteForm" action="#" method="POST">
+        <form id="deleteForm" action="deleteComputer" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -89,9 +89,9 @@
 	                        <td>
 	                            <a href="editComputer?id=${computer.id}" onclick=""><c:out value="${computer.name}"></c:out></a>
 	                        </td>
-	                        <td><c:out value="${computer.introduced}"></c:out></td>
-	                        <td><c:out value="${computer.discontinued}"></c:out></td>
-	                        <td><c:out value="${computer.companyName}"></c:out></td>
+	                        <td><c:out value="${computer.introducedTime}"></c:out></td>
+	                        <td><c:out value="${computer.discontinuedTime}"></c:out></td>
+	                        <td><c:out value="${computer.company.name}"></c:out></td>
 	                    </tr>
                 	</c:forEach>
                 </tbody>

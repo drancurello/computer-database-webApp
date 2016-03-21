@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.ComputerService;
 
@@ -54,7 +54,7 @@ public class IndexServlet extends HttpServlet {
 			}
 		}
 
-		List<ComputerDTO> computers = ComputerService.findPageComputers(indexPage.getPageNumber(),
+		List<Computer> computers = ComputerService.findPageComputers(indexPage.getPageNumber(),
 				indexPage.getNbEntriesByPage());
 
 		RequestDispatcher rd = null;
@@ -75,12 +75,6 @@ public class IndexServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		String[] computersId = request.getParameter("selection").split(",");
-
-		for (String id : computersId) {
-			ComputerService.deleteComputer(Integer.parseInt(id));
-		}
 
 		doGet(request, response);
 	}
