@@ -1,22 +1,46 @@
 package com.excilys.computerDatabase.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerDatabase.dao.CompanyDAO;
+import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
 import com.excilys.computerDatabase.model.Company;
 
 public class CompanyService { 
 	
 	private static CompanyDAO companyDAO = new CompanyDAO();
 	
-	public static List<Company> findAllCompanies()
+	public static List<Company> findAllCompanies() 
 	{
-		return companyDAO.findAll();
+		List<Company> companies = new ArrayList<>();
+		try {
+			companies = companyDAO.findAll();
+		} catch (DAOConfigurationException e) {
+			System.err.println(e.getMessage());
+		}
+		return companies;
 	}
 	
-	public static Company findCompany(long id)
+	public static Company findCompany(long id) 
 	{
-		return companyDAO.find(id);
+		Company company = null;
+		try {
+			company = companyDAO.find(id);
+		} catch (DAOConfigurationException e) {
+			System.err.println(e.getMessage());
+		}
+		return company;
+	}
+	
+	public static int findIdByName(String name) {
+		int i = 0;
+		try {
+			i = companyDAO.findIdByName(name);
+		} catch (DAOConfigurationException e) {
+			System.err.println(e.getMessage());
+		}
+		return i;
 	}
 
 }
