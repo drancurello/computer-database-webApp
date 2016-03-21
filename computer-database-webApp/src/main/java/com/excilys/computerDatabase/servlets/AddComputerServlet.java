@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validation.ValidationComputer;
@@ -55,7 +56,7 @@ public class AddComputerServlet extends HttpServlet {
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		
-		ComputerDTO computer = new ComputerDTO();
+		Computer computer = new Computer();
 		
 		try {
 			ValidationComputer.nameValidation(name);
@@ -84,18 +85,8 @@ public class AddComputerServlet extends HttpServlet {
 		}
 		
 		if(erreurs.isEmpty()) {
-			computer.setName(name);
 			
-			if(!introduced.equals("")) {
-				computer.setIntroduced(introduced);
-			}
-			if(!discontinued.equals("")) {
-				computer.setDiscontinued(discontinued);
-			}
-			Company company = CompanyService.findCompany(Integer.parseInt(request.getParameter("companyId")));
-			
-			computer.setCompanyId(company.getId());
-			computer.setCompanyName(company.getName());
+			computer = ComputerMapper.requestToComputer(request);
 			
 			ComputerService.addComputer(computer);
 			response.sendRedirect("index");

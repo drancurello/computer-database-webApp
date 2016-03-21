@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validation.ValidationComputer;
@@ -42,14 +43,14 @@ public class EditServlet extends HttpServlet {
 			id = Integer.parseInt(request.getParameter("id"));
 		}
 		
-		ComputerDTO computerdto = ComputerService.findComputer(id);
+		Computer computer = ComputerService.findComputer(id);
 		
 		List<Company> companies = CompanyService.findAllCompanies();
 		
 		request.setAttribute("companies", companies);
-		request.setAttribute("name", computerdto.getName());
-		request.setAttribute("introduced", computerdto.getIntroduced());
-		request.setAttribute("discontinued", computerdto.getDiscontinued());
+		request.setAttribute("name", computer.getName());
+		request.setAttribute("introduced", computer.getIntroducedTime());
+		request.setAttribute("discontinued", computer.getDiscontinuedTime());
 		
 		this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(request, response);
 	}
@@ -67,7 +68,7 @@ public class EditServlet extends HttpServlet {
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		
-		ComputerDTO computer = new ComputerDTO();
+		Computer computer = new Computer();
 		
 		try {
 			ValidationComputer.nameValidation(name);
@@ -96,19 +97,8 @@ public class EditServlet extends HttpServlet {
 		}
 		
 		if(erreurs.isEmpty()) {
+			computer = ComputerMapper.requestToComputer(request);
 			computer.setId(id);
-			computer.setName(name);
-			
-			if(!introduced.equals("")) {
-				computer.setIntroduced(introduced);
-			}
-			if(!discontinued.equals("")) {
-				computer.setDiscontinued(discontinued);
-			}
-			Company company = CompanyService.findCompany(Integer.parseInt(request.getParameter("companyId")));
-			
-			computer.setCompanyId(company.getId());
-			computer.setCompanyName(company.getName());
 			
 			ComputerService.updateComputer(computer);
 			response.sendRedirect("index");
