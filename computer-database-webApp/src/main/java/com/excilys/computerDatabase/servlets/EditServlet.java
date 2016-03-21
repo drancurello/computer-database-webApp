@@ -52,7 +52,7 @@ public class EditServlet extends HttpServlet {
 		request.setAttribute("introduced", computer.getIntroducedTime());
 		request.setAttribute("discontinued", computer.getDiscontinuedTime());
 		
-		this.getServletContext().getRequestDispatcher("/editComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
 	}
 
 	/**
