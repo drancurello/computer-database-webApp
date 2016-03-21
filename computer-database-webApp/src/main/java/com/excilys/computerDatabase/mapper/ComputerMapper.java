@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyService;
@@ -14,7 +16,7 @@ import com.excilys.computerDatabase.service.CompanyService;
 public class ComputerMapper {
 
 	/**
-	 * Result to computer.
+	 * Convert a ResultSet to a computer.
 	 *
 	 * @param A resultSet
 	 * @return A computer
@@ -41,5 +43,27 @@ public class ComputerMapper {
 
 		return computer;
 	}
+	
+	/**
+	 * Convert an HttpServletRequest to a Computer
+	 * 
+	 * @param an HttpServletRequest
+	 * @return a Computer
+	 */
+	public static Computer requestToComputer(HttpServletRequest request) {
+		Computer computer = new Computer();
+		
+		computer.setName(request.getParameter("computerName"));
+		if (!request.getParameter("introduced").isEmpty()) {
+			computer.setIntroducedTime(LocalDate.parse(request.getParameter("introduced")));
+		}
+		if (!request.getParameter("discontinued").isEmpty()) {
+			computer.setDiscontinuedTime(LocalDate.parse(request.getParameter("discontinued")));
+		}
+		Company company = CompanyService.findCompany(Integer.parseInt(request.getParameter("companyId")));
+		computer.setCompany(company);
+		return computer;
+	}
+	
 
 }
