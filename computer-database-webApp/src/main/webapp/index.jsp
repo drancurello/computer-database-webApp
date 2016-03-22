@@ -28,7 +28,7 @@
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="search" method="GET" class="form-inline">
+                    <form id="searchForm" action="index" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
@@ -100,7 +100,7 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
-    	<p:pagination currentPage="${currentPage}" nbComputersPage="${nbComputersPage}" nbPage="${nbPage}" />
+    	<p:pagination currentPage="${currentPage}" nbComputersPage="${nbComputersPage}" nbPage="${nbPage}" search="${search}"/>
     </footer>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
