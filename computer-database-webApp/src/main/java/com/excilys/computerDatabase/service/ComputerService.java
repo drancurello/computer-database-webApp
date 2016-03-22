@@ -88,16 +88,16 @@ public class ComputerService {
 	}
 	
 	/**
-	 * Find computer.
+	 * search computers.
 	 *
 	 * @param the name of the computer that we want to find
-	 * @return the found computer
+	 * @return computers found
 	 * @throws DAOConfigurationException 
 	 */
-	public static List<Computer> findByName(String name) {
+	public static List<Computer> search(String name, int pageNumber, int nComputer) {
 		List<Computer> computers = new ArrayList<>();
 		try {
-			computers = computerDAO.findByName(name);
+			computers = computerDAO.search(name,pageNumber,nComputer);
 		} catch (DAOConfigurationException e) {
 			System.err.println(e.getMessage());
 		}
@@ -107,18 +107,18 @@ public class ComputerService {
 	
 	/**
 	 * 
-	 * @param id of a company
-	 * @return the list of all computers from the company
+	 * @param the name of the computer and the id of the company
+	 * @return the list of all computers
 	 * @throws DAOConfigurationException 
 	 */
-	public static List<Computer> findComputersByCompanyId(int id) {
-		List<Computer> computers = new ArrayList<>();
+	public static int getNbComputersSearch(String name) {
+		int nbComputers = 0;
 		try {
-			computers = computerDAO.findComputersByCompanyId(id);
+			nbComputers = computerDAO.getNbComputersSearch(name);
 		} catch (DAOConfigurationException e) {
 			System.err.println(e.getMessage());
 		}
-		return computers;
+		return nbComputers;
 	}
 	
 	/**

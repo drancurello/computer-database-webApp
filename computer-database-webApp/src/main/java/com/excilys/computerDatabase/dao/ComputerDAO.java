@@ -22,13 +22,14 @@ public class ComputerDAO implements CrudService<Computer> {
 
 	/**
 	 * add a computer in the DB
-	 * @param a computer 
+	 * 
+	 * @param a computer
 	 * @return the added computer
-	 * @throws DAOConfigurationException 
-	 * @throws SQLException 
+	 * @throws DAOConfigurationException
+	 * @throws SQLException
 	 */
 	@Override
-	public Computer add(Computer obj) throws DAOConfigurationException{
+	public Computer add(Computer obj) throws DAOConfigurationException {
 
 		String query = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
 
@@ -67,25 +68,25 @@ public class ComputerDAO implements CrudService<Computer> {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, resultId, null, prepare);
 		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,resultId,null,prepare);
-		} 
 
 		return obj;
 	}
 
 	/**
 	 * update a computer in the DB
+	 * 
 	 * @param the new computer
-	 * @throws DAOConfigurationException 
+	 * @throws DAOConfigurationException
 	 */
 	@Override
 	public Computer update(Computer obj) throws DAOConfigurationException {
 
 		String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = "
 				+ obj.getId();
-		
+
 		Connection connection = null;
 		PreparedStatement ps = null;
 
@@ -115,9 +116,8 @@ public class ComputerDAO implements CrudService<Computer> {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,null,null,ps);
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, null, null, ps);
 		}
 
 		return obj;
@@ -125,8 +125,9 @@ public class ComputerDAO implements CrudService<Computer> {
 
 	/**
 	 * delete a computer in the DB
-	 * @param the id of the computer 
-	 * @throws DAOConfigurationException 
+	 * 
+	 * @param the id of the computer
+	 * @throws DAOConfigurationException
 	 * 
 	 */
 	@Override
@@ -137,7 +138,7 @@ public class ComputerDAO implements CrudService<Computer> {
 
 		Statement stmt = null;
 		Connection connection = null;
-		
+
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
@@ -145,9 +146,8 @@ public class ComputerDAO implements CrudService<Computer> {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,null,stmt,null);
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, null, stmt, null);
 		}
 
 		return result;
@@ -156,9 +156,10 @@ public class ComputerDAO implements CrudService<Computer> {
 
 	/**
 	 * find a computer in the DB by its id
-	 *@param the id of the computer
-	 *@return the computer found
-	 * @throws DAOConfigurationException 
+	 * 
+	 * @param the id of the computer
+	 * @return the computer found
+	 * @throws DAOConfigurationException
 	 */
 	@Override
 	public Computer find(long id) throws DAOConfigurationException {
@@ -182,32 +183,33 @@ public class ComputerDAO implements CrudService<Computer> {
 			} else {
 				return null;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
-		}
-
 		return null;
 	}
-	
+
 	/**
 	 * Find by name.
 	 *
-	 * @param the name of the search
+	 * @param the name of the search, the page number and the number of result by page
 	 * @return the list of all computers which contains the search in their name
-	 * @throws DAOConfigurationException 
+	 * @throws DAOConfigurationException
 	 */
-	public List<Computer> findByName(String name) throws DAOConfigurationException {
-		String query = "SELECT * FROM computer WHERE name LIKE '%" + name + "%' ";
-		
+	public List<Computer> search(String name, int pageNumber, int nComputer) throws DAOConfigurationException {
+
+		int debut = nComputer * (pageNumber - 1);
+		String query = "SELECT * FROM computer WHERE name LIKE '%" + name
+				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') LIMIT " + debut + ","
+				+ nComputer;
+
 		ResultSet rs = null;
 		Statement stmt = null;
 		List<Computer> computers = new ArrayList<>();
 		Connection connection = null;
-		
+
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
@@ -215,53 +217,51 @@ public class ComputerDAO implements CrudService<Computer> {
 
 			while (rs.next()) {
 				computers.add(ComputerMapper.resultToComputer(rs));
-			} 
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
 		return computers;
 	}
-	
+
 	/**
-	 * Find computers by company id.
-	 *
-	 * @param the company id
-	 * @return the list of computers 
-	 * @throws DAOConfigurationException 
+	 * 
+	 * @param name of the search
+	 * @return the number of result
+	 * @throws DAOConfigurationException
 	 */
-	public List<Computer> findComputersByCompanyId(int companyId) throws DAOConfigurationException {
-		String query = "SELECT * FROM computer WHERE company_id = " + companyId;
+	public int getNbComputersSearch(String name) throws DAOConfigurationException {
+
+		String query = "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + name
+				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%')";
 
 		ResultSet rs = null;
 		Statement stmt = null;
 		Connection connection = null;
-		List<Computer> computers = new ArrayList<>();
+		int nbComputers = 0;
 
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
-			while (rs.next()) {
-				computers.add(ComputerMapper.resultToComputer(rs));
-			} 
-
+			if (rs.next()) {
+				nbComputers = rs.getInt("COUNT(*)");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
-		}
-
-		return computers;
+		return nbComputers;
 	}
 
 	/**
 	 * find all computers
-	 * @throws DAOConfigurationException 
+	 * 
+	 * @throws DAOConfigurationException
 	 */
 	@Override
 	public List<Computer> findAll() throws DAOConfigurationException {
@@ -273,12 +273,12 @@ public class ComputerDAO implements CrudService<Computer> {
 		Connection connection = null;
 		ResultSet rs = null;
 		Statement stmt = null;
-		
+
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
-			
+
 			while (rs.next()) {
 				Computer computer = new Computer();
 				computer = ComputerMapper.resultToComputer(rs);
@@ -286,9 +286,8 @@ public class ComputerDAO implements CrudService<Computer> {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
 
 		return computerList;
@@ -296,9 +295,10 @@ public class ComputerDAO implements CrudService<Computer> {
 
 	/**
 	 * find the computers in a page
+	 * 
 	 * @param the page number and the number of computers by page
 	 * @return the list of computers
-	 * @throws DAOConfigurationException 
+	 * @throws DAOConfigurationException
 	 */
 	@Override
 	public List<Computer> findPage(int nPage, int nComputer) throws DAOConfigurationException {
@@ -312,7 +312,7 @@ public class ComputerDAO implements CrudService<Computer> {
 		ResultSet rs = null;
 		Statement stmt = null;
 		Connection connection = null;
-		
+
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
@@ -325,42 +325,39 @@ public class ComputerDAO implements CrudService<Computer> {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
 		return computerList;
 	}
-	
+
 	/**
 	 * Gets the number of computers.
 	 *
 	 * @return the number of computers
-	 * @throws DAOConfigurationException 
+	 * @throws DAOConfigurationException
 	 */
-	public int getNbComputers() throws DAOConfigurationException
-	{
+	public int getNbComputers() throws DAOConfigurationException {
 		String query = "SELECT COUNT(*) FROM computer";
-		
+
 		ResultSet rs = null;
 		Statement stmt = null;
 		Connection connection = null;
 		int nbEntries = 0;
-		
+
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
-			if(rs.next()) {
+			if (rs.next()) {
 				nbEntries = rs.getInt("COUNT(*)");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
-		}
-		
+
 		return nbEntries;
 	}
 }

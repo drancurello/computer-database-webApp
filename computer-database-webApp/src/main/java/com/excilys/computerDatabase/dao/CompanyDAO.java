@@ -9,9 +9,7 @@ import java.util.List;
 
 import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
-import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Computer;
 
 /**
  * The Class CompanyDAO.
@@ -66,41 +64,6 @@ public class CompanyDAO implements CrudService<Company> {
 		return company;
 	}
 	
-	/**
-	 * find the id of a company by its name
-	 * 
-	 * @param the name of the company
-	 * @return the id of the company
-	 * @throws DAOConfigurationException 
-	 */
-	
-	public int findIdByName(String name) throws DAOConfigurationException {
-		String query = "SELECT id FROM company WHERE name LIKE '%" + name + "%' ";
-		
-		ResultSet rs = null;
-		Statement stmt = null;
-		Connection connection = null;
-		
-		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
-
-			if (rs.next()) {
-				return rs.getInt("id");
-
-			} else {
-				return 0;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
-		}
-		return 0;
-	}
 
 	/** 
 	 * find all the companies

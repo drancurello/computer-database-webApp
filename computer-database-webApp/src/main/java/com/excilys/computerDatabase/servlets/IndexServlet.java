@@ -1,9 +1,9 @@
 package com.excilys.computerDatabase.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +35,8 @@ public class IndexServlet extends HttpServlet {
 
 		int page = 1;
 		int nbComputersPage = 50;
+		String name = null;
+		List<Computer> computers = new ArrayList<>();
 
 		if (request.getParameter("nbComputersPage") != null) {
 			nbComputersPage = Integer.parseInt(request.getParameter("nbComputersPage"));
@@ -46,18 +48,34 @@ public class IndexServlet extends HttpServlet {
 
 		Page indexPage = new Page(page, nbComputersPage);
 
-		if (indexPage.getPageNumber() > indexPage.getNbPage()) {
-			indexPage.setPageNumber(indexPage.getNbPage());
-		} else {
-			if (indexPage.getPageNumber() < 1) {
-				indexPage.setPageNumber(1);
+		if (request.getParameter("search") != null) {
+			name = request.getParameter("search");
+			for (Computer computer:ComputerService.search(name, page, nbComputersPage)) {
+				if (!computers.contains(computer)) {
+					computers.add(computer);
+				}		
 			}
-		}
-
-		List<Computer> computers = ComputerService.findPageComputers(indexPage.getPageNumber(),
+			indexPage.setNbComputers(ComputerService.getNbComputersSearch(name));
+			
+			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
+				indexPage.setPageNumber(indexPage.getNbPage());
+			} else {
+				if (indexPage.getPageNumber() < 1) {
+					indexPage.setPageNumber(1);
+				}
+			}
+			request.setAttribute("search", name);
+		} else {
+			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
+				indexPage.setPageNumber(indexPage.getNbPage());
+			} else {
+				if (indexPage.getPageNumber() < 1) {
+					indexPage.setPageNumber(1);
+				}
+			}
+			computers = ComputerService.findPageComputers(indexPage.getPageNumber(),
 				indexPage.getNbEntriesByPage());
-
-		RequestDispatcher rd = null;
+		}	
 
 		request.setAttribute("computers", computers);
 		request.setAttribute("nbPage", indexPage.getNbPage());
@@ -65,8 +83,7 @@ public class IndexServlet extends HttpServlet {
 		request.setAttribute("nbComputers", indexPage.getNbComputers());
 		request.setAttribute("nbComputersPage", indexPage.getNbEntriesByPage());
 
-		rd = getServletContext().getRequestDispatcher("/index.jsp");
-		rd.forward(request, response);
+		this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 	/**

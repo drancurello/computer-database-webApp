@@ -32,15 +32,4 @@ public class CompanyService {
 		}
 		return company;
 	}
-	
-	public static int findIdByName(String name) {
-		int i = 0;
-		try {
-			i = companyDAO.findIdByName(name);
-		} catch (DAOConfigurationException e) {
-			System.err.println(e.getMessage());
-		}
-		return i;
-	}
-
 }
