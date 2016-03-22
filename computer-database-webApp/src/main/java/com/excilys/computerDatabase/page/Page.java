@@ -7,7 +7,6 @@ import com.excilys.computerDatabase.service.ComputerService;
  */
 public class Page {
 
-	
 	/** The number of entries by page. */
 	private int nbEntriesByPage;
 	
@@ -31,6 +30,10 @@ public class Page {
 		this.pageNumber = pageNumber;
 		this.nbEntriesByPage = nbEntries;
 		this.nbComputers = ComputerService.getNbComputers();
+		update();
+	}
+	
+	private void update() {
 		if (nbComputers%nbEntriesByPage == 0) {
 			nbPage = nbComputers/nbEntriesByPage;
 		} else {
@@ -124,5 +127,10 @@ public class Page {
 	public int getNbComputers() {
 		return nbComputers;
 	}	
+	
+	public void setNbComputers(int nbComputers) {
+		this.nbComputers = nbComputers;
+		update();
+	}
 	
 }
