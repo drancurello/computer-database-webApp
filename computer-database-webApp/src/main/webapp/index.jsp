@@ -63,17 +63,57 @@
                         </th>
                         <th>
                             Computer name
+                            <c:choose>
+                            	<c:when test="${not empty search}">
+                            		<a href="?page=1&nbComputersPage=50&order=name&type=ASC&search=${search}">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=name&type=DESC&search=${search}">&raquo;</a>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<a href="?page=1&nbComputersPage=50&order=name&type=ASC">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=name&type=DESC">&raquo;</a>
+                            	</c:otherwise>
+                            </c:choose>
                         </th>
                         <th>
                             Introduced date
+                            <c:choose>
+                            	<c:when test="${not empty search}">
+                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=ASC&search=${search}">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=DESC&search=${search}">&raquo;</a>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=ASC">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=DESC">&raquo;</a>
+                            	</c:otherwise>
+                            </c:choose>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
+                            <c:choose>
+                            	<c:when test="${not empty search}">
+                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=ASC&search=${search}">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=DESC&search=${search}">&raquo;</a>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=ASC">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=DESC">&raquo;</a>
+                            	</c:otherwise>
+                            </c:choose>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             Company
+                            <c:choose>
+                            	<c:when test="${not empty search}">
+                            		<a href="?page=1&nbComputersPage=50&order=company&type=ASC&search=${search}">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=company&type=DESC&search=${search}">&raquo;</a>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<a href="?page=1&nbComputersPage=50&order=company&type=ASC">&laquo;</a>
+                            		<a href="?page=1&nbComputersPage=50&order=company&type=DESC">&raquo;</a>
+                            	</c:otherwise>
+                            </c:choose>
                         </th>
 
                     </tr>

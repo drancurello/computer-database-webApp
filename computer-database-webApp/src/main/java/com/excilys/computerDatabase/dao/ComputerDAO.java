@@ -20,6 +20,12 @@ import com.excilys.computerDatabase.model.Computer;
  */
 public class ComputerDAO implements CrudService<Computer> {
 
+	private String order = "name";
+	private String type = "ASC";
+	
+	private static final String INSERT_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
+	private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = ?";
+	
 	/**
 	 * add a computer in the DB
 	 * 
@@ -31,15 +37,13 @@ public class ComputerDAO implements CrudService<Computer> {
 	@Override
 	public Computer add(Computer obj) throws DAOConfigurationException {
 
-		String query = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
-
 		Connection connection = null;
 		ResultSet resultId = null;
 		PreparedStatement prepare = null;
 
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
-			prepare = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			prepare = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
 			prepare.setString(1, obj.getName());
 			if (obj.getIntroducedTime() == null) {
 				prepare.setString(2, null);
@@ -84,15 +88,13 @@ public class ComputerDAO implements CrudService<Computer> {
 	@Override
 	public Computer update(Computer obj) throws DAOConfigurationException {
 
-		String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = "
-				+ obj.getId();
 
 		Connection connection = null;
 		PreparedStatement ps = null;
 
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(UPDATE_COMPUTER);
 			ps.setString(1, obj.getName());
 			if (obj.getIntroducedTime() == null) {
 				ps.setString(2, null);
@@ -112,6 +114,8 @@ public class ComputerDAO implements CrudService<Computer> {
 			} else {
 				ps.setLong(4, obj.getCompany().getId());
 			}
+			ps.setLong(5, obj.getId());
+			
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -201,10 +205,17 @@ public class ComputerDAO implements CrudService<Computer> {
 	public List<Computer> search(String name, int pageNumber, int nComputer) throws DAOConfigurationException {
 
 		int debut = nComputer * (pageNumber - 1);
-		String query = "SELECT * FROM computer WHERE name LIKE '%" + name
-				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') LIMIT " + debut + ","
+		String query = null;
+		if (order.equals("company")) {
+			query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%" + name
+				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY company.name " + type + " LIMIT " + debut + ","
 				+ nComputer;
-
+		} else {
+		query = "SELECT * FROM computer WHERE name LIKE '%" + name
+				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY " + order + " " + type + " LIMIT " + debut + ","
+				+ nComputer;
+		}
+		
 		ResultSet rs = null;
 		Statement stmt = null;
 		List<Computer> computers = new ArrayList<>();
@@ -236,7 +247,6 @@ public class ComputerDAO implements CrudService<Computer> {
 
 		String query = "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + name
 				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%')";
-
 		ResultSet rs = null;
 		Statement stmt = null;
 		Connection connection = null;
@@ -304,9 +314,13 @@ public class ComputerDAO implements CrudService<Computer> {
 	public List<Computer> findPage(int nPage, int nComputer) throws DAOConfigurationException {
 
 		int debut = nComputer * (nPage - 1);
-
-		String query = "SELECT * FROM computer ORDER BY id ASC LIMIT " + debut + "," + nComputer;
-
+		String query = null;
+		
+		if (order.equals("company")) {
+			query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name " + type + " LIMIT " + debut + "," + nComputer;
+		} else {
+			query = "SELECT * FROM computer ORDER BY " + order + " " + type + " LIMIT " + debut + "," + nComputer;
+		}
 		List<Computer> computerList = new ArrayList<Computer>();
 
 		ResultSet rs = null;
@@ -360,4 +374,16 @@ public class ComputerDAO implements CrudService<Computer> {
 
 		return nbEntries;
 	}
+
+	public void setOrder(String order) {
+		this.order = order;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
+	
+	
 }

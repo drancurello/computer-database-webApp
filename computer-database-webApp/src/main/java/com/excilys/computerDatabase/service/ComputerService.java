@@ -73,7 +73,7 @@ public class ComputerService {
 	 * Find computer.
 	 *
 	 * @param the id of the computer that we want to find
-	 * @return the found computer
+	 * @return the computer found
 	 * @throws DAOConfigurationException 
 	 */
 	public static Computer findComputer(long id)
@@ -108,7 +108,7 @@ public class ComputerService {
 	/**
 	 * 
 	 * @param the name of the computer and the id of the company
-	 * @return the list of all computers
+	 * @return the number of computers
 	 * @throws DAOConfigurationException 
 	 */
 	public static int getNbComputersSearch(String name) {
@@ -173,4 +173,11 @@ public class ComputerService {
 		return i;
 	}
 	
+	public static void setOrder(String order) {
+		computerDAO.setOrder(order);
+	}
+	
+	public static void setType(String type) {
+		computerDAO.setType(type);
+	}
 }
