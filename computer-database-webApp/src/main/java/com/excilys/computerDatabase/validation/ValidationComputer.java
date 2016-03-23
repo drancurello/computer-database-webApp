@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.CompanyService;
 
 public class ValidationComputer {
@@ -74,6 +75,17 @@ public class ValidationComputer {
 		if(company.getName() == null) {
 			throw new Exception("id entered did not match any company ");
 		}
+	}
+	
+	public static Page PageNumberValidation(Page page) {
+		if (page.getPageNumber() > page.getNbPage()) {
+			page.setPageNumber(page.getNbPage());
+		} else {
+			if (page.getPageNumber() < 1) {
+				page.setPageNumber(1);
+			}
+		}
+		return page;
 	}
 	
 }

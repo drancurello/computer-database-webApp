@@ -16,6 +16,7 @@ import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
+import com.excilys.computerDatabase.validation.FormValidation;
 import com.excilys.computerDatabase.validation.ValidationComputer;
 
 /**
@@ -49,40 +50,9 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Map<String,String> erreurs = new HashMap<String,String>();
-		
-		String name = request.getParameter("computerName");
-		
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
+		Map<String,String> erreurs = FormValidation.validForm(request);
 		
 		Computer computer = new Computer();
-		
-		try {
-			ValidationComputer.nameValidation(name);
-		}
-		catch(Exception e) {
-			erreurs.put("name", e.getMessage());
-		}
-		
-		try {
-			ValidationComputer.introducedValidation(introduced);
-		} catch(Exception e) {
-			erreurs.put("introduced", e.getMessage());
-		}
-		
-		try {
-			ValidationComputer.discontinuedValidation(discontinued,introduced);
-		} catch(Exception e) {
-			erreurs.put("discontinued", e.getMessage());
-		}
-		
-		try {
-			ValidationComputer.companyValidation(request.getParameter("companyId"));
-		}
-		catch(Exception e) {
-			erreurs.put("company", e.getMessage());
-		}
 		
 		if(erreurs.isEmpty()) {
 			

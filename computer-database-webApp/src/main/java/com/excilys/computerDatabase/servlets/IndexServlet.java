@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.ComputerService;
+import com.excilys.computerDatabase.validation.ValidationComputer;
 
 /**
  * Servlet implementation class ComputersList
@@ -35,46 +36,46 @@ public class IndexServlet extends HttpServlet {
 
 		int page = 1;
 		int nbComputersPage = 50;
-		String name = null;
+		String search = null;
 		List<Computer> computers = new ArrayList<>();
+		String order = "name";
+		String type = "ASC";
 
-		if (request.getParameter("nbComputersPage") != null) {
+		if (request.getParameter("nbComputersPage") != null && request.getParameter("nbComputersPage").matches("\\d+")) {
 			nbComputersPage = Integer.parseInt(request.getParameter("nbComputersPage"));
 		}
 
-		if (request.getParameter("page") != null) {
+		if (request.getParameter("page") != null && request.getParameter("page").matches("\\d+")) {
 			page = Integer.parseInt(request.getParameter("page"));
+		}
+		
+		if (request.getParameter("order") != null) {
+			order = request.getParameter("order");
+			ComputerService.setOrder(order);
+		}
+		
+		if (request.getParameter("type") != null) {
+			type = request.getParameter("type");
+			ComputerService.setType(type);
 		}
 
 		Page indexPage = new Page(page, nbComputersPage);
 
 		if (request.getParameter("search") != null) {
-			name = request.getParameter("search");
-			for (Computer computer:ComputerService.search(name, page, nbComputersPage)) {
+			search = request.getParameter("search");
+			for (Computer computer:ComputerService.search(search, page, nbComputersPage)) {
 				if (!computers.contains(computer)) {
 					computers.add(computer);
 				}		
 			}
-			indexPage.setNbComputers(ComputerService.getNbComputersSearch(name));
+			indexPage.setNbComputers(ComputerService.getNbComputersSearch(search));
 			
-			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
-				indexPage.setPageNumber(indexPage.getNbPage());
-			} else {
-				if (indexPage.getPageNumber() < 1) {
-					indexPage.setPageNumber(1);
-				}
-			}
-			request.setAttribute("search", name);
+			ValidationComputer.PageNumberValidation(indexPage);
+			request.setAttribute("search", search);
+			
 		} else {
-			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
-				indexPage.setPageNumber(indexPage.getNbPage());
-			} else {
-				if (indexPage.getPageNumber() < 1) {
-					indexPage.setPageNumber(1);
-				}
-			}
-			computers = ComputerService.findPageComputers(indexPage.getPageNumber(),
-				indexPage.getNbEntriesByPage());
+			ValidationComputer.PageNumberValidation(indexPage);
+			computers = ComputerService.findPageComputers(indexPage.getPageNumber(),indexPage.getNbEntriesByPage());
 		}	
 
 		request.setAttribute("computers", computers);
@@ -84,16 +85,6 @@ public class IndexServlet extends HttpServlet {
 		request.setAttribute("nbComputersPage", indexPage.getNbEntriesByPage());
 
 		this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		doGet(request, response);
 	}
 
 }
