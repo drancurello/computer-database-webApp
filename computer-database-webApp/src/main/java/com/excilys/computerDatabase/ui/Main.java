@@ -23,7 +23,7 @@ public class Main {
 
 		while (!str.equals("exit")) {
 			System.out.println(
-					" 1-liste des materiels\n 2-liste des fabriquants\n 3-paginer les materiels\n 4-ajouter un materiel\n 5-chercher un materiel\n 6-mettre a jour un materiel\n 7-supprimer un materiel\n exit pour quitter ");
+					" 1-liste des materiels\n 2-liste des fabriquants\n 3-paginer les materiels\n 4-ajouter un materiel\n 5-chercher un materiel\n 6-mettre a jour un materiel\n 7-supprimer un materiel\n 8-supprimer une compagnie\n exit pour quitter ");
 			str = sc.nextLine();
 
 			switch (str) {
@@ -48,16 +48,16 @@ public class Main {
 			case "7":
 				Main.deleteComputer();
 				break;
+			case "8":
+				Main.deleteCompany();
+				break;
 			case "exit":
 				break;
 			default:
 				System.out.println("Entrez une commande valide");
 			}
-
 		}
-
 		System.out.println("deconnexion");
-
 		sc.close();
 	}
 
@@ -285,6 +285,18 @@ public class Main {
 			System.out.println("materiel supprimé");
 		} else {
 			System.out.println("Le materiel entre n'existe pas dans la base");
+		}
+	}
+	
+	public static void deleteCompany() {
+		String id;
+		System.out.println("Id de la compagnie a supprimer : ");
+		id = sc.nextLine();
+		int sup = CompanyService.delete(Integer.parseInt(id));
+		if (sup == 1) {
+			System.out.println("compagnie supprimé");
+		} else {
+			System.out.println("La compagnie entre n'existe pas dans la base");
 		}
 	}
 }

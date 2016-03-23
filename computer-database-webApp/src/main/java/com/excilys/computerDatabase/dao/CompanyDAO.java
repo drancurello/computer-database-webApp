@@ -1,6 +1,7 @@
 package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,7 +16,7 @@ import com.excilys.computerDatabase.model.Company;
  * The Class CompanyDAO.
  */
 public class CompanyDAO implements CrudService<Company> {
-
+	
 	@Override
 	public Company add(Company obj) {
 		return null;
@@ -27,7 +28,45 @@ public class CompanyDAO implements CrudService<Company> {
 	}
 
 	@Override
-	public int delete(long id) {
+	public int delete(long id) throws DAOConfigurationException {
+		
+		Connection connection = null;
+		PreparedStatement prstmtComputer = null;
+		PreparedStatement prstmtCompany = null;
+		int cputer = 0;
+		int cpany = 0;
+		
+		String deleteCoomputers = "DELETE FROM computer WHERE company_id = ?";
+		String deleteCompany = "DELETE FROM company WHERE id = ?";
+		
+		try {
+			connection = ConnectionMySQL.getInstance().getConnection();
+			connection.setAutoCommit(false);
+			
+			prstmtComputer = connection.prepareStatement(deleteCoomputers);
+			prstmtComputer.setLong(1, id);
+			cputer = prstmtComputer.executeUpdate();
+			
+			prstmtCompany = connection.prepareStatement(deleteCompany);
+			prstmtCompany.setLong(1, id);
+			cpany = prstmtCompany.executeUpdate();
+			
+			connection.commit();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			ConnectionMySQL.CloseConnection(connection,null,null,prstmtCompany);
+			ConnectionMySQL.CloseConnection(null,null,null,prstmtComputer);
+		}
+		
+		if (cputer > 0 || cpany >0) {
+			return 1;
+		}
 		return 0;
 	}
 

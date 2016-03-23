@@ -11,8 +11,18 @@ public class CompanyService {
 	
 	private static CompanyDAO companyDAO = new CompanyDAO();
 	
-	public static List<Company> findAllCompanies() 
-	{
+	public static int delete(long id) {
+		int del = 0;
+		try {
+			del = companyDAO.delete(id);
+		} catch (DAOConfigurationException e) {
+			e.printStackTrace();
+		}
+		
+		return del;
+	}
+	
+	public static List<Company> findAllCompanies() {
 		List<Company> companies = new ArrayList<>();
 		try {
 			companies = companyDAO.findAll();
@@ -22,8 +32,7 @@ public class CompanyService {
 		return companies;
 	}
 	
-	public static Company findCompany(long id) 
-	{
+	public static Company findCompany(long id) {
 		Company company = null;
 		try {
 			company = companyDAO.find(id);
