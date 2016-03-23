@@ -63,57 +63,26 @@
                         </th>
                         <th>
                             Computer name
-                            <c:choose>
-                            	<c:when test="${not empty search}">
-                            		<a href="?page=1&nbComputersPage=50&order=name&type=ASC&search=${search}">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=name&type=DESC&search=${search}">&raquo;</a>
-                            	</c:when>
-                            	<c:otherwise>
-                            		<a href="?page=1&nbComputersPage=50&order=name&type=ASC">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=name&type=DESC">&raquo;</a>
-                            	</c:otherwise>
-                            </c:choose>
+                            <p:linkFilter order="name" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="name" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
                         </th>
                         <th>
                             Introduced date
-                            <c:choose>
-                            	<c:when test="${not empty search}">
-                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=ASC&search=${search}">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=DESC&search=${search}">&raquo;</a>
-                            	</c:when>
-                            	<c:otherwise>
-                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=ASC">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=introduced&type=DESC">&raquo;</a>
-                            	</c:otherwise>
-                            </c:choose>
+                            <p:linkFilter order="introduced" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="introduced" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
+                            		
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
-                            <c:choose>
-                            	<c:when test="${not empty search}">
-                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=ASC&search=${search}">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=DESC&search=${search}">&raquo;</a>
-                            	</c:when>
-                            	<c:otherwise>
-                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=ASC">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=discontinued&type=DESC">&raquo;</a>
-                            	</c:otherwise>
-                            </c:choose>
+                            <p:linkFilter order="discontinued" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="discontinued" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             Company
-                            <c:choose>
-                            	<c:when test="${not empty search}">
-                            		<a href="?page=1&nbComputersPage=50&order=company&type=ASC&search=${search}">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=company&type=DESC&search=${search}">&raquo;</a>
-                            	</c:when>
-                            	<c:otherwise>
-                            		<a href="?page=1&nbComputersPage=50&order=company&type=ASC">&laquo;</a>
-                            		<a href="?page=1&nbComputersPage=50&order=company&type=DESC">&raquo;</a>
-                            	</c:otherwise>
-                            </c:choose>
+                            <p:linkFilter order="company" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="company" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
                         </th>
 
                     </tr>
