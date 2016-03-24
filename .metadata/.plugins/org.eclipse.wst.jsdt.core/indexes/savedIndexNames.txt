@@ -1,7 +1,0 @@
-INDEX VERSION 1.3+/home/excilys/Documents/computer-database-webApp/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-2735707852.index
-2450818923.index
-3440436205.index
-4212604135.index
-3872143817.index
-188062497.index
