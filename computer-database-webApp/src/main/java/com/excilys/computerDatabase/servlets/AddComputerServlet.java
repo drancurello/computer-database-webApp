@@ -1,7 +1,6 @@
 package com.excilys.computerDatabase.servlets;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validation.FormValidation;
-import com.excilys.computerDatabase.validation.ValidationComputer;
 
 /**
  * Servlet implementation class AddComputerServlet

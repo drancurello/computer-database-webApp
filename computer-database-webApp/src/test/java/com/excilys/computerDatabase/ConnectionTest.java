@@ -13,11 +13,11 @@ public class ConnectionTest {
 	@Test
 	public void testConnection() throws SQLException
 	{
-		Connection connection = ConnectionMySQL.getInstance();
-		
-		assertTrue(connection.isValid(5));
-		
-		ConnectionMySQL.CloseConnection(null, null, null);
+//		Connection connection = ConnectionMySQL.getInstance();
+//		
+//		assertTrue(connection.isValid(5));
+//		
+//		ConnectionMySQL.CloseConnection(null, null, null);
 		
 	} 
 	 
