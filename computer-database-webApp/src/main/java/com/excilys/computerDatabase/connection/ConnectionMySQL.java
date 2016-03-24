@@ -25,6 +25,8 @@ public class ConnectionMySQL {
     private BoneCP connectionPool;
     
     private static ConnectionMySQL connectionMySQL;
+    
+    public static final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
 
 	private ConnectionMySQL() throws DAOConfigurationException{
 		
@@ -65,7 +67,11 @@ public class ConnectionMySQL {
     }
 	
     public Connection getConnection() throws SQLException {
-        return connectionPool.getConnection();
+    	
+    	if (threadConnection.get() == null) {
+    		threadConnection.set(connectionPool.getConnection());
+    	}
+    	return threadConnection.get();
     }
 
 	/**
@@ -80,6 +86,7 @@ public class ConnectionMySQL {
 		try {
 			if (connection != null) {
 				connection.close();
+				threadConnection.remove();
 			}
 			if (result != null) {
 				result.close();
