@@ -50,11 +50,9 @@ public class AddComputerServlet extends HttpServlet {
 		
 		Map<String,String> erreurs = FormValidation.validForm(request);
 		
-		Computer computer = new Computer();
-		
 		if(erreurs.isEmpty()) {
 			
-			computer = ComputerMapper.requestToComputer(request);
+			Computer computer = ComputerMapper.requestToComputer(request);
 			
 			ComputerService.addComputer(computer);
 			response.sendRedirect("index");

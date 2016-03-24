@@ -15,7 +15,7 @@ public class Computer {
 	
 	/** The introduced time. */
 	private LocalDate introducedTime;
-	
+
 	/** The discontinued time. */
 	private LocalDate discontinuedTime;
 	
@@ -35,143 +35,52 @@ public class Computer {
 	/**
 	 * Instantiates a new computer with all the parameters.
 	 *
-	 * @param name the name
-	 * @param introducedTime the introduced time
-	 * @param discontinue the discontinue
-	 * @param company the company
+	 *@param an id, a name, an introduced date, a discontinued date and a company
 	 */
-	public Computer(String name, LocalDate introducedTime, LocalDate discontinue, Company company) {
+	public Computer(int id, String name, LocalDate introducedTime, LocalDate discontinue, Company company) {
+		this.id = id;
 		this.name = name;
 		this.introducedTime = introducedTime;
 		this.discontinuedTime = discontinue;
 		this.company = company;
 	}
 
-	/**
-	 * Instantiates a new computer with a name and a company.
-	 *
-	 * @param name the name
-	 * @param company the company
-	 */
-	public Computer(String name, Company company) {
-		this.name = name;
-		this.introducedTime = null;
-		this.discontinuedTime = null;
-		this.company = company;
-	}
-
-	/**
-	 * Instantiates a new computer only with a name.
-	 *
-	 * @param name the name
-	 */
-	public Computer(String name) {
-		this.name = name;
-		this.introducedTime = null;
-		this.discontinuedTime = null;
-		this.company = null;
-	}
-
-	/**
-	 * Instantiates a new computer with a name, an introduce date and a company.
-	 *
-	 * @param name the name
-	 * @param introducedTime the introduced time
-	 * @param company the company
-	 */
-	public Computer(String name, LocalDate introducedTime, Company company) {
-		this.name = name;
-		this.introducedTime = introducedTime;
-		this.discontinuedTime = null;
-		this.company = company;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the introduced time.
-	 *
-	 * @return the introduced time
-	 */
 	public LocalDate getIntroducedTime() {
 		return introducedTime;
 	}
 
-	/**
-	 * Sets the introduced time.
-	 *
-	 * @param introducedTime the new introduced time
-	 */
 	public void setIntroducedTime(LocalDate introducedTime) {
 		this.introducedTime = introducedTime;
 	}
 
-	/**
-	 * Gets the discontinued time.
-	 *
-	 * @return the discontinued time
-	 */
 	public LocalDate getDiscontinuedTime() {
 		return discontinuedTime;
 	}
 
-	/**
-	 * Sets the discontinued time.
-	 *
-	 * @param discontinuedTime the new discontinued time
-	 */
 	public void setDiscontinuedTime(LocalDate discontinuedTime) {
 		this.discontinuedTime = discontinuedTime;
 	}
 
-	/**
-	 * Gets the company.
-	 *
-	 * @return the company
-	 */
 	public Company getCompany() {
 		return company;
 	}
 
-	/**
-	 * Sets the company.
-	 *
-	 * @param company the new company
-	 */
 	public void setCompany(Company company) {
 		this.company = company;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
 	public long getId() {
 		return id;
 	}
 
-	/**
-	 * Sets the id.
-	 *
-	 * @param i the new id
-	 */
 	public void setId(long i) {
 		this.id = i;
 	}
@@ -207,5 +116,47 @@ public class Computer {
 		return "id=" + id + ", name=" + name + ", introducedTime=" + introducedTime + ", discontinuedTime="
 				+ discontinuedTime + ", company=" + company.getName();
 	}
+	
+	
+	public static class Builder {
+		private int bId;
+		private String bName;
+		private LocalDate bIntroduced;
+		private LocalDate bDiscontinued;
+		private Company bCompany;
+		
+		public Builder idComputer(int id) {
+			this.bId = id;
+			return this;
+		}
+		
+		public Builder nameComputer(String name) {
+			this.bName = name;
+			return this;
+		}
+		
+		public Builder introducedComputer(LocalDate introduced) {
+			this.bIntroduced = introduced;
+			return this;
+		}
+		
+		public Builder discontinuedComputer(LocalDate discontinued) {
+			this.bDiscontinued = discontinued;
+			return this;
+		}
+		
+		public Builder companyComputer(Company company) {
+			this.bCompany = company;
+			return this;
+		}
+		
+		public Computer build() {
+			return new Computer(bId, bName, bIntroduced, bDiscontinued, bCompany);
+		}
+		
+	}
+	
+	
+	
 
 }

@@ -62,10 +62,8 @@ public class EditServlet extends HttpServlet {
 		
 		Map<String,String> erreurs = FormValidation.validForm(request);
 		
-		Computer computer = new Computer();
-		
 		if(erreurs.isEmpty()) {
-			computer = ComputerMapper.requestToComputer(request);
+			Computer computer = ComputerMapper.requestToComputer(request);
 			computer.setId(id);
 			
 			ComputerService.updateComputer(computer);
