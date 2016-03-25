@@ -25,25 +25,17 @@ public class ComputerMapper {
 	 * @throws SQLException
 	 */
 	public static Computer resultToComputer(ResultSet rs) throws SQLException {
-		Computer computer = new Computer();
-		computer.setId(rs.getInt("id"));
-		computer.setName(rs.getString("name"));
-		if (rs.getDate("introduced") != null) {
-			String introduced = rs.getDate("introduced").toString();
-			computer.setIntroducedTime(LocalDate.parse(introduced));
-		}
-		if (rs.getDate("discontinued") != null) {
-			String discontinued = rs.getDate("discontinued").toString();
-			computer.setDiscontinuedTime(LocalDate.parse(discontinued));
-		}
+		Company company = null;
 		Integer companyId = rs.getInt("company_id"); 
-
 		if (companyId != null) {
-			Company company = CompanyService.findCompany(companyId);
-			computer.setCompany(company);
+			company = CompanyService.findCompany(companyId);
 		}
-
-		return computer;
+		
+		return  new Computer.Builder().idComputer(rs.getInt("id"))
+							.nameComputer(rs.getString("name"))
+							.introducedComputer(ParserToLocalDate.parserLocalDate(rs.getDate("introduced")))
+							.discontinuedComputer(ParserToLocalDate.parserLocalDate(rs.getDate("discontinued")))
+							.companyComputer(company).build();
 	}
 	
 	/**
