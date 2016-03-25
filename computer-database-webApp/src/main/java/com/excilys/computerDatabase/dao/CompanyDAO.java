@@ -15,7 +15,9 @@ import com.excilys.computerDatabase.model.Company;
 /**
  * The Class CompanyDAO.
  */
-public class CompanyDAO implements CrudService<Company> {
+public class CompanyDAO implements ICrudService<Company> {
+	
+	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
 	
 	@Override
 	public Company add(Company obj) {
@@ -27,47 +29,31 @@ public class CompanyDAO implements CrudService<Company> {
 		return null;
 	}
 
+	/**
+	 * @param the id of the company
+	 * @return the number of companies deleted
+	 */
 	@Override
 	public int delete(long id) throws DAOConfigurationException {
 		
-		Connection connection = null;
-		PreparedStatement prstmtComputer = null;
 		PreparedStatement prstmtCompany = null;
-		int cputer = 0;
 		int cpany = 0;
 		
-		String deleteCoomputers = "DELETE FROM computer WHERE company_id = ?";
-		String deleteCompany = "DELETE FROM company WHERE id = ?";
-		
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			Connection connection = ConnectionMySQL.getInstance().getConnection();
 			connection.setAutoCommit(false);
 			
-			prstmtComputer = connection.prepareStatement(deleteCoomputers);
-			prstmtComputer.setLong(1, id);
-			cputer = prstmtComputer.executeUpdate();
-			
-			prstmtCompany = connection.prepareStatement(deleteCompany);
+			prstmtCompany = connection.prepareStatement(DELETE_COMPANY);
 			prstmtCompany.setLong(1, id);
 			cpany = prstmtCompany.executeUpdate();
 			
-			connection.commit();
 		}catch (SQLException e) {
 			e.printStackTrace();
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 		} finally {
-			ConnectionMySQL.CloseConnection(connection,null,null,prstmtCompany);
-			ConnectionMySQL.CloseConnection(null,null,null,prstmtComputer);
+			ConnectionMySQL.CloseConnection(null,null,null,prstmtCompany);
 		}
 		
-		if (cputer > 0 || cpany >0) {
-			return 1;
-		}
-		return 0;
+		return cpany;
 	}
 
 	/**

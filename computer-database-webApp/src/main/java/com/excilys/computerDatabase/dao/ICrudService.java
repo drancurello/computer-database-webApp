@@ -1,10 +1,11 @@
 package com.excilys.computerDatabase.dao;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
 
-public interface CrudService<T> {
+public interface ICrudService<T> {
 
 	public abstract T add(T obj)  throws DAOConfigurationException;
 

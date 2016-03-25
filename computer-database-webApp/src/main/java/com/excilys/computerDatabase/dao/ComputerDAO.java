@@ -18,13 +18,18 @@ import com.excilys.computerDatabase.model.Computer;
 /**
  * The Class ComputerDAO.
  */
-public class ComputerDAO implements CrudService<Computer> {
+public class ComputerDAO implements ICrudService<Computer> {
 
 	private String order = "name";
 	private String type = "ASC";
 	
 	private static final String INSERT_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
 	private static final String UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = ?";
+	private static final String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
+	private static final String DELETE_COMPUTER_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
+	private static final String FIND_COMPUTER = "SELECT * FROM computer WHERE id = ?";
+	private static final String FIND_ALL = "SELECT * FROM computer";
+	private static final String COUNT_COMPUTERS = "SELECT COUNT(*) FROM computer";
 	
 	/**
 	 * add a computer in the DB
@@ -137,23 +142,49 @@ public class ComputerDAO implements CrudService<Computer> {
 	@Override
 	public int delete(long id) throws DAOConfigurationException {
 
-		String query = "DELETE FROM computer WHERE id = " + id;
 		int result = 0;
 
-		Statement stmt = null;
-		Connection connection = null;
+		PreparedStatement prstmt = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
-			stmt = connection.createStatement();
-			result = stmt.executeUpdate(query);
-
+			Connection connection = ConnectionMySQL.getInstance().getConnection();
+			prstmt = connection.prepareStatement(DELETE_COMPUTER);
+			prstmt.setLong(1, id);
+			result = prstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionMySQL.CloseConnection(connection, null, stmt, null);
+			ConnectionMySQL.CloseConnection(null, null, null, prstmt);
 		}
+		
+		return result;
 
+	}
+	
+	/**
+	 * delete computers by its company id 
+	 * 
+	 * @param the id of the company
+	 * @throws DAOConfigurationException
+	 * 
+	 */
+	public int deleteByCompany(long id) throws DAOConfigurationException {
+
+		int result = 0;
+
+		PreparedStatement prstmt = null;
+
+		try {
+			Connection connection = ConnectionMySQL.getInstance().getConnection();
+			prstmt = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
+			prstmt.setLong(1, id);
+			result = prstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
 		return result;
 
 	}
@@ -168,29 +199,27 @@ public class ComputerDAO implements CrudService<Computer> {
 	@Override
 	public Computer find(long id) throws DAOConfigurationException {
 
-		String query = "SELECT * FROM computer WHERE id = " + id;
-
 		ResultSet rs = null;
-		Statement stmt = null;
+		PreparedStatement prstmt = null;
 		Connection connection = null;
 
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
+			prstmt = connection.prepareStatement(FIND_COMPUTER);
+			prstmt.setLong(1, id);
+			rs = prstmt.executeQuery();
 
 			if (rs.next()) {
 				Computer computer = new Computer();
 				computer = ComputerMapper.resultToComputer(rs);
 				return computer;
-
 			} else {
 				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
+			ConnectionMySQL.CloseConnection(connection, rs, null, prstmt);
 		}
 		return null;
 	}
@@ -211,8 +240,8 @@ public class ComputerDAO implements CrudService<Computer> {
 				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY company.name " + type + " LIMIT " + debut + ","
 				+ nComputer;
 		} else {
-		query = "SELECT * FROM computer WHERE name LIKE '%" + name
-				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY " + order + " " + type + " LIMIT " + debut + ","
+		query = "SELECT * FROM computer WHERE name LIKE '%" + name + "%'"
+				+ " OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY " + order + " " + type + " LIMIT " + debut + ","
 				+ nComputer;
 		}
 		
@@ -276,8 +305,6 @@ public class ComputerDAO implements CrudService<Computer> {
 	@Override
 	public List<Computer> findAll() throws DAOConfigurationException {
 
-		String query = "SELECT * FROM computer";
-
 		List<Computer> computerList = new ArrayList<Computer>();
 
 		Connection connection = null;
@@ -287,7 +314,7 @@ public class ComputerDAO implements CrudService<Computer> {
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(FIND_ALL);
 
 			while (rs.next()) {
 				Computer computer = new Computer();
@@ -352,7 +379,6 @@ public class ComputerDAO implements CrudService<Computer> {
 	 * @throws DAOConfigurationException
 	 */
 	public int getNbComputers() throws DAOConfigurationException {
-		String query = "SELECT COUNT(*) FROM computer";
 
 		ResultSet rs = null;
 		Statement stmt = null;
@@ -362,7 +388,7 @@ public class ComputerDAO implements CrudService<Computer> {
 		try {
 			connection = ConnectionMySQL.getInstance().getConnection();
 			stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(COUNT_COMPUTERS);
 			if (rs.next()) {
 				nbEntries = rs.getInt("COUNT(*)");
 			}
@@ -382,8 +408,5 @@ public class ComputerDAO implements CrudService<Computer> {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
-	
-	
+
 }
