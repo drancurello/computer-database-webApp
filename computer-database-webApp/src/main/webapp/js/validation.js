@@ -21,11 +21,13 @@ $(document).ready(function() {
 	}, "you can't enter a date before 1970-01-02");
 
 	jQuery.validator.addMethod("discVal", function(value, element, params) {
+		if ($(params).val() == "")
+			return true;
+		if ($(params).val() == null)
+			return true;
 		if (value == null)
 			return true;
 		if (value == "")
-			return true;
-		if ($(params) == "")
 			return true;
 		return new Date(value) > new Date($(params).val());
 	}, "discontinued Date must be after the introduced date");
@@ -34,8 +36,8 @@ $(document).ready(function() {
         var str = value.trim();
 		if (str.length == 0)
 			return false;
-		return this.optional(element) || /^[a-zA-Z0-9\_\-\s]+$/.test(value);
-	}, "Use a valid username");
+		return this.optional(element) || /^[a-zA-Z0-9\_\-\.\+\s]+$/.test(value);
+	}, "Enter a valid name");
 
 	$("#formComputer").validate({
 		rules : {

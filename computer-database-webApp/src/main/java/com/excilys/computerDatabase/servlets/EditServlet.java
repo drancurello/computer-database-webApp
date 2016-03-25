@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.parser.ParserInteger;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validation.FormValidation;
@@ -23,7 +24,6 @@ import com.excilys.computerDatabase.validation.FormValidation;
 @WebServlet("/EditServlet")
 public class EditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private static int id = 0;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,20 +38,29 @@ public class EditServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if (request.getParameter("id") != null) {
-			id = Integer.parseInt(request.getParameter("id"));
+		int id = ParserInteger.parserInt(request.getParameter("id"));
+		Computer computer = null;
+		
+		if (id == -1) {
+			response.sendRedirect("index");
+		} else {
+			computer = ComputerService.findComputer(id);
+			if (computer == null) {
+				response.sendRedirect("index");
+			}
+			else {
+				List<Company> companies = CompanyService.findAllCompanies();
+		
+				request.setAttribute("companies", companies);
+				request.setAttribute("name", computer.getName());
+				request.setAttribute("introduced", computer.getIntroducedTime());
+				request.setAttribute("discontinued", computer.getDiscontinuedTime());
+				request.setAttribute("id", id);
+				
+				this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
+			}
 		}
 		
-		Computer computer = ComputerService.findComputer(id);
-		
-		List<Company> companies = CompanyService.findAllCompanies();
-		
-		request.setAttribute("companies", companies);
-		request.setAttribute("name", computer.getName());
-		request.setAttribute("introduced", computer.getIntroducedTime());
-		request.setAttribute("discontinued", computer.getDiscontinuedTime());
-		
-		this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
 	}
 
 	/**
@@ -64,7 +73,7 @@ public class EditServlet extends HttpServlet {
 		
 		if(erreurs.isEmpty()) {
 			Computer computer = ComputerMapper.requestToComputer(request);
-			computer.setId(id);
+			computer.setId(ParserInteger.parserInt(request.getParameter("id")));
 			
 			ComputerService.updateComputer(computer);
 			response.sendRedirect("index");

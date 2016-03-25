@@ -1,8 +1,11 @@
 package com.excilys.computerDatabase.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
 import com.excilys.computerDatabase.model.Computer;
@@ -56,16 +59,23 @@ public class ComputerService {
 	 *
 	 * @param the id of the computer
 	 * @return the result of the delete 
+	 * @throws SQLException 
 	 * @throws DAOConfigurationException 
 	 */
 	public static int deleteComputer(long id)
 	{
 		int i =0;
+		Connection connection = null;
+		
 		try {
 			i = computerDAO.delete(id);
-		} catch (DAOConfigurationException e) {
-			System.err.println(e.getMessage());
+			connection = ConnectionMySQL.getInstance().getConnection();
+		} catch (DAOConfigurationException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionMySQL.CloseConnection(connection, null, null, null);
 		}
+		
 		return i;
 	}
 	

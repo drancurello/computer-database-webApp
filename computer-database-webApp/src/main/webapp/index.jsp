@@ -63,26 +63,26 @@
                         </th>
                         <th>
                             Computer name
-                            <p:linkFilter order="name" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="name" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                         </th>
                         <th>
                             Introduced date
-                            <p:linkFilter order="introduced" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="introduced" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                             		
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
-                            <p:linkFilter order="discontinued" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="discontinued" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             Company
-                            <p:linkFilter order="company" nbComputersPage="50" type="ASC" page="1" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="company" nbComputersPage="50" type="DESC" page="1" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                         </th>
 
                     </tr>

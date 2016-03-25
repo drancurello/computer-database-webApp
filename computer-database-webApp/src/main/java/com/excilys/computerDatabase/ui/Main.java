@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
@@ -17,7 +18,7 @@ public class Main {
 
 	static Scanner sc = new Scanner(System.in);
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException, NumberFormatException, DAOConfigurationException {
 
 		String str = "";
 
@@ -165,44 +166,42 @@ public class Main {
 		while (aIntro == null) {
 			System.out.println("Entrez une date d'introduction au format yyyy-mm-dd : ");
 			aIntro = sc.nextLine();
-			if (!aIntro.equals("")) {
+			if (!aIntro.isEmpty()) {
 				try {
-					LocalDate.parse(aIntro);
+					aComputer.setIntroducedTime(LocalDate.parse(aIntro));
 				} catch (DateTimeParseException e) {
 					System.out.println("mauvais format");
 					aIntro = null;
-				}
-				aComputer.setIntroducedTime(LocalDate.parse(aIntro));
+				}		
 			}
 		}
-
 		String aDisc = null;
 		while (aDisc == null) {
 			System.out.println("Entrez une date de fin de commercialisation au format yyyy-mm-dd : ");
 			aDisc = sc.nextLine();
-
-			if (!aDisc.equals("")) {
+			if (!aDisc.isEmpty()) {
 				try {
-					LocalDate.parse(aDisc);
-					if (LocalDate.parse(aDisc).isBefore(LocalDate.parse(aIntro))) {
-						System.out.println("La date de fin doit etre apres la date d'introduction");
-						aDisc = null;
-						aComputer.setDiscontinuedTime(null);
+					if (!aIntro.isEmpty()) {
+						if (LocalDate.parse(aDisc).isBefore(LocalDate.parse(aIntro))) {
+							System.out.println("La date de fin doit etre apres la date d'introduction");
+							aDisc = null;
+						}
 					}
+					aComputer.setDiscontinuedTime(LocalDate.parse(aDisc));
 				} catch (DateTimeParseException e) {
 					System.out.println("Date au mauvais format : yyyy-mm-dd");
 					aDisc = null;
 				}
-				aComputer.setDiscontinuedTime(LocalDate.parse(aDisc));
 			}
 		}
-
+		
 		System.out.println("Entrez l'id d'un fabricant : ");
 		String aManufacturer = sc.nextLine();
 		if (!aManufacturer.equals("")) {
-			Company mCompany = CompanyService.findCompany(Integer.parseInt(aManufacturer));
-			aComputer.setCompany(mCompany);
+			Company aCompany = CompanyService.findCompany(Integer.parseInt(aManufacturer));
+			aComputer.setCompany(aCompany);
 		}
+		System.out.println(aComputer.toString());
 		ComputerService.addComputer(aComputer);
 		System.out.println("materiel ajoute");
 	}
@@ -234,14 +233,13 @@ public class Main {
 			System.out.println("Entrez une nouvelle date d introduction : ");
 			uIntro = sc.nextLine();
 
-			if (!uIntro.equals("")) {
+			if (!uIntro.isEmpty()) {
 				try {
-					LocalDate.parse(uIntro);
+					upComputer.setIntroducedTime(LocalDate.parse(uIntro));
 				} catch (DateTimeParseException e) {
 					System.out.println("date au mauvais format : yyyy-mm-dd");
 					uIntro = null;
 				}
-				upComputer.setIntroducedTime(LocalDate.parse(uIntro));
 			}
 		}
 
@@ -250,24 +248,26 @@ public class Main {
 			System.out.println("Entrez une nouvelle date de fin de commercialisation : ");
 			uDisc = sc.nextLine();
 
-			if (!uDisc.equals("")) {
+			if (!uDisc.isEmpty()) {
 				try {
-					LocalDate.parse(uDisc);
-					if (LocalDate.parse(uDisc).isBefore(LocalDate.parse(uIntro))) {
-						System.out.println("La date de fin doit etre apres la date d'introduction");
-						uDisc = null;
-						upComputer.setDiscontinuedTime(null);
+					if(!uIntro.isEmpty()) {
+						if (LocalDate.parse(uDisc).isBefore(LocalDate.parse(uIntro))) {
+							System.out.println("La date de fin doit etre apres la date d'introduction");
+							uDisc = null;
+							upComputer.setDiscontinuedTime(null);
+						}
 					}
+				upComputer.setDiscontinuedTime(LocalDate.parse(uDisc));
 				} catch (DateTimeParseException e) {
 					System.out.println("Date au mauvais format : yyyy-mm-dd");
 					uDisc = null;
 				}
-				upComputer.setDiscontinuedTime(LocalDate.parse(uDisc));
+				
 			}
 		}
 		System.out.println("Entrez l'id d'un nouveau fabricant : ");
 		String uManufacturer = sc.nextLine();
-		if (!uManufacturer.equals("")) {
+		if (!uManufacturer.isEmpty()) {
 			Company upCompany = CompanyService.findCompany(Integer.parseInt(uManufacturer));
 			upComputer.setCompany(upCompany);
 
@@ -288,7 +288,7 @@ public class Main {
 		}
 	}
 	
-	public static void deleteCompany() {
+	public static void deleteCompany() throws NumberFormatException, DAOConfigurationException, SQLException {
 		String id;
 		System.out.println("Id de la compagnie a supprimer : ");
 		id = sc.nextLine();
