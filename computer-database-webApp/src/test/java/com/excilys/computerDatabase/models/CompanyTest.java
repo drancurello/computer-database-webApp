@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase;
+package com.excilys.computerDatabase.models;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +19,7 @@ public class CompanyTest {
 		
 		assertEquals(1,company.getId());
 		
-		assertEquals(new String("Apple Inc."),company.getName());
+		assertEquals("Apple Inc.",company.getName());
 		
 		int nbCompanies = CompanyService.findAllCompanies().size();
 		

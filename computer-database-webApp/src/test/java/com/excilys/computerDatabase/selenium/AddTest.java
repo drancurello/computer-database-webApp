@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase;
+package com.excilys.computerDatabase.selenium;
 
 import java.util.concurrent.TimeUnit;
 import org.junit.*;

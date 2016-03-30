@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase;
+package com.excilys.computerDatabase.selenium;
 
 import static org.junit.Assert.fail;
 

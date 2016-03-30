@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase;
+package com.excilys.computerDatabase.selenium;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;

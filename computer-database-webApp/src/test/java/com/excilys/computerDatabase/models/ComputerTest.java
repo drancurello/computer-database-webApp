@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase;
+package com.excilys.computerDatabase.models;
 
 import static org.junit.Assert.*;
 
