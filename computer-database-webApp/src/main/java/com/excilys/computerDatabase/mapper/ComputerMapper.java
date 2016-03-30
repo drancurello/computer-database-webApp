@@ -1,8 +1,12 @@
 package com.excilys.computerDatabase.mapper;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,5 +59,39 @@ public class ComputerMapper {
 			   .companyComputer(company).build();
 	}
 	
+	public static List<Computer> resultToComputersList(ResultSet rs) throws SQLException {
+		List<Computer> computers = new ArrayList<>();
+		
+		while (rs.next()) {
+			computers.add(resultToComputer(rs));
+		}
+		
+		return computers;	
+	}
+	
+	public static void fillPreparedStatement(Computer obj, PreparedStatement prepare) throws SQLException {
+		
+		prepare.setString(1, obj.getName());
+		
+		if (obj.getIntroducedTime() == null) {
+			prepare.setString(2, null);
+		} else {
+			prepare.setDate(2, Date.valueOf(obj.getIntroducedTime()));
+		}
+		
+		if (obj.getDiscontinuedTime() == null) {
+			prepare.setString(3, null);
+		} else {
+			prepare.setDate(3, Date.valueOf(obj.getDiscontinuedTime()));
+		}
+
+		if (obj.getCompany() == null) {
+			Company company = new Company();
+			obj.setCompany(company);
+			prepare.setString(4, null);
+		} else {
+			prepare.setLong(4, obj.getCompany().getId());
+		}
+	}
 
 }

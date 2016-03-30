@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
+import com.excilys.computerDatabase.parser.ParserInteger;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validation.ValidationComputer;
 
@@ -38,25 +39,21 @@ public class IndexServlet extends HttpServlet {
 		int nbComputersPage = 50;
 		String search = null;
 		List<Computer> computers = new ArrayList<>();
-		String order = "name";
-		String type = "ASC";
 
-		if (request.getParameter("nbComputersPage") != null && request.getParameter("nbComputersPage").matches("\\d+")) {
-			nbComputersPage = Integer.parseInt(request.getParameter("nbComputersPage"));
+		if (ParserInteger.parserInt(request.getParameter("nbComputersPage")) != -1) {
+			nbComputersPage = ParserInteger.parserInt(request.getParameter("nbComputersPage"));
 		}
-
-		if (request.getParameter("page") != null && request.getParameter("page").matches("\\d+")) {
-			page = Integer.parseInt(request.getParameter("page"));
+		
+		if (ParserInteger.parserInt(request.getParameter("nbComputersPage")) != -1) {
+			page = ParserInteger.parserInt(request.getParameter("page"));
 		}
 		
 		if (request.getParameter("order") != null) {
-			order = request.getParameter("order");
-			ComputerService.setOrder(order);
+			ComputerService.setOrder(request.getParameter("order"));
 		}
 		
 		if (request.getParameter("type") != null) {
-			type = request.getParameter("type");
-			ComputerService.setType(type);
+			ComputerService.setType(request.getParameter("type"));
 		}
 
 		Page indexPage = new Page(page, nbComputersPage);
