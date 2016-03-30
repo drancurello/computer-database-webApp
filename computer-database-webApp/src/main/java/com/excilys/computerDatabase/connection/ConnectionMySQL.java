@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
+import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
@@ -28,7 +28,7 @@ public class ConnectionMySQL {
     
     public static final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
 
-	private ConnectionMySQL() throws DAOConfigurationException{
+	private ConnectionMySQL() throws ConnectionException{
 		
 			Properties properties = new Properties();
 			
@@ -49,15 +49,15 @@ public class ConnectionMySQL {
 	            connectionPool = new BoneCP(config);		
 			
 			} catch (SQLException e) {
-				throw new DAOConfigurationException("Pool configuration failed", e);
+				throw new ConnectionException("Pool configuration failed", e);
 			} catch (IOException e) {
-				throw new DAOConfigurationException("fail to load the properties file", e);
+				throw new ConnectionException("fail to load the properties file", e);
 			} catch (ClassNotFoundException e) {
-				throw new DAOConfigurationException("jdbc driver not found", e);
+				throw new ConnectionException("jdbc driver not found", e);
 			}
 	}
 	
-    public static ConnectionMySQL getInstance() throws DAOConfigurationException{
+    public static ConnectionMySQL getInstance() throws ConnectionException{
         if (connectionMySQL == null) {
             connectionMySQL = new ConnectionMySQL();
             return connectionMySQL;

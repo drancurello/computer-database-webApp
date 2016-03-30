@@ -5,18 +5,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.ComputerDAO;
-import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
+import com.excilys.computerDatabase.exceptions.ConnectionException;
+import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.model.Company;
 
 public class CompanyService { 
 	
 	private static CompanyDAO companyDAO = new CompanyDAO();
 	private static ComputerDAO computerDAO = new ComputerDAO();
+	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyService.class);
 	
-	public static int delete(long id) throws DAOConfigurationException, SQLException {
+	public static int delete(long id) throws SQLException{
 		int cpany = 0, cputer = 0;
 		Connection connection = null;
 		
@@ -29,8 +34,8 @@ public class CompanyService {
 			
 			connection.commit();
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException | ConnectionException | DAOException e) {
+			LOGGER.error("delete the company " + id + " failed cause " + e.getMessage());
 			connection.rollback();
 		} finally {
 			ConnectionMySQL.CloseConnection(connection, null, null, null);
@@ -44,8 +49,8 @@ public class CompanyService {
 		List<Company> companies = new ArrayList<>();
 		try {
 			companies = companyDAO.findAll();
-		} catch (DAOConfigurationException e) {
-			System.err.println(e.getMessage());
+		} catch (DAOException | ConnectionException e) {
+			LOGGER.error("find all the companies failed cause " + e.getMessage());
 		}
 		return companies;
 	}
@@ -54,8 +59,8 @@ public class CompanyService {
 		Company company = null;
 		try {
 			company = companyDAO.find(id);
-		} catch (DAOConfigurationException e) {
-			System.err.println(e.getMessage());
+		} catch (DAOException | ConnectionException e) {
+			LOGGER.error("find the company " + id + " failed cause " + e.getMessage());
 		}
 		return company;
 	}

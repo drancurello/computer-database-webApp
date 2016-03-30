@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.excilys.computerDatabase.exceptions.DAOConfigurationException;
+import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
@@ -18,7 +18,7 @@ public class Main {
 
 	static Scanner sc = new Scanner(System.in);
 
-	public static void main(String[] args) throws SQLException, NumberFormatException, DAOConfigurationException {
+	public static void main(String[] args) throws SQLException, NumberFormatException, ConnectionException {
 
 		String str = "";
 
@@ -288,7 +288,7 @@ public class Main {
 		}
 	}
 	
-	public static void deleteCompany() throws NumberFormatException, DAOConfigurationException, SQLException {
+	public static void deleteCompany() throws NumberFormatException, ConnectionException, SQLException {
 		String id;
 		System.out.println("Id de la compagnie a supprimer : ");
 		id = sc.nextLine();
