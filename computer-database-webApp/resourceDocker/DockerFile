@@ -9,3 +9,11 @@ RUN mkdir -p /usr/share/maven \
 
 ENV MAVEN_HOME /usr/share/maven
 
+
+COPY . /usr/app
+RUN CP resourceDocker/db_config.properties /usr/app/src/main/resources
+WORKDIR usr/app
+CMD ["mvn","install"]
+
+
+
