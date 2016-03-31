@@ -10,8 +10,8 @@ RUN mkdir -p /usr/share/maven \
 ENV MAVEN_HOME /usr/share/maven
 
 
-COPY . /usr/app
-WORKDIR usr/app/computer-database-webApp/
+COPY ./computer-database-webApp/ /usr/app/
+WORKDIR usr/app/
 
 
 
