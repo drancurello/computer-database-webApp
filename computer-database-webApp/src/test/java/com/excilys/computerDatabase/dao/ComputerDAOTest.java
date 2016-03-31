@@ -15,7 +15,7 @@ public class ComputerDAOTest {
 	
 	@Test
 	public void findAll() {
-		assertEquals(ComputerService.findAllComputers().size(),577);
+		assertEquals(ComputerService.findAllComputers().size(),574);
 	}
 	
 	
