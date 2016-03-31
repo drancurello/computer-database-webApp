@@ -11,7 +11,7 @@ ENV MAVEN_HOME /usr/share/maven
 
 
 COPY . /usr/app
-RUN CP ./computer-database-webApp/resourceDocker/db_config.properties /usr/app/computer-database-webApp/src/main/resources
+RUN CP ./computer-database-webApp/resourceDocker/db_config.properties /usr/app/computer-database-webApp/src/main/resources/
 WORKDIR usr/app/computer-database-webApp
 CMD ["mvn","install"]
 
