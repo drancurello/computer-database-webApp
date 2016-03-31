@@ -10,7 +10,7 @@ RUN mkdir -p /usr/share/maven \
 ENV MAVEN_HOME /usr/share/maven
 
 
-COPY ./ /usr/app/
+COPY ../ /usr/app/
 WORKDIR usr/app/
 
 
