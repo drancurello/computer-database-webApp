@@ -11,7 +11,7 @@ ENV MAVEN_HOME /usr/share/maven
 
 
 COPY . /usr/app
-WORKDIR usr/app/computer-database-webApp
+WORKDIR usr/app/computer-database-webApp/computer-database-webApp
 CMD ["mvn","install"]
 
 
