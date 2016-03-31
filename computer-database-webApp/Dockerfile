@@ -12,7 +12,7 @@ ENV MAVEN_HOME /usr/share/maven
 
 COPY . /usr/app/
 WORKDIR usr/app/
-CMD ["mvn","install"]
+
 
 
 
