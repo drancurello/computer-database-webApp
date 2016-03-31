@@ -108,7 +108,7 @@
           <version>2.19.1</version>
           <configuration>
             <excludes>
-              <exclude>com.excilys.computerDatabase.selenium</exclude>
+              <exclude>**/selenium/**</exclude>
             </excludes>
           </configuration>
         </plugin>
