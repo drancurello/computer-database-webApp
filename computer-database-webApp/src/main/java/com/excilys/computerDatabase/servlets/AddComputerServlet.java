@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
@@ -23,6 +28,10 @@ import com.excilys.computerDatabase.validation.FormValidation;
 @WebServlet("/AddComputerServlet")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -30,15 +39,22 @@ public class AddComputerServlet extends HttpServlet {
     public AddComputerServlet() {
         super();
     }
+    
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"spring-Module.xml"});
+		computerService = (ComputerService) context.getBean("computerService");
+		companyService = (CompanyService) context.getBean("companyService");
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> companies = CompanyService.findAllCompanies();
-		
-		request.setAttribute("companies", companies);
-		
+		List<Company> companies = companyService.findAllCompanies();	
+		request.setAttribute("companies", companies);	
 		this.getServletContext().getRequestDispatcher("/views/addComputer.jsp").forward(request, response);
 		
 	}
@@ -53,8 +69,8 @@ public class AddComputerServlet extends HttpServlet {
 		if(erreurs.isEmpty()) {
 			
 			Computer computer = ComputerMapper.requestToComputer(request);
-			
-			ComputerService.addComputer(computer);
+			computer.setCompany(companyService.findCompany(computer.getCompany().getId()));
+			computerService.addComputer(computer);
 			response.sendRedirect("index");
 			
 		} else {

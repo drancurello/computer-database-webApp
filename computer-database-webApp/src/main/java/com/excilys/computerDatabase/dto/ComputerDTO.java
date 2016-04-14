@@ -1,5 +1,10 @@
 package com.excilys.computerDatabase.dto;
 
+import java.time.LocalDate;
+
+import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.model.Computer.Builder;
 
 /**
  * The Class ComputerDTO.
@@ -22,9 +27,6 @@ public class ComputerDTO {
 	/** The company id. */
 	private long companyId;
 	
-	/** The company name. */
-	private String companyName = null;
-	
 	/**
 	 * Instantiates a new computer dto.
 	 */
@@ -39,13 +41,13 @@ public class ComputerDTO {
 	 * @param companyId the company id
 	 * @param companyName the company name
 	 */
-	public ComputerDTO(String name, String introduced,String discontinued,long companyId, String companyName) {
+	public ComputerDTO(int id, String name, String introduced,String discontinued,long companyId) {
 	
+		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		this.companyId = companyId;
-		this.companyName = companyName;
 	}
 
 	/**
@@ -136,30 +138,73 @@ public class ComputerDTO {
 	 */
 	public void setCompanyId(long companyId) {
 		this.companyId = companyId;
-	}
-
-	/**
-	 * Gets the company name.
-	 *
-	 * @return the company name
-	 */
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	/**
-	 * Sets the company name.
-	 *
-	 * @param companyName the new company name
-	 */
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+	}	
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ComputerDTO other = (ComputerDTO) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
-				+ discontinued + ", companyName=" + companyName;
+				+ discontinued;
 	}
+	
+	public static class Builder {
+		private int bId;
+		private String bName;
+		private String bIntroduced;
+		private String bDiscontinued;
+		private long bCompany;
+		
+		public Builder idComputer(int id) {
+			this.bId = id;
+			return this;
+		}
+		
+		public Builder nameComputer(String name) {
+			this.bName = name;
+			return this;
+		}
+		
+		public Builder introducedComputer(String introduced) {
+			this.bIntroduced = introduced;
+			return this;
+		}
+		
+		public Builder discontinuedComputer(String discontinued) {
+			this.bDiscontinued = discontinued;
+			return this;
+		}
+		
+		public Builder companyComputer(long companyId) {
+			this.bCompany = companyId;
+			return this;
+		}
+		
+		public ComputerDTO build() {
+			return new ComputerDTO(bId, bName, bIntroduced, bDiscontinued, bCompany);
+		}
+		
+	}
+	
 	
 }

@@ -32,7 +32,6 @@ public class ComputerDTOMapper {
 		
 		if (computer.getCompany().getName() != null) {
 			computerDTO.setCompanyId(computer.getCompany().getId());
-			computerDTO.setCompanyName(computer.getCompany().getName());
 		}
 		
 		return computerDTO;
@@ -59,10 +58,7 @@ public class ComputerDTOMapper {
 		}
 		
 		Company company = new Company();
-		if (computerDTO.getCompanyName() != null) {		
-			company.setId(computerDTO.getCompanyId());
-			company.setName(computerDTO.getCompanyName());
-		}
+		company.setId(computerDTO.getCompanyId());
 		computer.setCompany(company);
 		
 		return computer;

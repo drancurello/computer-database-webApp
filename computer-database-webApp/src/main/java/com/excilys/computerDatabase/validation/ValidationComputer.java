@@ -69,12 +69,6 @@ public class ValidationComputer {
 		} catch (Exception e) {
 			throw new Exception("please enter a valid id");
 		}
-		
-		Company company = CompanyService.findCompany(Integer.parseInt(id));
-		
-		if(company.getName() == null) {
-			throw new Exception("id entered did not match any company ");
-		}
 	}
 	
 	public static Page PageNumberValidation(Page page) {

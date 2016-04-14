@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +18,14 @@ import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.mapper.CompanyMapper;
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.page.Page;
 
 /**
  * The Class CompanyDAO.
  */
 public class CompanyDAO implements ICrudService<Company> {
+	
+	private DataSource dataSource;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
@@ -47,7 +52,7 @@ public class CompanyDAO implements ICrudService<Company> {
 		int cpany = 0;
 		
 		try {
-			Connection connection = ConnectionMySQL.getInstance().getConnection();
+			Connection connection = dataSource.getConnection();
 			connection.setAutoCommit(false);
 			
 			prstmtCompany = connection.prepareStatement(DELETE_COMPANY);
@@ -81,7 +86,7 @@ public class CompanyDAO implements ICrudService<Company> {
 		Company company = new Company();
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
@@ -115,7 +120,7 @@ public class CompanyDAO implements ICrudService<Company> {
 		Statement stmt = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
@@ -131,8 +136,12 @@ public class CompanyDAO implements ICrudService<Company> {
 	}
 
 	@Override
-	public List<Company> findPage(int nPage, int nComputer) {
+	public Page findPage(Page page) {
 		return null;
+	}
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 }

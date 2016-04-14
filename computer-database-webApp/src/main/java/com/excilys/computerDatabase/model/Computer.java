@@ -44,6 +44,13 @@ public class Computer {
 		this.discontinuedTime = discontinue;
 		this.company = company;
 	}
+	
+	public Computer(int id, String name, LocalDate introducedTime, LocalDate discontinue) {
+		this.id = id;
+		this.name = name;
+		this.introducedTime = introducedTime;
+		this.discontinuedTime = discontinue;
+	}
 
 	public String getName() {
 		return name;
@@ -152,11 +159,6 @@ public class Computer {
 		
 		public Computer build() {
 			return new Computer(bId, bName, bIntroduced, bDiscontinued, bCompany);
-		}
-		
+		}	
 	}
-	
-	
-	
-
 }

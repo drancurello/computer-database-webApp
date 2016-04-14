@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
@@ -24,6 +29,10 @@ import com.excilys.computerDatabase.validation.FormValidation;
 @WebServlet("/EditServlet")
 public class EditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	private ComputerService computerService;
+	@Autowired
+	private CompanyService companyService;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -31,6 +40,15 @@ public class EditServlet extends HttpServlet {
     public EditServlet() {
         super();
     }
+    
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);	
+
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"spring-Module.xml"});
+		computerService = (ComputerService) context.getBean("computerService");
+		companyService = (CompanyService) context.getBean("companyService");
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,12 +62,12 @@ public class EditServlet extends HttpServlet {
 		if (id == -1) {
 			response.sendRedirect("index");
 		} else {
-			computer = ComputerService.findComputer(id);
+			computer = computerService.findComputer(id);
 			if (computer == null) {
 				response.sendRedirect("index");
 			}
 			else {
-				List<Company> companies = CompanyService.findAllCompanies();
+				List<Company> companies = companyService.findAllCompanies();
 		
 				request.setAttribute("companies", companies);
 				request.setAttribute("name", computer.getName());
@@ -73,9 +91,10 @@ public class EditServlet extends HttpServlet {
 		
 		if(erreurs.isEmpty()) {
 			Computer computer = ComputerMapper.requestToComputer(request);
+			computer.setCompany(companyService.findCompany(computer.getCompany().getId()));
 			computer.setId(ParserInteger.parserInt(request.getParameter("id")));
 			
-			ComputerService.updateComputer(computer);
+			computerService.updateComputer(computer);
 			response.sendRedirect("index");
 			
 		} else {

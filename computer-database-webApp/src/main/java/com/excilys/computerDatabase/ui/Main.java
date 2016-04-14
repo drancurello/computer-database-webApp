@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
@@ -17,11 +20,17 @@ import com.excilys.computerDatabase.service.ComputerService;
 public class Main {
 
 	static Scanner sc = new Scanner(System.in);
+	private static ComputerService computerService;
+	private static CompanyService companyService;
 
 	public static void main(String[] args) throws SQLException, NumberFormatException, ConnectionException {
 
 		String str = "";
-
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"spring-Module.xml"});
+		computerService = (ComputerService) context.getBean("computerService");
+		companyService = (CompanyService) context.getBean("companyService");
+		
 		while (!str.equals("exit")) {
 			System.out.println(
 					" 1-liste des materiels\n 2-liste des fabriquants\n 3-paginer les materiels\n 4-ajouter un materiel\n 5-chercher un materiel\n 6-mettre a jour un materiel\n 7-supprimer un materiel\n 8-supprimer une compagnie\n exit pour quitter ");
@@ -64,7 +73,7 @@ public class Main {
 
 	public static void listAllComputer() {
 		List<Computer> listComputer = new ArrayList<Computer>();
-		listComputer = ComputerService.findAllComputers();
+		listComputer = computerService.findAllComputers();
 		for (Computer c : listComputer) {
 			System.out.println(c.toString());
 		}
@@ -72,15 +81,14 @@ public class Main {
 
 	public static void listAllCompanies() {
 		List<Company> companyList = new ArrayList<Company>();
-		companyList = CompanyService.findAllCompanies();
+		companyList = companyService.findAllCompanies();
 		for (Company company : companyList) {
 			System.out.println(company.toString());
 		}
 	}
 
 	public static void listComputerByPage() {
-		List<Computer> pListComputer = new ArrayList<Computer>();
-		System.out.println("Combien de materiels vouolez vous afficher ?");
+		System.out.println("Combien de materiels voulez vous afficher ?");
 		String nbEntries = sc.nextLine();
 		while (Integer.parseInt(nbEntries) < 0) {
 			System.out.println("Veuillez rentrer un nombre de materiels a afficher valide ");
@@ -93,12 +101,12 @@ public class Main {
 			nPage = sc.nextLine();
 		}
 
-		Page page = new Page(Integer.parseInt(nPage), Integer.parseInt(nbEntries));
+		Page page = new Page(Integer.parseInt(nPage), Integer.parseInt(nbEntries), computerService.getNbComputers());
 		String rep = "";
 
-		pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
+		page = computerService.findPageComputers(page);
 
-		for (Computer c : pListComputer) {
+		for (Computer c : page.getComputersList()) {
 			System.out.println(c.toString());
 		}
 
@@ -110,15 +118,15 @@ public class Main {
 			switch (rep) {
 			case "1":
 				page.previousPage();
-				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				page = computerService.findPageComputers(page);
+				for (Computer c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
 			case "2":
 				page.nextPage();
-				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				page = computerService.findPageComputers(page);
+				for (Computer c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -127,8 +135,8 @@ public class Main {
 				nbEntries = sc.nextLine();
 				page.setNbEntriesByPage(Integer.parseInt(nbEntries));
 				page.setPageNumber(1);
-				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				page = computerService.findPageComputers(page);
+				for (Computer c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -136,8 +144,8 @@ public class Main {
 				System.out.println("Quel page voulez-vous consulter ?");
 				nbEntries = sc.nextLine();
 				page.setPageNumber(Integer.parseInt(nbEntries));
-				pListComputer = ComputerService.findPageComputers(page.getPageNumber(), page.getNbEntriesByPage());
-				for (Computer c : pListComputer) {
+				page = computerService.findPageComputers(page);
+				for (Computer c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -198,11 +206,11 @@ public class Main {
 		System.out.println("Entrez l'id d'un fabricant : ");
 		String aManufacturer = sc.nextLine();
 		if (!aManufacturer.equals("")) {
-			Company aCompany = CompanyService.findCompany(Integer.parseInt(aManufacturer));
+			Company aCompany = companyService.findCompany(Integer.parseInt(aManufacturer));
 			aComputer.setCompany(aCompany);
 		}
 		System.out.println(aComputer.toString());
-		ComputerService.addComputer(aComputer);
+		computerService.addComputer(aComputer);
 		System.out.println("materiel ajoute");
 	}
 
@@ -211,7 +219,7 @@ public class Main {
 		System.out.println("Entrez l'id du materiel a chercher : ");
 		id = sc.nextLine();
 		Computer fComputer = new Computer();
-		fComputer = ComputerService.findComputer(Integer.parseInt(id));
+		fComputer = computerService.findComputer(Integer.parseInt(id));
 		if (fComputer == null) {
 			System.out.println("Le materiel recherche n'est pas dans la base");
 		} else {
@@ -268,11 +276,11 @@ public class Main {
 		System.out.println("Entrez l'id d'un nouveau fabricant : ");
 		String uManufacturer = sc.nextLine();
 		if (!uManufacturer.isEmpty()) {
-			Company upCompany = CompanyService.findCompany(Integer.parseInt(uManufacturer));
+			Company upCompany = companyService.findCompany(Integer.parseInt(uManufacturer));
 			upComputer.setCompany(upCompany);
 
 		}
-		ComputerService.updateComputer(upComputer);
+		computerService.updateComputer(upComputer);
 		System.out.println("Le materiel a bien ete midifie");
 	}
 
@@ -280,7 +288,7 @@ public class Main {
 		String id;
 		System.out.println("Id du materiel a supprimer : ");
 		id = sc.nextLine();
-		int sup = ComputerService.deleteComputer(Integer.parseInt(id));
+		int sup = computerService.deleteComputer(Integer.parseInt(id));
 		if (sup == 1) {
 			System.out.println("materiel supprimé");
 		} else {
@@ -292,7 +300,7 @@ public class Main {
 		String id;
 		System.out.println("Id de la compagnie a supprimer : ");
 		id = sc.nextLine();
-		int sup = CompanyService.delete(Integer.parseInt(id));
+		int sup = companyService.delete(Integer.parseInt(id));
 		if (sup == 1) {
 			System.out.println("compagnie supprimé");
 		} else {

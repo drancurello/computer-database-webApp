@@ -9,23 +9,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
-import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.page.Page;
 
 /**
  * The Class ComputerDAO.
  */
 public class ComputerDAO implements ICrudService<Computer> {
 
-	private String order = "name";
-	private String type = "ASC";
+	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 	
@@ -55,7 +58,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		PreparedStatement prepare = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			prepare = connection.prepareStatement(INSERT_COMPUTER, Statement.RETURN_GENERATED_KEYS);
 			
 			ComputerMapper.fillPreparedStatement(obj, prepare);
@@ -92,7 +95,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		PreparedStatement prepare = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			prepare = connection.prepareStatement(UPDATE_COMPUTER);
 			ComputerMapper.fillPreparedStatement(obj, prepare);
 			prepare.setLong(5, obj.getId());		
@@ -122,7 +125,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		PreparedStatement prstmt = null;
 
 		try {
-			Connection connection = ConnectionMySQL.getInstance().getConnection();
+			Connection connection = dataSource.getConnection();
 			prstmt = connection.prepareStatement(DELETE_COMPUTER);
 			prstmt.setLong(1, id);
 			result = prstmt.executeUpdate();
@@ -152,7 +155,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		PreparedStatement prstmt = null;
 
 		try {
-			Connection connection = ConnectionMySQL.getInstance().getConnection();
+			Connection connection = dataSource.getConnection();
 			prstmt = connection.prepareStatement(DELETE_COMPUTER_BY_COMPANY);
 			prstmt.setLong(1, id);
 			result = prstmt.executeUpdate();
@@ -182,7 +185,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		Computer computer = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			prstmt = connection.prepareStatement(FIND_COMPUTER);
 			prstmt.setLong(1, id);
 			rs = prstmt.executeQuery();
@@ -205,18 +208,18 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @return the list of all computers which contains the search in their name
 	 * @throws ConnectionException
 	 */
-	public List<Computer> search(String name, int pageNumber, int nComputer) throws DAOException, ConnectionException {
+	public Page search(String search, Page page) throws DAOException, ConnectionException {
 
-		int debut = nComputer * (pageNumber - 1);
+		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);
 		String query = null;
-		if (order.equals("company")) {
-			query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%" + name
-				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY company.name " + type + " LIMIT " + debut + ","
-				+ nComputer;
+		if (page.getOrder().equals("company")) {
+			query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%" + search
+				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + search + "%') ORDER BY company.name " + page.getType() + " LIMIT " + debut + ","
+				+ page.getNbEntriesByPage();
 		} else {
-		query = "SELECT * FROM computer WHERE name LIKE '%" + name + "%'"
-				+ " OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%') ORDER BY " + order + " " + type + " LIMIT " + debut + ","
-				+ nComputer;
+		query = "SELECT * FROM computer WHERE name LIKE '%" + search + "%'"
+				+ " OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + search + "%') ORDER BY " + page.getOrder() + " " + page.getType() + " LIMIT " + debut + ","
+				+ page.getNbEntriesByPage();
 		}
 		
 		ResultSet rs = null;
@@ -225,12 +228,14 @@ public class ComputerDAO implements ICrudService<Computer> {
 		Connection connection = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
-				computers.add(ComputerMapper.resultToComputer(rs));
+				if (!computers.contains(ComputerMapper.resultToComputer(rs))) {
+					computers.add(ComputerMapper.resultToComputer(rs));
+				}		
 			}
 		} catch (SQLException e) {
 			LOGGER.error("failure to return the search caused by " + e.getMessage());
@@ -238,7 +243,11 @@ public class ComputerDAO implements ICrudService<Computer> {
 		} finally {
 			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
-		return computers;
+		
+		page.setComputersList(computers);
+		page.setNbComputers(getNbComputersSearch(search));
+		
+		return page;
 	}
 
 	/**
@@ -247,17 +256,17 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @return the number of result
 	 * @throws ConnectionException
 	 */
-	public int getNbComputersSearch(String name) throws DAOException, ConnectionException {
+	public int getNbComputersSearch(String search) throws DAOException, ConnectionException {
 
-		String query = "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + name
-				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + name + "%')";
+		String query = "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + search
+				+ "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + search + "%')";
 		ResultSet rs = null;
 		Statement stmt = null;
 		Connection connection = null;
 		int nbComputers = 0;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
@@ -289,7 +298,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		Statement stmt = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(FIND_ALL);
 
@@ -313,15 +322,15 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public List<Computer> findPage(int nPage, int nComputer) throws DAOException, ConnectionException {
+	public Page findPage(Page page) throws DAOException, ConnectionException {
 
-		int debut = nComputer * (nPage - 1);
+		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);
 		String query = null;
 		
-		if (order.equals("company")) {
-			query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name " + type + " LIMIT " + debut + "," + nComputer;
+		if (page.getOrder().equals("company")) {
+			query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name " + page.getType() + " LIMIT " + debut + "," + page.getNbEntriesByPage();
 		} else {
-			query = "SELECT * FROM computer ORDER BY " + order + " " + type + " LIMIT " + debut + "," + nComputer;
+			query = "SELECT * FROM computer ORDER BY " + page.getOrder() + " " + page.getType() + " LIMIT " + debut + "," + page.getNbEntriesByPage();
 		}
 		List<Computer> computerList = new ArrayList<Computer>();
 
@@ -330,19 +339,20 @@ public class ComputerDAO implements ICrudService<Computer> {
 		Connection connection = null;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
 
 			computerList = ComputerMapper.resultToComputersList(rs);
-			
+			page.setComputersList(computerList);
+			page.setNbComputers(getNbComputers());
 		} catch (SQLException e) {
 			LOGGER.error("failure to find the page caused by " + e.getMessage());
 			throw new DAOException("find the page failed", e);
 		} finally {
 			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
-		return computerList;
+		return page;
 	}
 
 	/**
@@ -359,7 +369,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		int nbEntries = 0;
 
 		try {
-			connection = ConnectionMySQL.getInstance().getConnection();
+			connection = dataSource.getConnection();
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(COUNT_COMPUTERS);
 			if (rs.next()) {
@@ -371,16 +381,13 @@ public class ComputerDAO implements ICrudService<Computer> {
 		} finally {
 			ConnectionMySQL.CloseConnection(connection, rs, stmt, null);
 		}
-
+		
 		return nbEntries;
 	}
-
-	public void setOrder(String order) {
-		this.order = order;
-	}
-
-	public void setType(String type) {
-		this.type = type;
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 }

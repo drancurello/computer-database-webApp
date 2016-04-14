@@ -7,22 +7,30 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.computerDatabase.connection.ConnectionMySQL;
+import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.page.Page;
 
 /**
  * The Class ComputerService.
  */
+@Component
 public class ComputerService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
 
 	/** The computer dao. */
-	private static ComputerDAO computerDAO = new ComputerDAO();
+	@Autowired
+	private ComputerDAO computerDAO;
+	@Autowired
+	private CompanyDAO companyDAO;
 	
 	/**
 	 * Adds the computer.
@@ -32,7 +40,7 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static Computer addComputer(Computer computer) {		
+	public Computer addComputer(Computer computer) {		
 		Computer c = null;
 		try {
 			c = computerDAO.add(computer);
@@ -50,7 +58,7 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static Computer updateComputer(Computer computer) {
+	public Computer updateComputer(Computer computer) {
 		Computer c = null;
 		try {
 			c = computerDAO.update(computer);
@@ -69,7 +77,7 @@ public class ComputerService {
 	 * @throws SQLException 
 	 * @throws ConnectionException 
 	 */
-	public static int deleteComputer(long id) {
+	public int deleteComputer(long id) {
 		int i =0;
 		Connection connection = null;
 		
@@ -93,10 +101,13 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static Computer findComputer(long id) {
+	public Computer findComputer(long id) {
 		Computer c = null;
 		try {
 			c = computerDAO.find(id);
+			if (c.getCompany() != null) {
+				c.setCompany(companyDAO.find(c.getCompany().getId()));
+			}
 		} catch (ConnectionException | DAOException e) {
 			LOGGER.error("find the computer " + id + " failed cause " + e.getMessage());
 		}
@@ -111,15 +122,19 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static List<Computer> search(String name, int pageNumber, int nComputer) {
-		List<Computer> computers = new ArrayList<>();
+	public Page search(String name, Page page) {
 		try {
-			computers = computerDAO.search(name,pageNumber,nComputer);
+			page = computerDAO.search(name,page);
+			for (Computer c:page.getComputersList()) {
+				if (c.getCompany() != null) {
+					c.setCompany(companyDAO.find(c.getCompany().getId()));
+				}
+			}
 		} catch (ConnectionException | DAOException e) {
 			LOGGER.error("the search failed cause " + e.getMessage());
 		}
 		
-		return computers;
+		return page;
 	}
 	
 	/**
@@ -129,7 +144,7 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static int getNbComputersSearch(String name) {
+	public int getNbComputersSearch(String name) {
 		int nbComputers = 0;
 		try {
 			nbComputers = computerDAO.getNbComputersSearch(name);
@@ -146,10 +161,15 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static List<Computer> findAllComputers() {
+	public List<Computer> findAllComputers() {
 		 List<Computer> computersList = new ArrayList<>();
 		 try {
 			computersList = computerDAO.findAll();
+			for (Computer c:computersList) {
+				if (c.getCompany() != null) {
+					c.setCompany(companyDAO.find(c.getCompany().getId()));
+				}
+			}
 		} catch (ConnectionException | DAOException e) {
 			LOGGER.error("find all the computers failed cause " + e.getMessage());
 		}
@@ -166,15 +186,19 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static List<Computer> findPageComputers(int pageNumber,int nbEntries) {	
-		 List<Computer> computersList = new ArrayList<>();
+	public Page findPageComputers(Page page) {	
 		 try {
-			computersList = computerDAO.findPage(pageNumber, nbEntries);
+			page = computerDAO.findPage(page);
+			for (Computer c:page.getComputersList()) {
+				if (c.getCompany() != null) {
+					c.setCompany(companyDAO.find(c.getCompany().getId()));
+				}
+			}
 		} catch (ConnectionException | DAOException e) {
 			LOGGER.error("find the page failed cause " + e.getMessage());
 		};
 
-		 return computersList;
+		 return page;
 	}
 	
 	/**
@@ -184,7 +208,7 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public static int getNbComputers() {
+	public int getNbComputers() {
 		int i = 0;
 		try {
 			i = computerDAO.getNbComputers();
@@ -194,11 +218,14 @@ public class ComputerService {
 		return i;
 	}
 	
-	public static void setOrder(String order) {
-		computerDAO.setOrder(order);
+	
+	public void setCompanyDAO(CompanyDAO companyDAO) {
+		this.companyDAO = companyDAO;
+	}
+		
+	public void setComputerDAO(ComputerDAO computerDAO) {
+		this.computerDAO = computerDAO;
 	}
 	
-	public static void setType(String type) {
-		computerDAO.setType(type);
-	}
+	
 }

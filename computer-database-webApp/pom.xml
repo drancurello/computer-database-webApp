@@ -21,6 +21,7 @@
   	<bonecp>0.8.0.RELEASE</bonecp>
   	<sourceTarget>1.8</sourceTarget>
   	<build>3.0</build>
+  	<springVersion>4.2.5.RELEASE</springVersion>
   </properties>
  
    <dependencies>
@@ -78,6 +79,25 @@
 		<version>${bonecp}</version>
 		<scope>compile</scope>
 	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${springVersion}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-tx</artifactId>
+		<version>${springVersion}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<version>${springVersion}</version>
+	</dependency>
+	
   </dependencies>
   
   <build>

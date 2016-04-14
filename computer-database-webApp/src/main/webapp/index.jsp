@@ -24,7 +24,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                ${nbComputers} Computers found
+                ${page.nbComputers} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -90,7 +90,7 @@
                 <!-- Browse attribute computers -->
                 <tbody id="results">
                 
-                	<c:forEach items="${computers}" var="computer" varStatus="status" >
+                	<c:forEach items="${page.computersList}" var="computer" varStatus="status" >
 	                	<tr>
 	                        <td class="editMode">
 	                            <input type="checkbox" name="cb" class="cb" value="${computer.id}">
@@ -109,7 +109,7 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
-    	<p:pagination currentPage="${currentPage}" nbComputersPage="${nbComputersPage}" nbPage="${nbPage}" search="${search}"/>
+    	<p:pagination currentPage="${page.pageNumber}" nbComputersPage="${page.nbEntriesByPage}" nbPage="${page.nbPage}" search="${search}"/>
     </footer>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.parser.ParserInteger;
 import com.excilys.computerDatabase.parser.ParserToLocalDate;
-import com.excilys.computerDatabase.service.CompanyService;
 
 /**
  * The Class ComputerMapper.
@@ -32,7 +30,8 @@ public class ComputerMapper {
 		Company company = null;
 		Integer companyId = rs.getInt("company_id"); 
 		if (companyId != null) {
-			company = CompanyService.findCompany(companyId);
+			company = new Company();
+			company.setId(companyId);
 		}
 		
 		return  new Computer.Builder().idComputer(rs.getInt("id"))
@@ -49,7 +48,8 @@ public class ComputerMapper {
 	 * @return a Computer
 	 */
 	public static Computer requestToComputer(HttpServletRequest request) {
-		Company company = CompanyService.findCompany(Integer.parseInt(request.getParameter("companyId")));
+		Company company = new Company();
+		company.setId(Integer.parseInt(request.getParameter("companyId")));
 				
 		return new Computer.Builder()
 			   .idComputer(ParserInteger.parserInt(request.getParameter("id")))
