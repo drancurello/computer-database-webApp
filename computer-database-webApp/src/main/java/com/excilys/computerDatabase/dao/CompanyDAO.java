@@ -1,19 +1,14 @@
 package com.excilys.computerDatabase.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
-import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.mapper.CompanyMapper;
@@ -23,12 +18,16 @@ import com.excilys.computerDatabase.page.Page;
 /**
  * The Class CompanyDAO.
  */
+@Component
 public class CompanyDAO implements ICrudService<Company> {
 	
 	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
+	private static final String FIND_ALL = "SELECT * FROM company";
+	private static final String FIND = "SELECT * FROM company WHERE id = ?";
 	
 	@Override
 	public Company add(Company obj) {
@@ -47,26 +46,7 @@ public class CompanyDAO implements ICrudService<Company> {
 	 */
 	@Override
 	public int delete(long id) throws DAOException, ConnectionException {
-		
-		PreparedStatement prstmtCompany = null;
-		int cpany = 0;
-		
-		try {
-			Connection connection = dataSource.getConnection();
-			connection.setAutoCommit(false);
-			
-			prstmtCompany = connection.prepareStatement(DELETE_COMPANY);
-			prstmtCompany.setLong(1, id);
-			cpany = prstmtCompany.executeUpdate();
-			
-		}catch (SQLException e) {
-			LOGGER.error("failure to delete the company caused by " + e.getMessage());
-			throw new DAOException("delete failed",e);
-		} finally {
-			ConnectionMySQL.CloseConnection(null,null,null,prstmtCompany);
-		}
-		
-		return cpany;
+		return jdbcTemplate.update(DELETE_COMPANY, id);
 	}
 
 	/**
@@ -78,26 +58,12 @@ public class CompanyDAO implements ICrudService<Company> {
 	 */
 	@Override
 	public Company find(long id) throws DAOException, ConnectionException {
-		String query = "SELECT * FROM company WHERE id = " + id;
-
-		ResultSet rs = null;
-		Connection connection = null;
-		Statement stmt = null;
+		
 		Company company = new Company();
-
-		try {
-			connection = dataSource.getConnection();
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
-
-			if (rs.next()) {
-				company = CompanyMapper.resultToCompany(rs);
-			}
-		} catch (SQLException e) {
-			LOGGER.error("failure to find the company caused by " + e.getMessage());
-			throw new DAOException("find the company failed",e);
-		} finally {
-			ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
+		List<Company> companies = jdbcTemplate.query(FIND,new Object[]{id}, new CompanyMapper());
+		
+		if (companies.size() != 0) {
+			return companies.get(0);
 		}
 		return company;
 	}
@@ -110,29 +76,7 @@ public class CompanyDAO implements ICrudService<Company> {
 	 */
 	@Override
 	public List<Company> findAll() throws DAOException, ConnectionException {
-
-		String query = "SELECT * FROM company";
-
-		List<Company> companyList = new ArrayList<Company>();
-
-		Connection connection = null;
-		ResultSet rs = null;
-		Statement stmt = null;
-
-		try {
-			connection = dataSource.getConnection();
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
-
-			companyList = CompanyMapper.resultToCompanies(rs);
-			
-		} catch (SQLException e) {
-			LOGGER.error("failure to find all the companies caused by " + e.getMessage());
-			throw new DAOException("find all companies failed",e);
-		}
-
-		ConnectionMySQL.CloseConnection(connection,rs,stmt,null);
-		return companyList;
+		return jdbcTemplate.query(FIND_ALL, new CompanyMapper());
 	}
 
 	@Override
@@ -142,6 +86,7 @@ public class CompanyDAO implements ICrudService<Company> {
 	
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 }

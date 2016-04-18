@@ -1,6 +1,5 @@
 package com.excilys.computerDatabase.service;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
@@ -34,24 +32,12 @@ public class CompanyService {
 	@Transactional
 	public int delete(long id) throws SQLException{
 		int cpany = 0, cputer = 0;
-		Connection connection = null;
-		
 		try {
-			connection = dataSource.getConnection();
-			connection.setAutoCommit(false);
-			
 			cputer = computerDAO.deleteByCompany(id);
-			cpany = companyDAO.delete(id);
-			
-			connection.commit();
-			
-		} catch (SQLException | ConnectionException | DAOException e) {
+			cpany = companyDAO.delete(id);	
+		} catch (ConnectionException | DAOException e) {
 			LOGGER.error("delete the company " + id + " failed cause " + e.getMessage());
-			connection.rollback();
-		} finally {
-			ConnectionMySQL.CloseConnection(connection, null, null, null);
-		}
-		
+		} 
 		return cpany;
 		
 	}

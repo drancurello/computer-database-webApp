@@ -105,7 +105,7 @@ public class ComputerService {
 		Computer c = null;
 		try {
 			c = computerDAO.find(id);
-			if (c.getCompany() != null) {
+			if (c != null && c.getCompany() != null) {
 				c.setCompany(companyDAO.find(c.getCompany().getId()));
 			}
 		} catch (ConnectionException | DAOException e) {
