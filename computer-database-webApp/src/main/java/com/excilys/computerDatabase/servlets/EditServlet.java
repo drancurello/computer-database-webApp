@@ -90,7 +90,7 @@ public class EditServlet extends HttpServlet {
 		Map<String,String> erreurs = FormValidation.validForm(request);
 		
 		if(erreurs.isEmpty()) {
-			Computer computer = ComputerMapper.requestToComputer(request);
+			Computer computer = ComputerMapper.servletRequestToComputer(request);
 			computer.setCompany(companyService.findCompany(computer.getCompany().getId()));
 			computer.setId(ParserInteger.parserInt(request.getParameter("id")));
 			

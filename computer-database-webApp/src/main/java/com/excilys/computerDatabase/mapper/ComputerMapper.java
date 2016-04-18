@@ -4,10 +4,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
@@ -17,7 +19,8 @@ import com.excilys.computerDatabase.parser.ParserToLocalDate;
 /**
  * The Class ComputerMapper.
  */
-public class ComputerMapper {
+@Component
+public class ComputerMapper implements RowMapper<Computer> {
 
 	/**
 	 * Convert a ResultSet to a computer.
@@ -26,7 +29,8 @@ public class ComputerMapper {
 	 * @return A computer
 	 * @throws SQLException
 	 */
-	public static Computer resultToComputer(ResultSet rs) throws SQLException {
+	@Override
+	public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Company company = null;
 		Integer companyId = rs.getInt("company_id"); 
 		if (companyId != null) {
@@ -47,7 +51,7 @@ public class ComputerMapper {
 	 * @param an HttpServletRequest
 	 * @return a Computer
 	 */
-	public static Computer requestToComputer(HttpServletRequest request) {
+	public static Computer servletRequestToComputer(HttpServletRequest request) {
 		Company company = new Company();
 		company.setId(Integer.parseInt(request.getParameter("companyId")));
 				
@@ -59,14 +63,22 @@ public class ComputerMapper {
 			   .companyComputer(company).build();
 	}
 	
-	public static List<Computer> resultToComputersList(ResultSet rs) throws SQLException {
-		List<Computer> computers = new ArrayList<>();
-		
-		while (rs.next()) {
-			computers.add(resultToComputer(rs));
-		}
-		
-		return computers;	
+	/**
+	 * Convert an HttpServletRequest to a Computer
+	 * 
+	 * @param an HttpServletRequest
+	 * @return a Computer
+	 */
+	public static Computer requestToComputer(Map<String,String> request) {
+		Company company = new Company();
+		company.setId(Integer.parseInt(request.get("companyId")));
+				
+		return new Computer.Builder()
+			   .idComputer(ParserInteger.parserInt(request.get("id")))
+			   .nameComputer(request.get("computerName"))
+			   .introducedComputer(ParserToLocalDate.parserLocalDate(request.get("introduced")))
+			   .discontinuedComputer(ParserToLocalDate.parserLocalDate(request.get("discontinued")))
+			   .companyComputer(company).build();
 	}
 	
 	public static void fillPreparedStatement(Computer obj, PreparedStatement prepare) throws SQLException {
@@ -92,6 +104,5 @@ public class ComputerMapper {
 		} else {
 			prepare.setLong(4, obj.getCompany().getId());
 		}
-	}
-
+	}	
 }

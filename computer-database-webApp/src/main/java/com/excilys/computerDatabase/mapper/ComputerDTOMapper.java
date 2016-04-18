@@ -2,6 +2,8 @@ package com.excilys.computerDatabase.mapper;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
@@ -9,6 +11,7 @@ import com.excilys.computerDatabase.model.Computer;
 /**
  * The Class ComputerDTOMapper.
  */
+@Component
 public class ComputerDTOMapper {
 
 	/**

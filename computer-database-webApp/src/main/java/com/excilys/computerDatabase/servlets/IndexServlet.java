@@ -15,7 +15,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.excilys.computerDatabase.mapper.PageMapper;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.ComputerService;
-import com.excilys.computerDatabase.validation.ValidationComputer;
 
 /**
  * Servlet implementation class ComputersList
@@ -54,13 +53,9 @@ public class IndexServlet extends HttpServlet {
 		if (request.getParameter("search") != null) {
 			search = request.getParameter("search");
 			indexPage = computerService.search(search, indexPage);
-			
-			ValidationComputer.PageNumberValidation(indexPage);
-			request.setAttribute("search", search);
-			
-		} else {
-			ValidationComputer.PageNumberValidation(indexPage);
-		}	
+			request.setAttribute("search", search);		
+		} 
+		
 
 		request.setAttribute("page", indexPage);
 

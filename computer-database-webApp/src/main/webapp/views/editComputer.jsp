@@ -31,22 +31,22 @@
                     <h1>Edit Computer</h1>
 
                     <form action="editComputer" method="POST" id="formComputer">
-                        <input type="hidden" value="${id}" name="id"/>
+                        <input type="hidden" value="${computer.id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" value="${name}">
-                                <span style="color:red">${erreurs['name']}</span>
+                                <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}">
+                                <span style="color:red">${errors['name']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" value="${introduced}">
-                                <span style="color:red">${erreurs['introduced']}</span>
+                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introducedTime}">
+                                <span style="color:red">${errors['introduced']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${discontinued}">
-                                <span style="color:red">${erreurs['discontinued']}</span>
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinuedTime}">
+                                <span style="color:red">${errors['discontinued']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -55,7 +55,7 @@
 	                                		<option value="${company.id}">${company.name}</option>
 	                                </c:forEach>
                                 </select>
-                                <span style="color:red">${erreurs['company']}</span>
+                                <span style="color:red">${errors['company']}</span>
                             </div>            
                         </fieldset>
                         <div class="actions pull-right">

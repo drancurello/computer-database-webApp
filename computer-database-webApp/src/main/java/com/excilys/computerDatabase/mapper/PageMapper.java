@@ -1,13 +1,13 @@
 package com.excilys.computerDatabase.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Component;
 
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.parser.ParserInteger;
 
+@Component
 public class PageMapper {
 	
 	public static Page requestToPage(HttpServletRequest request) {
@@ -18,8 +18,12 @@ public class PageMapper {
 			nbComputersPage = ParserInteger.parserInt(request.getParameter("nbComputersPage"));
 		}
 		
-		if (ParserInteger.parserInt(request.getParameter("page")) != -1) {
-			pageNumber = ParserInteger.parserInt(request.getParameter("page"));
+		if (ParserInteger.parserInt(request.getParameter("page")) != -1 ) {
+			if (Integer.parseInt(request.getParameter("page")) == 0) {
+				pageNumber = 1;
+			} else {
+				pageNumber = ParserInteger.parserInt(request.getParameter("page"));
+			}
 		}
 		
 		Page indexPage = new Page(pageNumber, nbComputersPage);

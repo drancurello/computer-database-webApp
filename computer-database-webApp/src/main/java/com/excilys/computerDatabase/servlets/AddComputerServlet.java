@@ -64,17 +64,17 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Map<String,String> erreurs = FormValidation.validForm(request);
+		Map<String,String> errors = FormValidation.validForm(request);
 		
-		if(erreurs.isEmpty()) {
+		if(errors.isEmpty()) {
 			
-			Computer computer = ComputerMapper.requestToComputer(request);
+			Computer computer = ComputerMapper.servletRequestToComputer(request);
 			computer.setCompany(companyService.findCompany(computer.getCompany().getId()));
 			computerService.addComputer(computer);
 			response.sendRedirect("index");
 			
 		} else {
-			request.setAttribute("erreurs", erreurs);
+			request.setAttribute("errors", errors);
 			doGet(request, response);
 		}
 	}

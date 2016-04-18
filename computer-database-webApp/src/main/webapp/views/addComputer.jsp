@@ -32,17 +32,17 @@
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
-                                <span style="color:red">${erreurs['name']}</span>
+                                <span style="color:red">${errors['name']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
-                                <span style="color:red">${erreurs['introduced']}</span>
+                                <span style="color:red">${errors['introduced']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
-                                <span style="color:red">${erreurs['discontinued']}</span>
+                                <span style="color:red">${errors['discontinued']}</span>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -51,7 +51,7 @@
                                 		<option value="${company.id}">${company.name}</option>
                                 	</c:forEach>
                                 </select>
-                                <span style="color:red">${erreurs['company']}</span>
+                                <span style="color:red">${errors['company']}</span>
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
