@@ -98,9 +98,9 @@
 	                        <td>
 	                            <a href="editComputer?id=${computer.id}" onclick=""><c:out value="${computer.name}"></c:out></a>
 	                        </td>
-	                        <td><c:out value="${computer.introducedTime}"></c:out></td>
-	                        <td><c:out value="${computer.discontinuedTime}"></c:out></td>
-	                        <td><c:out value="${computer.company.name}"></c:out></td>
+	                        <td><c:out value="${computer.introduced}"></c:out></td>
+	                        <td><c:out value="${computer.discontinued}"></c:out></td>
+	                        <td><c:out value="${computer.companyName}"></c:out></td>
 	                    </tr>
                 	</c:forEach>
                 </tbody>

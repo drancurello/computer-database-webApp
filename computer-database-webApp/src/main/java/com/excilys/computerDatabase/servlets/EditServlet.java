@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.mapper.ComputerDTOMapper;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
@@ -57,7 +59,7 @@ public class EditServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int id = ParserInteger.parserInt(request.getParameter("id"));
-		Computer computer = null;
+		ComputerDTO computer = null;
 		
 		if (id == -1) {
 			response.sendRedirect("index");
@@ -71,8 +73,8 @@ public class EditServlet extends HttpServlet {
 		
 				request.setAttribute("companies", companies);
 				request.setAttribute("name", computer.getName());
-				request.setAttribute("introduced", computer.getIntroducedTime());
-				request.setAttribute("discontinued", computer.getDiscontinuedTime());
+				request.setAttribute("introduced", computer.getIntroduced());
+				request.setAttribute("discontinued", computer.getDiscontinued());
 				request.setAttribute("id", id);
 				
 				this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
@@ -94,7 +96,7 @@ public class EditServlet extends HttpServlet {
 			computer.setCompany(companyService.findCompany(computer.getCompany().getId()));
 			computer.setId(ParserInteger.parserInt(request.getParameter("id")));
 			
-			computerService.updateComputer(computer);
+			computerService.updateComputer(ComputerDTOMapper.toComputerDTO(computer));
 			response.sendRedirect("index");
 			
 		} else {

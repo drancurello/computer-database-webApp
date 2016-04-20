@@ -21,23 +21,23 @@ public class ComputerDTOMapper {
 	 * @return A computerDTO
 	 */
 	public static ComputerDTO toComputerDTO(Computer computer) {
-		ComputerDTO computerDTO = new ComputerDTO();
 		
-		computerDTO.setId(computer.getId());
-		computerDTO.setName(computer.getName());
+		ComputerDTO.Builder builder = new ComputerDTO.Builder();
+		builder.idComputer(computer.getId());
+		builder.nameComputer(computer.getName());
 		
 		if (computer.getIntroducedTime() != null) {
-			computerDTO.setIntroduced(String.valueOf(computer.getIntroducedTime()));
+			builder.introducedComputer(String.valueOf(computer.getIntroducedTime()));
 		}
 		if (computer.getDiscontinuedTime() != null) {
-			computerDTO.setDiscontinued(String.valueOf(computer.getDiscontinuedTime()));
+			builder.discontinuedComputer(String.valueOf(computer.getDiscontinuedTime()));
 		}
 		
-		if (computer.getCompany().getName() != null) {
-			computerDTO.setCompanyId(computer.getCompany().getId());
+		if (computer.getCompany() != null) {
+			builder.companyComputer(computer.getCompany().getId(), computer.getCompany().getName());
 		}
 		
-		return computerDTO;
+		return builder.build();
 	}
 	
 	/**
@@ -52,19 +52,24 @@ public class ComputerDTOMapper {
 		computer.setId(computerDTO.getId());
 		computer.setName(computerDTO.getName());
 		
-		if (computerDTO.getIntroduced() != null) {
+		if (computerDTO.getIntroduced() != null && !computerDTO.getIntroduced().equals("")) {
 			computer.setIntroducedTime(LocalDate.parse(computerDTO.getIntroduced()));
 		}
 		
-		if (computerDTO.getDiscontinued() != null) {
+		if (computerDTO.getDiscontinued() != null && !computerDTO.getDiscontinued().equals("")) {
 			computer.setDiscontinuedTime(LocalDate.parse(computerDTO.getDiscontinued()));
 		}
 		
-		Company company = new Company();
-		company.setId(computerDTO.getCompanyId());
-		computer.setCompany(company);
+		if (computerDTO.getCompanyId() > 0) {	
+			Company company = new Company();
+			company.setId(computerDTO.getCompanyId());
+			company.setName(computerDTO.getCompanyName());
+			computer.setCompany(company);
+		}
 		
 		return computer;
 	}
+	
+	
 	
 }

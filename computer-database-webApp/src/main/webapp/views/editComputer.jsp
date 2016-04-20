@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -26,44 +27,43 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <div class="label label-default pull-right">
-                        id: ${id}
+                        id: ${computerDTO.id}
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="editComputer" method="POST" id="formComputer">
-                        <input type="hidden" value="${computer.id}" name="id"/>
+                    <form:form action="editComputer" method="POST" id="formComputer" modelAttribute="computerDTO">
+                        <input type="hidden" value="${computerDTO.id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}">
-                                <span style="color:red">${errors['name']}</span>
+                                <form:input type="text" class="form-control" id="computerName" name="computerName" path="name" placeholder="Computer name" value="${computerDTO.name}"/>
+                                <form:errors path="name" cssClass="error"/>
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introducedTime}">
-                                <span style="color:red">${errors['introduced']}</span>
+                                <form:input type="date" class="form-control" id="introduced" name="introduced" path="introduced" placeholder="Introduced date" value="${computerDTO.introduced}"/>
+                                <form:errors path="introduced" cssClass="error"/>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinuedTime}">
-                                <span style="color:red">${errors['discontinued']}</span>
+                                <form:input type="date" class="form-control" id="discontinued" name="discontinued" path="discontinued" placeholder="Discontinued date" value="${computerDTO.discontinued}"/>
+                                <form:errors path="discontinued" cssClass="error"/>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" name="companyId" >
-	                                <c:forEach items="${companies}" var="company">
-	                                		<option value="${company.id}">${company.name}</option>
-	                                </c:forEach>
-                                </select>
-                                <span style="color:red">${errors['company']}</span>
-                            </div>            
+                                <form:select class="form-control" id="companyId" name="companyId" path="companyId" >
+                                	<c:forEach items="${companies}" var="company">
+                                		<form:option value="${company.id}">${company.name}</form:option>
+                                	</c:forEach>
+                                </form:select>
+                            </div>         
                         </fieldset>
                         <div class="actions pull-right">
                             <input type="submit" value="Edit" class="btn btn-primary">
                             or
                             <a href="index" class="btn btn-default">Cancel</a>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>

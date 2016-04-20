@@ -1,58 +1,50 @@
 package com.excilys.computerDatabase.dto;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 
-import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Computer;
-import com.excilys.computerDatabase.model.Computer.Builder;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.excilys.computerDatabase.validation.annotations.DateFormat;
+import com.excilys.computerDatabase.validation.annotations.DateBefore;
+import com.excilys.computerDatabase.validation.annotations.DateBefore1970;
 
 /**
  * The Class ComputerDTO.
  */
-
+@DateBefore
 public class ComputerDTO {
 
 	/** The id. */
 	private long id;
 	
 	/** The name. */
+	@NotEmpty(message = "The name can't be empty")
+	@NotNull(message = "The name can't be null")
 	private String name;
 	
 	/** The introduced. */
-	private String introduced = null;
+	@DateBefore1970
+	@DateFormat
+	private String introduced;
 	
 	/** The discontinued. */
-	private String discontinued = null;
+	@DateBefore1970
+	@DateFormat
+	private String discontinued;
 	
 	/** The company id. */
 	private long companyId;
+	
+	/** The company Name */
+	private String companyName;
 	
 	/**
 	 * Instantiates a new computer dto.
 	 */
 	public ComputerDTO() {}
-	
-	/**
-	 * Instantiates a new computer dto.
-	 *
-	 * @param name the name
-	 * @param introduced the introduced
-	 * @param discontinued the discontinued
-	 * @param companyId the company id
-	 * @param companyName the company name
-	 */
-	public ComputerDTO(int id, String name, String introduced,String discontinued,long companyId) {
-	
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyId = companyId;
-	}
 
 	/**
 	 * Gets the id.
-	 *
 	 * @return the id
 	 */
 	public long getId() {
@@ -61,7 +53,6 @@ public class ComputerDTO {
 
 	/**
 	 * Sets the id.
-	 *
 	 * @param id the new id
 	 */
 	public void setId(long id) {
@@ -70,7 +61,6 @@ public class ComputerDTO {
 
 	/**
 	 * Gets the name.
-	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -79,7 +69,6 @@ public class ComputerDTO {
 
 	/**
 	 * Sets the name.
-	 *
 	 * @param name the new name
 	 */
 	public void setName(String name) {
@@ -88,7 +77,6 @@ public class ComputerDTO {
 
 	/**
 	 * Gets the introduced.
-	 *
 	 * @return the introduced
 	 */
 	public String getIntroduced() {
@@ -97,7 +85,6 @@ public class ComputerDTO {
 
 	/**
 	 * Sets the introduced.
-	 *
 	 * @param introduced the new introduced
 	 */
 	public void setIntroduced(String introduced) {
@@ -106,7 +93,6 @@ public class ComputerDTO {
 
 	/**
 	 * Gets the discontinued.
-	 *
 	 * @return the discontinued
 	 */
 	public String getDiscontinued() {
@@ -115,7 +101,6 @@ public class ComputerDTO {
 
 	/**
 	 * Sets the discontinued.
-	 *
 	 * @param discontinued the new discontinued
 	 */
 	public void setDiscontinued(String discontinued) {
@@ -124,7 +109,6 @@ public class ComputerDTO {
 
 	/**
 	 * Gets the company id.
-	 *
 	 * @return the company id
 	 */
 	public long getCompanyId() {
@@ -133,13 +117,20 @@ public class ComputerDTO {
 
 	/**
 	 * Sets the company id.
-	 *
 	 * @param companyId the new company id
 	 */
 	public void setCompanyId(long companyId) {
 		this.companyId = companyId;
 	}	
 	
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -165,17 +156,18 @@ public class ComputerDTO {
 	@Override
 	public String toString() {
 		return "id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
-				+ discontinued;
+				+ discontinued + ", Company=" + companyName;
 	}
 	
 	public static class Builder {
-		private int bId;
+		private long bId;
 		private String bName;
 		private String bIntroduced;
 		private String bDiscontinued;
-		private long bCompany;
+		private long bCompanyId;
+		private String bCompanyName;
 		
-		public Builder idComputer(int id) {
+		public Builder idComputer(long id) {
 			this.bId = id;
 			return this;
 		}
@@ -195,13 +187,21 @@ public class ComputerDTO {
 			return this;
 		}
 		
-		public Builder companyComputer(long companyId) {
-			this.bCompany = companyId;
+		public Builder companyComputer(long companyId, String companyName) {
+			this.bCompanyId = companyId;
+			this.bCompanyName = companyName;
 			return this;
 		}
 		
 		public ComputerDTO build() {
-			return new ComputerDTO(bId, bName, bIntroduced, bDiscontinued, bCompany);
+			ComputerDTO computer = new ComputerDTO();
+			computer.id = bId;
+			computer.name = bName;
+			computer.introduced = bIntroduced;
+			computer.discontinued = bDiscontinued;
+			computer.companyId = bCompanyId;
+			computer.companyName = bCompanyName;
+			return computer;
 		}
 		
 	}

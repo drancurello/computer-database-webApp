@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.excilys.computerDatabase.mapper.ComputerDTOMapper;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
@@ -70,7 +71,7 @@ public class AddComputerServlet extends HttpServlet {
 			
 			Computer computer = ComputerMapper.servletRequestToComputer(request);
 			computer.setCompany(companyService.findCompany(computer.getCompany().getId()));
-			computerService.addComputer(computer);
+			computerService.addComputer(ComputerDTOMapper.toComputerDTO(computer));
 			response.sendRedirect("index");
 			
 		} else {
