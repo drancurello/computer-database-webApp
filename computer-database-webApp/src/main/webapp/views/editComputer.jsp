@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -29,28 +30,28 @@
                     <div class="label label-default pull-right">
                         id: ${computerDTO.id}
                     </div>
-                    <h1>Edit Computer</h1>
+                    <h1><spring:message code="label.edit"/></h1>
 
                     <form:form action="editComputer" method="POST" id="formComputer" modelAttribute="computerDTO">
                         <input type="hidden" value="${computerDTO.id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
+                                <label for="computerName"><spring:message code="label.name"/></label>
                                 <form:input type="text" class="form-control" id="computerName" name="computerName" path="name" placeholder="Computer name" value="${computerDTO.name}"/>
                                 <form:errors path="name" cssClass="error"/>
                             </div>
                             <div class="form-group">
-                                <label for="introduced">Introduced date</label>
+                                <label for="introduced"><spring:message code="label.introduced"/></label>
                                 <form:input type="date" class="form-control" id="introduced" name="introduced" path="introduced" placeholder="Introduced date" value="${computerDTO.introduced}"/>
                                 <form:errors path="introduced" cssClass="error"/>
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
+                                <label for="discontinued"><spring:message code="label.discontinued"/></label>
                                 <form:input type="date" class="form-control" id="discontinued" name="discontinued" path="discontinued" placeholder="Discontinued date" value="${computerDTO.discontinued}"/>
                                 <form:errors path="discontinued" cssClass="error"/>
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label>
+                                <label for="companyId"><spring:message code="label.company"/></label>
                                 <form:select class="form-control" id="companyId" name="companyId" path="companyId" >
                                 	<c:forEach items="${companies}" var="company">
                                 		<form:option value="${company.id}">${company.name}</form:option>
@@ -59,9 +60,9 @@
                             </div>         
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Edit" class="btn btn-primary">
+                            <input type="submit" value=<spring:message code="label.edit"/> class="btn btn-primary">
                             or
-                            <a href="index" class="btn btn-default">Cancel</a>
+                            <a href="index" class="btn btn-default"><spring:message code="label.cancel"/></a>
                         </div>
                     </form:form>
                 </div>

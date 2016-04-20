@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -24,19 +25,21 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                ${page.nbComputers} Computers found
+                ${page.nbComputers} <spring:message code="label.computers"/>
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="index" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                        <input type="submit" id="searchsubmit" value=<spring:message code="label.filter"/>
                         class="btn btn-primary" />
+                        <a href="?language=fr"><img src="img/france.png" width=20px height=20px/></a>
+                        <a href="?language=en"><img src="img/en.png" width=20px height=20px/></a>
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="label.add"/></a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -62,25 +65,25 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                            <spring:message code="label.name"/>
                             <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
                             <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                         </th>
                         <th>
-                            Introduced date
+                            <spring:message code="label.introduced"/>
                             <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
                             <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                             		
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                            <spring:message code="label.discontinued"/>
                             <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
                             <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                            <spring:message code="label.company"/>
                             <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
                             <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
                         </th>
