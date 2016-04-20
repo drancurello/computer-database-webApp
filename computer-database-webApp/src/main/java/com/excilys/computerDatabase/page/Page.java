@@ -3,6 +3,7 @@ package com.excilys.computerDatabase.page;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Computer;
 
 /**
@@ -29,7 +30,7 @@ public class Page {
 	private String type;
 	
 	/** the list of computers contained in the page */
-	private List<Computer> computersList;
+	private List<ComputerDTO> computersList;
 	
 	public Page(int pageNumber, int nbEntries) {
 		this.pageNumber = pageNumber;
@@ -140,11 +141,11 @@ public class Page {
 		}
 	}
 
-	public List<Computer> getComputersList() {
+	public List<ComputerDTO> getComputersList() {
 		return computersList;
 	}
 
-	public void setComputersList(List<Computer> computersList) {
+	public void setComputersList(List<ComputerDTO> computersList) {
 		this.computersList = computersList;
 	}
 

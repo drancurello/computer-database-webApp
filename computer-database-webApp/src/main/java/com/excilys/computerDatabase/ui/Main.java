@@ -10,7 +10,9 @@ import java.util.Scanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
+import com.excilys.computerDatabase.mapper.ComputerDTOMapper;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
@@ -106,7 +108,7 @@ public class Main {
 
 		page = computerService.findPageComputers(page);
 
-		for (Computer c : page.getComputersList()) {
+		for (ComputerDTO c : page.getComputersList()) {
 			System.out.println(c.toString());
 		}
 
@@ -119,14 +121,14 @@ public class Main {
 			case "1":
 				page.previousPage();
 				page = computerService.findPageComputers(page);
-				for (Computer c : page.getComputersList()) {
+				for (ComputerDTO c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
 			case "2":
 				page.nextPage();
 				page = computerService.findPageComputers(page);
-				for (Computer c : page.getComputersList()) {
+				for (ComputerDTO c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -136,7 +138,7 @@ public class Main {
 				page.setNbEntriesByPage(Integer.parseInt(nbEntries));
 				page.setPageNumber(1);
 				page = computerService.findPageComputers(page);
-				for (Computer c : page.getComputersList()) {
+				for (ComputerDTO c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -145,7 +147,7 @@ public class Main {
 				nbEntries = sc.nextLine();
 				page.setPageNumber(Integer.parseInt(nbEntries));
 				page = computerService.findPageComputers(page);
-				for (Computer c : page.getComputersList()) {
+				for (ComputerDTO c : page.getComputersList()) {
 					System.out.println(c.toString());
 				}
 				break;
@@ -210,7 +212,7 @@ public class Main {
 			aComputer.setCompany(aCompany);
 		}
 		System.out.println(aComputer.toString());
-		computerService.addComputer(aComputer);
+		computerService.addComputer(ComputerDTOMapper.toComputerDTO(aComputer));
 		System.out.println("materiel ajoute");
 	}
 
@@ -218,7 +220,7 @@ public class Main {
 		String id;
 		System.out.println("Entrez l'id du materiel a chercher : ");
 		id = sc.nextLine();
-		Computer fComputer = new Computer();
+		ComputerDTO fComputer = new ComputerDTO();
 		fComputer = computerService.findComputer(Integer.parseInt(id));
 		if (fComputer == null) {
 			System.out.println("Le materiel recherche n'est pas dans la base");
@@ -280,7 +282,7 @@ public class Main {
 			upComputer.setCompany(upCompany);
 
 		}
-		computerService.updateComputer(upComputer);
+		computerService.updateComputer(ComputerDTOMapper.toComputerDTO(upComputer));
 		System.out.println("Le materiel a bien ete midifie");
 	}
 
