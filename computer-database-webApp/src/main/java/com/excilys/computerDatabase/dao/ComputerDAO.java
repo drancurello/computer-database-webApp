@@ -111,17 +111,16 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @return the list of all computers which contains the search in their name
 	 * @throws ConnectionException
 	 */
-	public Page search(String search, Page page) throws DAOException, ConnectionException {
+	public List<Computer> search(String search, Page page) throws DAOException, ConnectionException {
 
 		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
 		List<Computer> computers = new ArrayList<>();
 
 		computers = jdbcTemplate.query(SqlQueries.search(page, search, debut), new ComputerMapper());
 		
-		page.setComputersList(computers);
 		page.setNbComputers(getNbComputersSearch(search));
 		
-		return page;
+		return computers;
 	}
 
 	/**
@@ -149,16 +148,15 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public Page findPage(Page page) throws DAOException, ConnectionException {
+	public List<Computer> findPage(Page page) throws DAOException, ConnectionException {
 		
 		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
 		List<Computer> computerList = new ArrayList<Computer>();
 		
 		computerList = jdbcTemplate.query(SqlQueries.findPage(page, debut), new ComputerMapper());
-		page.setComputersList(computerList);
 		page.setNbComputers(getNbComputers());
 		
-		return page;
+		return computerList;
 	}
 
 	/**

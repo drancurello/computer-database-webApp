@@ -80,7 +80,7 @@ public class CompanyDAO implements ICrudService<Company> {
 	}
 
 	@Override
-	public Page findPage(Page page) {
+	public List<Company> findPage(Page page) {
 		return null;
 	}
 	

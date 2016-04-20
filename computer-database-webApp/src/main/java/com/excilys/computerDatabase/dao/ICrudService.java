@@ -62,6 +62,6 @@ public interface ICrudService<T> {
 	 * @throws DAOException
 	 * @throws ConnectionException
 	 */
-	public abstract Page findPage(Page page)  throws DAOException,ConnectionException;
+	public abstract List<T> findPage(Page page)  throws DAOException,ConnectionException;
 
 }
