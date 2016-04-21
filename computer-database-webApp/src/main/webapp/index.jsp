@@ -31,7 +31,8 @@
                 <div class="pull-left">
                     <form id="searchForm" action="index" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
+						<spring:message code="search.name" var="mess_search"/>
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="${mess_search}" />
                         <input type="submit" id="searchsubmit" value=<spring:message code="label.filter"/>
                         class="btn btn-primary" />
                         <a href="?language=fr"><img src="img/france.png" width=20px height=20px/></a>
@@ -40,7 +41,7 @@
                 </div>
                 <div class="pull-right">
                     <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="label.add"/></a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="but.edit"/></a>
                 </div>
             </div>
         </div>
@@ -116,6 +117,13 @@
     </footer>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	var translation = new Array();
+	translation['but.edit'] = "<spring:message code='but.edit' javaScriptEscape='true' />";
+	translation['but.view'] = "<spring:message code='but.view' javaScriptEscape='true' />";
+	translation['delete.mess'] = "<spring:message code='delete.mess' javaScriptEscape='true' />";
+</script>
 <script src="js/dashboard.js"></script>
+
 </body>
 </html>

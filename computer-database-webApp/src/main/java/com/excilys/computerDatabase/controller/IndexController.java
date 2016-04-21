@@ -30,9 +30,17 @@ public class IndexController {
 		if (requestParams.get("search") != null) {
 			String search = requestParams.get("search");
 			indexPage = computerService.search(search, indexPage);
+			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
+				indexPage.previousPage();
+				indexPage = computerService.search(search, indexPage);
+			}
 			model.addObject("search", search);
-		} 
-		
+		} else {
+			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
+				indexPage.previousPage();
+				indexPage = computerService.findPageComputers(indexPage);
+			}
+		}
 		model.addObject("page", indexPage);
 		
 		return model;

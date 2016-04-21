@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	jQuery.validator.addMethod("myDate", function(value, element) {
+	jQuery.validator.addMethod("dateFormat", function(value, element) {
 		if (value == null)
 			return true;
 		if (value == "")
@@ -8,7 +8,7 @@ $(document).ready(function() {
 		if (value == "0000-00-00")
 			return false;
 		return /^\d\d\d\d?-\d\d-\d\d/.test(value);
-	}, "Please specify the date in YYYY-MM-DD format");
+	});
 
 	jQuery.validator.addMethod("dateBefore1970", function(value, element) {
 		if (value == null)
@@ -18,7 +18,7 @@ $(document).ready(function() {
 		if (value == "0000-00-00")
 			return false;
 		return new Date(value) > new Date("1970-01-01");
-	}, "you can't enter a date before 1970-01-02");
+	});
 
 	jQuery.validator.addMethod("discVal", function(value, element, params) {
 		if ($(params).val() == "")
@@ -30,33 +30,48 @@ $(document).ready(function() {
 		if (value == "")
 			return true;
 		return new Date(value) > new Date($(params).val());
-	}, "discontinued Date must be after the introduced date");
+	});
 
 	jQuery.validator.addMethod("myName", function(value, element) {
         var str = value.trim();
 		if (str.length == 0)
 			return false;
 		return this.optional(element) || /^[a-zA-Z0-9\_\-\.\+\s]+$/.test(value);
-	}, "Enter a valid name");
+	});
 
 	$("#formComputer").validate({
 		rules : {
-			computerName : {
+			name : {
 				required : true,
 				minlength : 2,
 				myName : true,
 			},
 			introduced : {
 				required : false,
-				myDate : true,
+				dateFormat : true,
 				dateBefore1970 : true,
 			},
 			discontinued : {
 				required : false,
-				myDate : true,
+				dateFormat : true,
 				discVal : "#introduced",
 				dateBefore1970 : true,
 			}
+		},
+		messages: {
+			name : {
+				myName : translation['error.name'],
+				required : translation['error.required']
+			},
+			introduced : {
+				dateFormat : translation['error.dateFormat'],
+				dateBefore1970 : translation['error.dateBefore1970']
+			},
+			discontinued : {
+				dateFormat : translation['error.dateFormat'],
+				dateBefore1970 : translation['error.dateBefore1970'],
+				discVal : translation['error.dateBefore']
+			}
 		}
-	})
+	});
 });

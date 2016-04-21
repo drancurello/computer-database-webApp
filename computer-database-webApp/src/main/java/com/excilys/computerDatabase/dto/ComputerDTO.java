@@ -11,25 +11,25 @@ import com.excilys.computerDatabase.validation.annotations.DateBefore1970;
 /**
  * The Class ComputerDTO.
  */
-@DateBefore
+@DateBefore(message = "{error.dateBefore}")
 public class ComputerDTO {
 
 	/** The id. */
 	private long id;
 	
 	/** The name. */
-	@NotEmpty(message = "The name can't be empty")
-	@NotNull(message = "The name can't be null")
+	@NotEmpty(message = "{error.nameEmpty}")
+	@NotNull(message = "{error.nameNull}")
 	private String name;
 	
 	/** The introduced. */
-	@DateBefore1970
-	@DateFormat
+	@DateBefore1970(message = "{error.dateBefore1970}")
+	@DateFormat(message = "{error.dateFormat}")
 	private String introduced;
 	
 	/** The discontinued. */
-	@DateBefore1970
-	@DateFormat
+	@DateBefore1970(message = "{error.dateBefore1970}")
+	@DateFormat(message = "{error.dateFormat}")
 	private String discontinued;
 	
 	/** The company id. */
