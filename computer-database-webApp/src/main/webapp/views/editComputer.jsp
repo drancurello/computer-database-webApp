@@ -44,13 +44,13 @@
                             <div class="form-group">
                             	<spring:message code="label.introduced" var="mess_introduced"/>
                                 <label for="introduced">${mess_introduced}</label>
-                                <form:input type="date" class="form-control" id="introduced" name="introduced" path="introduced" placeholder="${mess_introduced}" value="${computerDTO.introduced}"/>
+                                <form:input type="text" class="form-control" id="introduced" name="introduced" path="introduced" placeholder="${mess_introduced}" value="${computerDTO.introduced}"/>
                                 <form:errors path="introduced" cssClass="error"/>
                             </div>
                             <div class="form-group">
                             	<spring:message code="label.discontinued" var="mess_discontinued"/>
                                 <label for="discontinued">${mess_discontinued}</label>
-                                <form:input type="date" class="form-control" id="discontinued" name="discontinued" path="discontinued" placeholder="${mess_discontinued}" value="${computerDTO.discontinued}"/>
+                                <form:input type="text" class="form-control" id="discontinued" name="discontinued" path="discontinued" placeholder="${mess_discontinued}" value="${computerDTO.discontinued}"/>
                                 <form:errors path="discontinued" cssClass="error"/>
                                 <form:errors path="" cssClass="error"/>
                             </div>
@@ -76,7 +76,6 @@
 						translation['error.dateFormat'] = "<spring:message code='error.dateFormat' javaScriptEscape='true' />";
 						translation['error.name'] = "<spring:message code='error.name' javaScriptEscape='true' />";
 						translation['error.required'] = "<spring:message code='error.required' javaScriptEscape='true' />";
-						translation['validation.pattern'] = "<spring:message code='validation.pattern' javaScriptEscape='true' />";
 					</script>
                 </div>
             </div>

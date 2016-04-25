@@ -16,6 +16,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import com.excilys.computerDatabase.dao.interfaceDAO.IComputerDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
@@ -26,11 +27,10 @@ import com.excilys.computerDatabase.page.Page;
  * The Class ComputerDAO.
  */
 @Component
-public class ComputerDAO implements ICrudService<Computer> {
+public class ComputerDAO implements IComputerDAO {
 
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
-	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 	
 	/**
 	 * add a computer in the DB
@@ -40,7 +40,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws SQLException
 	 */
 	@Override
-	public Computer add(Computer obj) throws DAOException, ConnectionException {
+	public Computer add(Computer obj){
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(
@@ -62,7 +62,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public Computer update(Computer obj) throws DAOException, ConnectionException {
+	public Computer update(Computer obj){
 		jdbcTemplate.update(SqlQueries.UPDATE_COMPUTER,new Object[]{obj.getName(),obj.getIntroducedTime(),obj.getDiscontinuedTime(),obj.getCompany().getId(),obj.getId()});
 		return obj;
 	}
@@ -73,7 +73,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public int delete(long id) throws DAOException, ConnectionException {
+	public int delete(long id){
 		return jdbcTemplate.update(SqlQueries.DELETE_COMPUTER, id);
 	}
 	
@@ -82,7 +82,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @param the id of the company
 	 * @throws ConnectionException
 	 */
-	public int deleteByCompany(long id) throws DAOException, ConnectionException {
+	public int deleteByCompany(long id){
 		return jdbcTemplate.update(SqlQueries.DELETE_COMPUTER_BY_COMPANY, id);
 	}
 
@@ -93,7 +93,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public Computer find(long id) throws DAOException, ConnectionException {	
+	public Computer find(long id){	
 		Computer computer = null;
 		
 		List<Computer> computers = jdbcTemplate.query(SqlQueries.FIND_COMPUTER,new Object[]{id}, new ComputerMapper());
@@ -111,7 +111,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @return the list of all computers which contains the search in their name
 	 * @throws ConnectionException
 	 */
-	public List<Computer> search(String search, Page page) throws DAOException, ConnectionException {
+	public List<Computer> search(String search, Page page){
 
 		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
 		List<Computer> computers = new ArrayList<>();
@@ -126,7 +126,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @return the number of result
 	 * @throws ConnectionException
 	 */
-	public int getNbComputersSearch(String search) throws DAOException, ConnectionException {		
+	public int getNbComputersSearch(String search){		
 		return jdbcTemplate.queryForObject(SqlQueries.getNbComputerSearch(search), Integer.class);
 	}
 
@@ -135,7 +135,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public List<Computer> findAll() throws DAOException, ConnectionException {
+	public List<Computer> findAll(){
 		return jdbcTemplate.query(SqlQueries.FIND_ALL, new ComputerMapper());
 	}
 
@@ -146,7 +146,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public List<Computer> findPage(Page page) throws DAOException, ConnectionException {
+	public List<Computer> findPage(Page page){
 		
 		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
 		List<Computer> computerList = new ArrayList<Computer>();
@@ -161,7 +161,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 	 * @return the number of computers
 	 * @throws ConnectionException
 	 */
-	public int getNbComputers() throws DAOException, ConnectionException {
+	public int getNbComputers(){
 		return jdbcTemplate.queryForObject(SqlQueries.COUNT_COMPUTERS, Integer.class);
 	}
 	

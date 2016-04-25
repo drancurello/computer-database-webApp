@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.dao;
+package com.excilys.computerDatabase.dao.interfaceDAO;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.excilys.computerDatabase.page.Page;
  *
  * this interface provides CRUD operations
  */
-public interface ICrudService<T> {
+public interface IGenericDAO<T> {
 
 	/**
 	 * add an object in a database
@@ -18,7 +18,9 @@ public interface ICrudService<T> {
 	 * @throws DAOException
 	 * @throws ConnectionException
 	 */
-	public abstract T add(T obj)  throws DAOException,ConnectionException;
+	default T add(T obj){
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * update an object in a database
@@ -26,7 +28,9 @@ public interface ICrudService<T> {
 	 * @throws DAOException
 	 * @throws ConnectionException
 	 */
-	public abstract T update(T obj)  throws DAOException,ConnectionException;
+	default T update(T obj){
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * delete an object in a database
@@ -35,7 +39,9 @@ public interface ICrudService<T> {
 	 * @throws DAOException
 	 * @throws ConnectionException
 	 */
-	public abstract int delete(long id)  throws DAOException,ConnectionException;
+	default int delete(long id){
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * find an object with its id
@@ -44,7 +50,9 @@ public interface ICrudService<T> {
 	 * @throws DAOException
 	 * @throws ConnectionException
 	 */
-	public abstract T find(long id)  throws DAOException,ConnectionException;
+	default T find(long id){
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * find all the objects in the database
@@ -52,16 +60,8 @@ public interface ICrudService<T> {
 	 * @throws DAOException
 	 * @throws ConnectionException
 	 */
-	public abstract List<T> findAll()  throws DAOException,ConnectionException;
-
-	/**
-	 * get objects in a page
-	 * @param the page number
-	 * @param the number of objects in the page
-	 * @return the page 
-	 * @throws DAOException
-	 * @throws ConnectionException
-	 */
-	public abstract List<T> findPage(Page page)  throws DAOException,ConnectionException;
+	default List<T> findAll(){
+		throw new UnsupportedOperationException();
+	}
 
 }

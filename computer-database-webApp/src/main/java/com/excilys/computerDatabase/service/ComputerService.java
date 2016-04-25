@@ -1,6 +1,5 @@
 package com.excilys.computerDatabase.service;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.computerDatabase.connection.ConnectionMySQL;
 import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.dto.ComputerDTO;
@@ -26,8 +24,6 @@ import com.excilys.computerDatabase.page.Page;
 @Component
 public class ComputerService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
-
 	/** The computer dao. */
 	@Autowired
 	private ComputerDAO computerDAO;
@@ -44,12 +40,8 @@ public class ComputerService {
 	 */
 	public ComputerDTO addComputer(ComputerDTO computerdto) {		
 		Computer c = null;
-		try {
-			c = computerDAO.add(ComputerDTOMapper.toComputer(computerdto));
-			computerdto.setId(c.getId());
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("add a computer failed cause " + e.getMessage());
-		}
+		c = computerDAO.add(ComputerDTOMapper.toComputer(computerdto));
+		computerdto.setId(c.getId());
 		return computerdto;
 	}
 	
@@ -63,11 +55,7 @@ public class ComputerService {
 	 */
 	public ComputerDTO updateComputer(ComputerDTO computerdto) {
 		ComputerDTO c = null;
-		try {
-			c = ComputerDTOMapper.toComputerDTO(computerDAO.update(ComputerDTOMapper.toComputer(computerdto)));
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("update a computer failed cause " + e.getMessage());
-		}
+		c = ComputerDTOMapper.toComputerDTO(computerDAO.update(ComputerDTOMapper.toComputer(computerdto)));
 		return c;
 	}
 	
@@ -81,18 +69,8 @@ public class ComputerService {
 	 * @throws ConnectionException 
 	 */
 	public int deleteComputer(long id) {
-		int i =0;
-		Connection connection = null;
-		
-		try {
-			i = computerDAO.delete(id);
-			connection = ConnectionMySQL.getInstance().getConnection();
-		} catch (ConnectionException | SQLException | DAOException e) {
-			LOGGER.error("delete the computer " + id + " failed cause " + e.getMessage());
-		} finally {
-			ConnectionMySQL.CloseConnection(connection, null, null, null);
-		}
-		
+
+		int i = computerDAO.delete(id);
 		return i;
 	}
 	
@@ -106,14 +84,11 @@ public class ComputerService {
 	 */
 	public ComputerDTO findComputer(long id) {
 		Computer c = null;
-		try {
-			c = computerDAO.find(id);
-			if (c != null && c.getCompany() != null) {
-				c.setCompany(companyDAO.find(c.getCompany().getId()));
-			}
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("find the computer " + id + " failed cause " + e.getMessage());
+		c = computerDAO.find(id);
+		if (c != null && c.getCompany() != null) {
+			c.setCompany(companyDAO.find(c.getCompany().getId()));
 		}
+
 		return ComputerDTOMapper.toComputerDTO(c);
 	}
 	
@@ -128,19 +103,16 @@ public class ComputerService {
 	public Page search(String name, Page page) {
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();
-		try {
-			computers = computerDAO.search(name,page);
-			page.setNbComputers(getNbComputersSearch(name));
-			for (Computer c:computers) {
-				if (c.getCompany() != null) {
-					c.setCompany(companyDAO.find(c.getCompany().getId()));
-				}
+		
+		computers = computerDAO.search(name,page);
+		page.setNbComputers(getNbComputersSearch(name));
+		for (Computer c:computers) {
+			if (c.getCompany() != null) {
+				c.setCompany(companyDAO.find(c.getCompany().getId()));
 			}
-			for(Computer c:computers) {
-				computersDTO.add(ComputerDTOMapper.toComputerDTO(c));
-			}
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("the search failed cause " + e.getMessage());
+		}
+		for(Computer c:computers) {
+			computersDTO.add(ComputerDTOMapper.toComputerDTO(c));
 		}
 		
 		page.setComputersList(computersDTO);
@@ -157,11 +129,7 @@ public class ComputerService {
 	 */
 	public int getNbComputersSearch(String name) {
 		int nbComputers = 0;
-		try {
-			nbComputers = computerDAO.getNbComputersSearch(name);
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("get the number of computers of the search failed cause " + e.getMessage());
-		}
+		nbComputers = computerDAO.getNbComputersSearch(name);
 		return nbComputers;
 	}
 	
@@ -173,19 +141,14 @@ public class ComputerService {
 	 * @throws ConnectionException 
 	 */
 	public List<Computer> findAllComputers() {
-		 List<Computer> computersList = new ArrayList<>();
-		 try {
-			computersList = computerDAO.findAll();
-			for (Computer c:computersList) {
-				if (c.getCompany() != null) {
-					c.setCompany(companyDAO.find(c.getCompany().getId()));
-				}
+		List<Computer> computersList = new ArrayList<>();
+		computersList = computerDAO.findAll();
+		for (Computer c:computersList) {
+			if (c.getCompany() != null) {
+				c.setCompany(companyDAO.find(c.getCompany().getId()));
 			}
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("find all the computers failed cause " + e.getMessage());
 		}
-		 
-		 return computersList;
+		return computersList;
 	}
 	
 	/**
@@ -200,20 +163,16 @@ public class ComputerService {
 	public Page findPageComputers(Page page) {	
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();	
-		 try {
-			computers = computerDAO.findPage(page);
-			page.setNbComputers(getNbComputers());
-			for (Computer c:computers) {
-				if (c.getCompany() != null) {
-					c.setCompany(companyDAO.find(c.getCompany().getId()));
-				}
+		computers = computerDAO.findPage(page);
+		page.setNbComputers(getNbComputers());
+		for (Computer c:computers) {
+			if (c.getCompany() != null) {
+				c.setCompany(companyDAO.find(c.getCompany().getId()));
 			}
-			for(Computer c:computers) {
-				computersDTO.add(ComputerDTOMapper.toComputerDTO(c));
-			}
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("find the page failed cause " + e.getMessage());
-		};
+		}
+		for(Computer c:computers) {
+			computersDTO.add(ComputerDTOMapper.toComputerDTO(c));
+		}
 
 		page.setComputersList(computersDTO);
 		
@@ -229,11 +188,7 @@ public class ComputerService {
 	 */
 	public int getNbComputers() {
 		int i = 0;
-		try {
-			i = computerDAO.getNbComputers();
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("get the number of computers failed cause " + e.getMessage());
-		}
+		i = computerDAO.getNbComputers();
 		return i;
 	}
 	

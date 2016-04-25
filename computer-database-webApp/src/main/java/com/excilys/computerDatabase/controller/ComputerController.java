@@ -93,10 +93,10 @@ public class ComputerController {
 			else {
 				if (locale.equals("fr")) {
 					if(computerDTO.getIntroduced() != null && !computerDTO.getIntroduced().equals("")) {
-						computerDTO.setIntroduced(ParserCountryDate.toEnglishDate(computerDTO.getIntroduced()));
+						computerDTO.setIntroduced(ParserCountryDate.toFrenchDate(computerDTO.getIntroduced()));
 					}
 					if(computerDTO.getDiscontinued() != null && !computerDTO.getDiscontinued().equals("")) {
-						computerDTO.setDiscontinued(ParserCountryDate.toEnglishDate(computerDTO.getDiscontinued()));
+						computerDTO.setDiscontinued(ParserCountryDate.toFrenchDate(computerDTO.getDiscontinued()));
 					}
 				}
 				List<Company> companies = companyService.findAllCompanies();

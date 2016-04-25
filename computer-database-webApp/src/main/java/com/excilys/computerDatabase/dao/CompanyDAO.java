@@ -9,35 +9,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.excilys.computerDatabase.dao.interfaceDAO.ICompanyDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
-import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.mapper.CompanyMapper;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.page.Page;
 
 /**
  * The Class CompanyDAO.
  */
 @Component
-public class CompanyDAO implements ICrudService<Company> {
+public class CompanyDAO implements ICompanyDAO {
 	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
-	private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
-	private static final String FIND_ALL = "SELECT * FROM company";
-	private static final String FIND = "SELECT * FROM company WHERE id = ?";
-	
-	@Override
-	public Company add(Company obj) {
-		return null;
-	}
-
-	@Override
-	public Company update(Company obj) {
-		return null;
-	}
 
 	/**
 	 * @param the id of the company
@@ -45,8 +31,8 @@ public class CompanyDAO implements ICrudService<Company> {
 	 * @throws ConnectionException 
 	 */
 	@Override
-	public int delete(long id) throws DAOException, ConnectionException {
-		return jdbcTemplate.update(DELETE_COMPANY, id);
+	public int delete(long id) {
+		return jdbcTemplate.update(SqlQueries.DELETE_COMPANY, id);
 	}
 
 	/**
@@ -57,10 +43,10 @@ public class CompanyDAO implements ICrudService<Company> {
 	 * @throws ConnectionException 
 	 */
 	@Override
-	public Company find(long id) throws DAOException, ConnectionException {
+	public Company find(long id){
 		
 		Company company = new Company();
-		List<Company> companies = jdbcTemplate.query(FIND,new Object[]{id}, new CompanyMapper());
+		List<Company> companies = jdbcTemplate.query(SqlQueries.FIND_COMPANY,new Object[]{id}, new CompanyMapper());
 		
 		if (companies.size() != 0) {
 			return companies.get(0);
@@ -75,13 +61,8 @@ public class CompanyDAO implements ICrudService<Company> {
 	 * @throws ConnectionException 
 	 */
 	@Override
-	public List<Company> findAll() throws DAOException, ConnectionException {
-		return jdbcTemplate.query(FIND_ALL, new CompanyMapper());
-	}
-
-	@Override
-	public List<Company> findPage(Page page) {
-		return null;
+	public List<Company> findAll(){
+		return jdbcTemplate.query(SqlQueries.FIND_ALL_COMPANIES, new CompanyMapper());
 	}
 	
 	public void setDataSource(DataSource dataSource) {

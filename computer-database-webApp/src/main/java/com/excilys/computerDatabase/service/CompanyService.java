@@ -32,33 +32,23 @@ public class CompanyService {
 	@Transactional
 	public int delete(long id) throws SQLException{
 		int cpany = 0, cputer = 0;
-		try {
-			cputer = computerDAO.deleteByCompany(id);
-			cpany = companyDAO.delete(id);	
-		} catch (ConnectionException | DAOException e) {
-			LOGGER.error("delete the company " + id + " failed cause " + e.getMessage());
-		} 
+		
+		cputer = computerDAO.deleteByCompany(id);
+		cpany = companyDAO.delete(id);	
+		
 		return cpany;
 		
 	}
 	
 	public List<Company> findAllCompanies() {
 		List<Company> companies = new ArrayList<>();
-		try {
-			companies = companyDAO.findAll();
-		} catch (DAOException | ConnectionException e) {
-			LOGGER.error("find all the companies failed cause " + e.getMessage());
-		}
+		companies = companyDAO.findAll();
 		return companies;
 	}
 	
 	public Company findCompany(long id) {
 		Company company = null;
-		try {
-			company = companyDAO.find(id);
-		} catch (DAOException | ConnectionException e) {
-			LOGGER.error("find the company " + id + " failed cause " + e.getMessage());
-		}
+		company = companyDAO.find(id);
 		return company;
 	}
 	

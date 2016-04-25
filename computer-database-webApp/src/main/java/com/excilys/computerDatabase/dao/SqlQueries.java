@@ -17,6 +17,10 @@ public class SqlQueries {
 	public static final String SEARCHORDERCOMP = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%?%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%?%') ORDER BY company.name ? LIMIT ?, ?";
 	public static final String SEARCH = "SELECT * FROM computer WHERE name LIKE '%?%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%?%') ORDER BY ? ? LIMIT ?, ?";
 	
+	public static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
+	public static final String FIND_ALL_COMPANIES = "SELECT * FROM company";
+	public static final String FIND_COMPANY = "SELECT * FROM company WHERE id = ?";
+	
 	public static String getNbComputerSearch(String search) {
 		return "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + search + "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + search + "%')";
 	}
