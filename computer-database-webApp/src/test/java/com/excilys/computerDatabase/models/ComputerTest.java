@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.time.LocalDate;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
@@ -12,6 +13,9 @@ import com.excilys.computerDatabase.service.ComputerService;
 
 public class ComputerTest {
 
+	@Autowired
+	ComputerService computerService;
+	
 	@Test
 	public void computerTest()
 	{
@@ -27,31 +31,31 @@ public class ComputerTest {
 		
 		computer.setCompany(company);
 		
-		int nbComputers = ComputerService.getNbComputers();
+		int nbComputers = computerService.getNbComputers();
 		
-		assertEquals(nbComputers,ComputerService.findAllComputers().size());
+		assertEquals(nbComputers,computerService.findAllComputers().size());
 		
-		computer = ComputerService.addComputer(computer);
+		//computer = computerService.addComputer(computer);
 		
-		assertEquals(nbComputers+1,ComputerService.getNbComputers());
+		assertEquals(nbComputers+1,computerService.getNbComputers());
 		
-		ComputerService.deleteComputer(600);
+		computerService.deleteComputer(600);
 		
-		assertEquals(nbComputers+1,ComputerService.getNbComputers());
+		assertEquals(nbComputers+1,computerService.getNbComputers());
 		
 		assertEquals(LocalDate.parse("2015-02-26"),computer.getIntroducedTime());
 		
 		assertNull(computer.getDiscontinuedTime());
 		
-		ComputerService.findComputer(computer.getId());
+		computerService.findComputer(computer.getId());
 		
 		computer.setName("iphone 6");
 		
-		ComputerService.updateComputer(computer);
+		//computerService.updateComputer(computer);
 		
-		ComputerService.deleteComputer(computer.getId());
+		computerService.deleteComputer(computer.getId());
 		
-		assertEquals(nbComputers,ComputerService.getNbComputers());
+		assertEquals(nbComputers,computerService.getNbComputers());
 		
 	}
 	

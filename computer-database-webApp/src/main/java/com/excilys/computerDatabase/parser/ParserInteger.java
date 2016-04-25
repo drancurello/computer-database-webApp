@@ -7,7 +7,6 @@ public class ParserInteger {
 		if (val != null && val.matches("\\d+")) {
 			i = Integer.parseInt(val);
 		}
-		
 		return i;
 	}
 	

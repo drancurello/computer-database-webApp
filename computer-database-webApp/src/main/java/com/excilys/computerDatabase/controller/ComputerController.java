@@ -1,11 +1,13 @@
 package com.excilys.computerDatabase.controller;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.computerDatabase.dto.ComputerDTO;
-import com.excilys.computerDatabase.mapper.ComputerDTOMapper;
-import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.parser.ParserCountryDate;
 import com.excilys.computerDatabase.parser.ParserInteger;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
-import com.excilys.computerDatabase.validation.FormValidation;
 
 @Controller
 public class ComputerController {
@@ -42,7 +41,8 @@ public class ComputerController {
 	}
 
 	@RequestMapping(path = "addComputer", method = RequestMethod.POST)
-	public ModelAndView addComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO, BindingResult result ) {
+	public ModelAndView addComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO, BindingResult result ) throws ParseException {
+		String locale = LocaleContextHolder.getLocale().toString();
 		
 		if(result.hasErrors()) {
 			ModelAndView model = new ModelAndView("views/addComputer.jsp");
@@ -51,6 +51,14 @@ public class ComputerController {
 			return model;
 		}
 		else {
+			if (locale.equals("fr")) {
+				if(computerDTO.getIntroduced() != null && !computerDTO.getIntroduced().equals("")) {
+					computerDTO.setIntroduced(ParserCountryDate.toEnglishDate(computerDTO.getIntroduced()));
+				}
+				if(computerDTO.getDiscontinued() != null && !computerDTO.getDiscontinued().equals("")) {
+					computerDTO.setDiscontinued(ParserCountryDate.toEnglishDate(computerDTO.getDiscontinued()));
+				}
+			}
 			computerService.addComputer(computerDTO);
 			return new ModelAndView("redirect:/index");
 		}
@@ -69,8 +77,9 @@ public class ComputerController {
 	}
 	
 	@RequestMapping(path = "editComputer", method = RequestMethod.GET)
-	public ModelAndView updateComputerPage(@RequestParam(value="id") String idComputer) {
+	public ModelAndView updateComputerPage(@RequestParam(value="id") String idComputer) throws ParseException {
 		ModelAndView model = new ModelAndView("views/editComputer.jsp");
+		String locale = LocaleContextHolder.getLocale().toString();
 		int id = ParserInteger.parserInt(idComputer);
 		ComputerDTO computerDTO = null;
 		
@@ -82,6 +91,14 @@ public class ComputerController {
 				new ModelAndView("redirect:/index");
 			}
 			else {
+				if (locale.equals("fr")) {
+					if(computerDTO.getIntroduced() != null && !computerDTO.getIntroduced().equals("")) {
+						computerDTO.setIntroduced(ParserCountryDate.toEnglishDate(computerDTO.getIntroduced()));
+					}
+					if(computerDTO.getDiscontinued() != null && !computerDTO.getDiscontinued().equals("")) {
+						computerDTO.setDiscontinued(ParserCountryDate.toEnglishDate(computerDTO.getDiscontinued()));
+					}
+				}
 				List<Company> companies = companyService.findAllCompanies();
 				model.addObject("companies", companies);
 				model.addObject("computerDTO", computerDTO);
@@ -91,7 +108,8 @@ public class ComputerController {
 	}
 	
 	@RequestMapping(path = "editComputer", method = RequestMethod.POST)
-	public ModelAndView editComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO, BindingResult result ) {
+	public ModelAndView editComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO, BindingResult result ) throws ParseException {
+		String locale = LocaleContextHolder.getLocale().toString();
 		
 		if(result.hasErrors()) {
 			ModelAndView model = new ModelAndView("views/editComputer.jsp");
@@ -100,6 +118,14 @@ public class ComputerController {
 			return model;
 		}
 		else {
+			if (locale.equals("fr")) {
+				if(computerDTO.getIntroduced() != null && !computerDTO.getIntroduced().equals("")) {
+					computerDTO.setIntroduced(ParserCountryDate.toEnglishDate(computerDTO.getIntroduced()));
+				}
+				if(computerDTO.getDiscontinued() != null && !computerDTO.getDiscontinued().equals("")) {
+					computerDTO.setDiscontinued(ParserCountryDate.toEnglishDate(computerDTO.getDiscontinued()));
+				}
+			}
 			computerDTO = computerService.updateComputer(computerDTO);
 			return new ModelAndView("redirect:/index");
 		}

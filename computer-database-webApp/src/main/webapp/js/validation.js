@@ -1,13 +1,15 @@
 $(document).ready(function() {
+	var englishRegex = /^\d\d\d\d?-\d\d-\d\d/;
+	var frenchRegex = /^\d\d?-\d\d-\d\d\d\d/;
 
 	jQuery.validator.addMethod("dateFormat", function(value, element) {
 		if (value == null)
 			return true;
 		if (value == "")
 			return true;
-		if (value == "0000-00-00")
+		if (value == "0000-00-00" || value == "00-00-0000")
 			return false;
-		return /^\d\d\d\d?-\d\d-\d\d/.test(value);
+		return englishRegex.test(value) || frenchRegex.test(value) != null;
 	});
 
 	jQuery.validator.addMethod("dateBefore1970", function(value, element) {
@@ -15,8 +17,13 @@ $(document).ready(function() {
 			return true;
 		if (value == "")
 			return true;
-		if (value == "0000-00-00")
+		if (value == "0000-00-00" || value == "00-00-0000")
 			return false;
+		if (frenchRegex.test(value)) {
+			var values = value.split("-");
+			value = values[2] + "-" + values[1] + "-" + values[0];
+			console.log(value);
+		}
 		return new Date(value) > new Date("1970-01-01");
 	});
 
@@ -29,7 +36,16 @@ $(document).ready(function() {
 			return true;
 		if (value == "")
 			return true;
-		return new Date(value) > new Date($(params).val());
+		var introduced = $(params).val();
+		if (frenchRegex.test(value)) {
+			var values = value.split("-");
+			value = values[2] + "-" + values[1] + "-" + values[0];
+			console.log(value);
+			var values = introduced.split("-");
+			introduced = values[2] + "-" + values[1] + "-" + values[0];
+			console.log(introduced);
+		}
+		return new Date(value) > new Date(introduced);
 	});
 
 	jQuery.validator.addMethod("myName", function(value, element) {
@@ -75,3 +91,6 @@ $(document).ready(function() {
 		}
 	});
 });
+
+
+

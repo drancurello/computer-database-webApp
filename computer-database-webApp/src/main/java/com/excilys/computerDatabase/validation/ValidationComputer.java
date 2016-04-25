@@ -3,6 +3,8 @@ package com.excilys.computerDatabase.validation;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import org.apache.commons.validator.GenericValidator;
+
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.CompanyService;
@@ -80,6 +82,10 @@ public class ValidationComputer {
 			}
 		}
 		return page;
+	}
+	
+	public static boolean frenchDate(String date) {
+		return GenericValidator.isDate(date, "dd-MM-yyyy", true);
 	}
 	
 }

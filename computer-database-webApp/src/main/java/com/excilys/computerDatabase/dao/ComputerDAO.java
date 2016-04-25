@@ -117,9 +117,7 @@ public class ComputerDAO implements ICrudService<Computer> {
 		List<Computer> computers = new ArrayList<>();
 
 		computers = jdbcTemplate.query(SqlQueries.search(page, search, debut), new ComputerMapper());
-		
-		page.setNbComputers(getNbComputersSearch(search));
-		
+				
 		return computers;
 	}
 
@@ -154,7 +152,6 @@ public class ComputerDAO implements ICrudService<Computer> {
 		List<Computer> computerList = new ArrayList<Computer>();
 		
 		computerList = jdbcTemplate.query(SqlQueries.findPage(page, debut), new ComputerMapper());
-		page.setNbComputers(getNbComputers());
 		
 		return computerList;
 	}

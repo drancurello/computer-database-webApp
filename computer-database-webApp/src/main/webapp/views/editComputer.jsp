@@ -76,6 +76,7 @@
 						translation['error.dateFormat'] = "<spring:message code='error.dateFormat' javaScriptEscape='true' />";
 						translation['error.name'] = "<spring:message code='error.name' javaScriptEscape='true' />";
 						translation['error.required'] = "<spring:message code='error.required' javaScriptEscape='true' />";
+						translation['validation.pattern'] = "<spring:message code='validation.pattern' javaScriptEscape='true' />";
 					</script>
                 </div>
             </div>

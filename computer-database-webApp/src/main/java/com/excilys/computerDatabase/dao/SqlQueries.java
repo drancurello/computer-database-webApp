@@ -11,6 +11,11 @@ public class SqlQueries {
 	public static final String FIND_COMPUTER = "SELECT * FROM computer WHERE id = ?";
 	public static final String FIND_ALL = "SELECT * FROM computer";
 	public static final String COUNT_COMPUTERS = "SELECT COUNT(*) FROM computer";
+	public static final String GETNBCOMPUTERSEARCH = "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + "?" + "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" +"?"+"%')";
+	public static final String FINDPAGEORDERCOMP = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name ? LIMIT ?, ?"; 
+	public static final String FINDPAGE = "SELECT * FROM computer ORDER BY ? ? LIMIT ?,?";
+	public static final String SEARCHORDERCOMP = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%?%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%?%') ORDER BY company.name ? LIMIT ?, ?";
+	public static final String SEARCH = "SELECT * FROM computer WHERE name LIKE '%?%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%?%') ORDER BY ? ? LIMIT ?, ?";
 	
 	public static String getNbComputerSearch(String search) {
 		return "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + search + "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" + search + "%')";

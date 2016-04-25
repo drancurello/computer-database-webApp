@@ -16,7 +16,7 @@ public class DateFormatValidator implements ConstraintValidator<DateFormat, Stri
 	public boolean isValid(String date, ConstraintValidatorContext context) {
 		boolean bool = false;
 		
-		if (date == null || date.equals("") || GenericValidator.isDate(date, "yyyy-MM-dd", true)) {
+		if (date == null || date.equals("") || GenericValidator.isDate(date, "yyyy-MM-dd", true) || GenericValidator.isDate(date, "dd-MM-yyyy", true)){
 			bool = true;
 		}
 		
