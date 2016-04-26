@@ -19,7 +19,6 @@
   	<selenium>2.53.0</selenium>
   	<slf4j>1.7.21</slf4j>
   	<logback>1.1.6</logback>
-  	<bonecp>0.8.0.RELEASE</bonecp>
   	<sValidation>1.1.0.Final</sValidation>
   	<hibernate>5.1.0.Final</hibernate>
   	<commons>1.5.0</commons>
@@ -100,13 +99,18 @@
 	
 	<!-- pool connection -->
 	<dependency>
-		<groupId>com.jolbox</groupId>
-		<artifactId>bonecp</artifactId>
-		<version>${bonecp}</version>
-		<scope>compile</scope>
+		<groupId>com.zaxxer</groupId>
+		<artifactId>HikariCP</artifactId>
+		<version>${hikari}</version>
 	</dependency>
 	
 	<!-- spring -->
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${springVersion}</version>
+    </dependency>
+	
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context</artifactId>
@@ -139,6 +143,12 @@
 		<version>${springVersion}</version>
 	</dependency>
 	
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>${springVersion}</version>
+    </dependency>
+	
 	<!-- Spring mvc framework -->
 	<dependency>
         <groupId>org.springframework</groupId>
@@ -164,16 +174,10 @@
     <dependency>
     	<groupId>org.hibernate</groupId>
    		<artifactId>hibernate-validator</artifactId>
-    	<version>${hibernate}</version>
+    	<version>5.2.4.Final</version>
     </dependency>
     
-    <!-- Hibernate -->
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-        <version>${hibernate}</version>
-    </dependency>
-    
+    <!-- Hibernate --> 
     <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
@@ -184,12 +188,6 @@
 		<groupId>commons-validator</groupId>
 		<artifactId>commons-validator</artifactId>
 		<version>${commons}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.zaxxer</groupId>
-		<artifactId>HikariCP</artifactId>
-		<version>${hikari}</version>
 	</dependency>
 	
   </dependencies>

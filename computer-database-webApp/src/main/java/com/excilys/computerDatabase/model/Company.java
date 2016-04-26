@@ -1,15 +1,35 @@
 package com.excilys.computerDatabase.model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  * The Class Company.
  */
-public class Company {
+@SuppressWarnings("serial")
+@Entity
+@Table(name="company")
+public class Company implements Serializable {
 
 	/** The id. */
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
 	/** The name. */
+	@Column
 	private String name;
+	
+//	@OneToMany
+//	private List<Computer> computers;
 
 	/**
 	 * Instantiates a new company with a name.

@@ -1,26 +1,50 @@
 package com.excilys.computerDatabase.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 /**
  * The Class Computer.
  */
-public class Computer {
+@SuppressWarnings("serial")
+@Entity
+@Table(name="computer")
+public class Computer implements Serializable {
 
 	/** The id. */
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
 	/** The name. */
+	@Column
 	private String name;
 	
 	/** The introduced time. */
+	@Column(name="introduced")
+	@Type(type = "com.excilys.computerDatabase.mapper.LocalDateUserType")
 	private LocalDate introducedTime;
 
 	/** The discontinued time. */
+	@Column(name="discontinued")
+	@Type(type = "com.excilys.computerDatabase.mapper.LocalDateUserType")
 	private LocalDate discontinuedTime;
 	
 	/** The company. */
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="company_id")
 	private Company company;
 
 	/**

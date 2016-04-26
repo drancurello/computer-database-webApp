@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.computerDatabase.dao.interfaceDAO.IComputerDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
-import com.excilys.computerDatabase.exceptions.DAOException;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
@@ -27,10 +26,14 @@ import com.excilys.computerDatabase.page.Page;
  * The Class ComputerDAO.
  */
 @Component
+@SuppressWarnings("unchecked")
 public class ComputerDAO implements IComputerDAO {
 
-	private DataSource dataSource;
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired 
+	private SessionFactory factory;
 	
 	/**
 	 * add a computer in the DB
@@ -151,7 +154,13 @@ public class ComputerDAO implements IComputerDAO {
 		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
 		List<Computer> computerList = new ArrayList<Computer>();
 		
-		computerList = jdbcTemplate.query(SqlQueries.findPage(page, debut), new ComputerMapper());
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery(SqlQueries.findPage(page));
+		query.setFirstResult(debut);
+		query.setMaxResults(debut+page.getNbEntriesByPage());
+		computerList = query.list();
+		
+//		computerList = jdbcTemplate.query(SqlQueries.findPage(page), new ComputerMapper());
 		
 		return computerList;
 	}
@@ -163,10 +172,5 @@ public class ComputerDAO implements IComputerDAO {
 	 */
 	public int getNbComputers(){
 		return jdbcTemplate.queryForObject(SqlQueries.COUNT_COMPUTERS, Integer.class);
-	}
-	
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 }

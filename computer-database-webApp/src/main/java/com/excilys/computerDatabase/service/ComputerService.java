@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.ComputerDAO;
@@ -100,6 +101,7 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
+	@Transactional
 	public Page search(String name, Page page) {
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();
@@ -160,6 +162,7 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
+	@Transactional
 	public Page findPageComputers(Page page) {	
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();	

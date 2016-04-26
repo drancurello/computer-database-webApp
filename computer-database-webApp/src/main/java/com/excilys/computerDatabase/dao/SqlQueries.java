@@ -13,9 +13,8 @@ public class SqlQueries {
 	public static final String COUNT_COMPUTERS = "SELECT COUNT(*) FROM computer";
 	public static final String GETNBCOMPUTERSEARCH = "SELECT COUNT(*) FROM computer WHERE name LIKE '%" + "?" + "%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%" +"?"+"%')";
 	public static final String FINDPAGEORDERCOMP = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name ? LIMIT ?, ?"; 
-	public static final String FINDPAGE = "SELECT * FROM computer ORDER BY ? ? LIMIT ?,?";
+	public static final String FINDPAGE = "SELECT * FROM computer ORDER BY ? ?";
 	public static final String SEARCHORDERCOMP = "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.name LIKE '%?%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%?%') ORDER BY company.name ? LIMIT ?, ?";
-	public static final String SEARCH = "SELECT * FROM computer WHERE name LIKE '%?%' OR company_id IN ( SELECT id FROM company WHERE name LIKE '%?%') ORDER BY ? ? LIMIT ?, ?";
 	
 	public static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
 	public static final String FIND_ALL_COMPANIES = "SELECT * FROM company";
@@ -26,12 +25,12 @@ public class SqlQueries {
 	}
 	
 	
-	public static String findPage(Page page, int debut) {
+	public static String findPage(Page page) {
 		if (page.getOrder().equals("company")) {
-			return "SELECT * FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name " + page.getType() + " LIMIT " + debut + "," + page.getNbEntriesByPage();
+			return "from Computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name " + page.getType();
 		}
 		else {
-			return "SELECT * FROM computer ORDER BY " + page.getOrder() + " " + page.getType() + " LIMIT " + debut + "," + page.getNbEntriesByPage();
+			return "from Computer ORDER BY " + page.getOrder() + " " + page.getType();
 		}
 	}
 	
