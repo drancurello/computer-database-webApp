@@ -34,12 +34,10 @@ public class Computer implements Serializable {
 	
 	/** The introduced time. */
 	@Column(name="introduced")
-	@Type(type = "com.excilys.computerDatabase.mapper.LocalDateUserType")
 	private LocalDate introducedTime;
 
 	/** The discontinued time. */
 	@Column(name="discontinued")
-	@Type(type = "com.excilys.computerDatabase.mapper.LocalDateUserType")
 	private LocalDate discontinuedTime;
 	
 	/** The company. */
@@ -146,7 +144,7 @@ public class Computer implements Serializable {
 	@Override
 	public String toString() {
 		return "id=" + id + ", name=" + name + ", introducedTime=" + introducedTime + ", discontinuedTime="
-				+ discontinuedTime + ", company=" + company.getName();
+				+ discontinuedTime + ", company=" + company.getId();
 	}
 	
 	

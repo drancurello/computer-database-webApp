@@ -23,6 +23,7 @@ import com.excilys.computerDatabase.page.Page;
  * The Class ComputerService.
  */
 @Component
+@Transactional
 public class ComputerService {
 	
 	/** The computer dao. */
@@ -101,7 +102,6 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	@Transactional
 	public Page search(String name, Page page) {
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();
@@ -162,7 +162,6 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	@Transactional
 	public Page findPageComputers(Page page) {	
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();	

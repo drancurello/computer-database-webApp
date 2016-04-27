@@ -9,11 +9,14 @@
 <%@ attribute name="search" required="false"%>
 <%@ attribute name="valueSpan" required="false" %>
 <%@ attribute name="value" required="false" %>
+<%@ attribute name="order" required="false" %>
+<%@ attribute name="orderType" required="false" %>
+
 
 <c:set var="span" value="<span aria-hidden='true'>${valueSpan}</span>" />
 <c:set var="noSpan" value="${value}" />
-<c:set var="forSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&search=${search}"/>
-<c:set var="notSearch" value="page=${page}&nbComputersPage=${nbComputersPage}" />
+<c:set var="forSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&order=${order}&type=${orderType}&search=${search}"/>
+<c:set var="notSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&order=${order}&type=${orderType}" />
 
 <a href="?${not empty search ? forSearch : notSearch}"
 	type="${not empty type ? type : ''}"

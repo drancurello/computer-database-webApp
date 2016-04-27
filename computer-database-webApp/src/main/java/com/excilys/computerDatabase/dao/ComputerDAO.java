@@ -1,7 +1,5 @@
 package com.excilys.computerDatabase.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +8,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computerDatabase.dao.interfaceDAO.IComputerDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
-import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.page.Page;
 
@@ -28,9 +21,6 @@ import com.excilys.computerDatabase.page.Page;
 @Component
 @SuppressWarnings("unchecked")
 public class ComputerDAO implements IComputerDAO {
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired 
 	private SessionFactory factory;
@@ -43,19 +33,8 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws SQLException
 	 */
 	@Override
-	public Computer add(Computer obj){
-
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(
-	    	    new PreparedStatementCreator() {
-	    	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-	    	            PreparedStatement pstmt = con.prepareStatement(SqlQueries.INSERT_COMPUTER, new String[] {"id"});
-	    	            ComputerMapper.fillPreparedStatement(obj, pstmt);
-	    	            return pstmt;
-	    	        }
-	    	    },
-	    	    keyHolder);
-		obj.setId((long)keyHolder.getKey());			
+	public Computer add(Computer obj){		
+		factory.getCurrentSession().save(obj);		
 		return obj;
 	}
 
@@ -66,7 +45,11 @@ public class ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public Computer update(Computer obj){
-		jdbcTemplate.update(SqlQueries.UPDATE_COMPUTER,new Object[]{obj.getName(),obj.getIntroducedTime(),obj.getDiscontinuedTime(),obj.getCompany().getId(),obj.getId()});
+		Query query = factory.getCurrentSession().createQuery(SqlQueries.UPDATE_COMPUTER);
+		query.setParameter("name", obj.getName()).setParameter("introduced", obj.getIntroducedTime()).setParameter("discontinued", obj.getDiscontinuedTime())
+		.setParameter("company_id", obj.getCompany().getId()).setParameter("id", obj.getId());
+		query.executeUpdate();
+		
 		return obj;
 	}
 
@@ -77,7 +60,9 @@ public class ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public int delete(long id){
-		return jdbcTemplate.update(SqlQueries.DELETE_COMPUTER, id);
+		Query query = factory.getCurrentSession().createQuery(SqlQueries.DELETE_COMPUTER);
+		query.setParameter("id", id);
+		return query.executeUpdate();
 	}
 	
 	/**
@@ -86,7 +71,9 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	public int deleteByCompany(long id){
-		return jdbcTemplate.update(SqlQueries.DELETE_COMPUTER_BY_COMPANY, id);
+		Query query = factory.getCurrentSession().createQuery(SqlQueries.DELETE_COMPUTER_BY_COMPANY);
+		query.setParameter("id", id);
+		return query.executeUpdate();
 	}
 
 	/**
@@ -99,7 +86,9 @@ public class ComputerDAO implements IComputerDAO {
 	public Computer find(long id){	
 		Computer computer = null;
 		
-		List<Computer> computers = jdbcTemplate.query(SqlQueries.FIND_COMPUTER,new Object[]{id}, new ComputerMapper());
+		Query query = factory.getCurrentSession().createQuery(SqlQueries.FIND_COMPUTER);
+		query.setParameter("id", id);
+		List<Computer> computers = query.list();
 		
 		if (!computers.isEmpty()) {
 			return computers.get(0);
@@ -118,8 +107,12 @@ public class ComputerDAO implements IComputerDAO {
 
 		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
 		List<Computer> computers = new ArrayList<>();
-
-		computers = jdbcTemplate.query(SqlQueries.search(page, search, debut), new ComputerMapper());
+		
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery(SqlQueries.search(page, search));
+		query.setFirstResult(debut);
+		query.setMaxResults(page.getNbEntriesByPage());
+		computers = query.list();
 				
 		return computers;
 	}
@@ -129,8 +122,10 @@ public class ComputerDAO implements IComputerDAO {
 	 * @return the number of result
 	 * @throws ConnectionException
 	 */
-	public int getNbComputersSearch(String search){		
-		return jdbcTemplate.queryForObject(SqlQueries.getNbComputerSearch(search), Integer.class);
+	public int getNbComputersSearch(String search){	
+		
+		List<Long> result = factory.getCurrentSession().createQuery(SqlQueries.getNbComputerSearch(search)).list();
+		return (int) (long) result.get(0);
 	}
 
 	/**
@@ -139,7 +134,7 @@ public class ComputerDAO implements IComputerDAO {
 	 */
 	@Override
 	public List<Computer> findAll(){
-		return jdbcTemplate.query(SqlQueries.FIND_ALL, new ComputerMapper());
+		return factory.getCurrentSession().createQuery(SqlQueries.FIND_ALL).list();
 	}
 
 	/**
@@ -157,11 +152,9 @@ public class ComputerDAO implements IComputerDAO {
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(SqlQueries.findPage(page));
 		query.setFirstResult(debut);
-		query.setMaxResults(debut+page.getNbEntriesByPage());
+		query.setMaxResults(page.getNbEntriesByPage());
 		computerList = query.list();
-		
-//		computerList = jdbcTemplate.query(SqlQueries.findPage(page), new ComputerMapper());
-		
+				
 		return computerList;
 	}
 
@@ -171,6 +164,9 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	public int getNbComputers(){
-		return jdbcTemplate.queryForObject(SqlQueries.COUNT_COMPUTERS, Integer.class);
+		
+		Query query = factory.getCurrentSession().createQuery(SqlQueries.COUNT_COMPUTERS);
+		query.setMaxResults(1);
+		return (int) (long) query.uniqueResult();
 	}
 }

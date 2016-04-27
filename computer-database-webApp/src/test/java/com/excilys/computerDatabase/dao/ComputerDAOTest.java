@@ -15,12 +15,8 @@ import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/resources/spring-Module.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-Module.xml" })
 public class ComputerDAOTest {
-
-	
-	@Autowired
-	private ApplicationContext context;
 	
 	@Autowired
 	ComputerDAO computerDAO;

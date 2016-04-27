@@ -16,7 +16,6 @@ public class ComputerDTOMapper {
 
 	/**
 	 * To computerDTO.
-	 *
 	 * @param A computer 
 	 * @return A computerDTO
 	 */
@@ -42,7 +41,6 @@ public class ComputerDTOMapper {
 	
 	/**
 	 * To computer.
-	 *
 	 * @param A computerDTO
 	 * @return A computer
 	 */

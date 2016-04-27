@@ -15,7 +15,7 @@ import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.exceptions.DAOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/resources/spring-Module.xml" })
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring-Module.xml" })
 public class computerServiceTest {
 	
 	@Autowired
@@ -36,6 +36,16 @@ public class computerServiceTest {
 		computerDTO = computerService.updateComputer(computerDTO);
 		assertEquals(computerDTO.getName(),"name");
 		computerService.deleteComputer(computerDTO.getId());
+	}
+	
+	@Test
+	public void getNBComputers() throws DAOException, ConnectionException {
+		assertEquals(computerService.getNbComputers(),574);
+	}
+	
+	@Test
+	public void findComputer() throws DAOException, ConnectionException {
+		assertEquals(computerService.findComputer(574).getName(),"iPhone 4S");
 	}
 	
 	

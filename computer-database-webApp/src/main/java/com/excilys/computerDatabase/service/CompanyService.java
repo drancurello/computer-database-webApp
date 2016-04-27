@@ -14,13 +14,13 @@ import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.model.Company;
 
 @Component
+@Transactional
 public class CompanyService {
 	@Autowired
 	private CompanyDAO companyDAO;
 	@Autowired
 	private ComputerDAO computerDAO;
 			
-	@Transactional
 	public int delete(long id) throws SQLException{
 		int cpany = 0, cputer = 0;
 		
@@ -31,14 +31,12 @@ public class CompanyService {
 		
 	}
 	
-	@Transactional
 	public List<Company> findAllCompanies() {
 		List<Company> companies = new ArrayList<>();
 		companies = companyDAO.findAll();
 		return companies;
 	}
 	
-	@Transactional
 	public Company findCompany(long id) {
 		Company company = null;
 		company = companyDAO.find(id);

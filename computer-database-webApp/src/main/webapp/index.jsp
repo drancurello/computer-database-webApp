@@ -113,7 +113,7 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
-    	<p:pagination currentPage="${page.pageNumber}" nbComputersPage="${page.nbEntriesByPage}" nbPage="${page.nbPage}" search="${search}"/>
+    	<p:pagination currentPage="${page.pageNumber}" nbComputersPage="${page.nbEntriesByPage}" nbPage="${page.nbPage}" search="${search}" order="${page.order}" orderType="${page.type}"/>
     </footer>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

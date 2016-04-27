@@ -7,11 +7,13 @@
 <%@ attribute name="nbComputersPage" required="true"%>
 <%@ attribute name="nbPage" required="true"%>
 <%@ attribute name="search" required="false"%>
+<%@ attribute name="order" required="false"%>
+<%@ attribute name="orderType" required="false"%>
 
 <div class="container text-center">
             <ul class="pagination">
               <li>
-              		<p:link nbComputersPage="${nbComputersPage}" page="${currentPage - 1}" ariaLabel="Previous" valueSpan="&laquo;" search="${search}"/> 
+              		<p:link nbComputersPage="${nbComputersPage}" page="${currentPage - 1}" ariaLabel="Previous" valueSpan="&laquo;" search="${search}" order="${order}" orderType="${orderType}"/> 
               </li>
               <c:forEach var="i" begin="1" end="${nbPage}" step="1">
               	<c:choose>
@@ -24,16 +26,16 @@
 	            		</c:if>
 	            	</c:when>
 	            	<c:otherwise>
-	              		<li><p:link nbComputersPage="${nbComputersPage}" page="${i}" value="${i}" search="${search}"/></li>
+	              		<li><p:link nbComputersPage="${nbComputersPage}" page="${i}" value="${i}" search="${search}" order="${order}" orderType="${orderType}"/></li>
 	            	</c:otherwise>
               	</c:choose>
               </c:forEach>
               <li>
-              	<p:link nbComputersPage="${nbComputersPage}" page="${currentPage + 1}" ariaLabel="Next" valueSpan="&raquo;" search="${search}"/>
+              	<p:link nbComputersPage="${nbComputersPage}" page="${currentPage + 1}" ariaLabel="Next" valueSpan="&raquo;" search="${search}" order="${order}" orderType="${orderType}"/>
             </li>
         </ul>
         <div class="btn-group btn-group-sm pull-right" role="group" >
-         	<p:link nbComputersPage="10" page="1" type="button" classes="btn btn-default" value="10" search="${search}"/> 
-            <p:link nbComputersPage="50" page="1" type="button" classes="btn btn-default" value="50" search="${search}"/> 
-            <p:link nbComputersPage="100" page="1" type="button" classes="btn btn-default" value="100" search="${search}"/> 
+         	<p:link nbComputersPage="10" page="1" type="button" classes="btn btn-default" value="10" search="${search}" order="${order}" orderType="${orderType}"/> 
+            <p:link nbComputersPage="50" page="1" type="button" classes="btn btn-default" value="50" search="${search}" order="${order}" orderType="${orderType}"/> 
+            <p:link nbComputersPage="100" page="1" type="button" classes="btn btn-default" value="100" search="${search}" order="${order}" orderType="${orderType}"/> 
         </div>
