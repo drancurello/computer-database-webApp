@@ -3,7 +3,6 @@ package com.excilys.computerDatabase.dao.interfaceDAO;
 import java.util.List;
 
 import com.excilys.computerDatabase.model.Computer;
-import com.excilys.computerDatabase.page.Page;
 
 public interface IComputerDAO extends IGenericDAO<Computer> {
 	

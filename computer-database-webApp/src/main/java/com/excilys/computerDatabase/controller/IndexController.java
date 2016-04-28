@@ -42,8 +42,6 @@ public class IndexController {
 				indexPage = computerService.search(search, indexPage);
 			}
 			model.addObject("search", search);
-			model.addObject("order", requestParams.get("order"));
-			model.addObject("type", requestParams.get("type"));
 		} else {
 			if (indexPage.getPageNumber() > indexPage.getNbPage()) {
 				indexPage.previousPage();
@@ -62,8 +60,6 @@ public class IndexController {
 			}
 		}
 		
-		model.addObject("order", indexPage.getOrder());
-		model.addObject("type", indexPage.getType());
 		model.addObject("page", indexPage);
 		
 		return model;

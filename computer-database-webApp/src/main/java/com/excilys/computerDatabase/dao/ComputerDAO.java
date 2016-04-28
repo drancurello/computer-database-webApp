@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.computerDatabase.dao.interfaceDAO.IComputerDAO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.model.Computer;
-import com.excilys.computerDatabase.page.Page;
 
 /**
  * The Class ComputerDAO.
