@@ -67,26 +67,26 @@
                         </th>
                         <th>
                             <spring:message code="label.name"/>
-                            <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="ASC" page="${page.pageNumber}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="name" nbComputersPage="${nbComputersPage}" type="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>
                         </th>
                         <th>
                             <spring:message code="label.introduced"/>
-                            <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="ASC" page="${page.pageNumber}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="introduced" nbComputersPage="${nbComputersPage}" type="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>
                             		
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             <spring:message code="label.discontinued"/>
-                            <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="ASC" page="${page.pageNumber}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="discontinued" nbComputersPage="${nbComputersPage}" type="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             <spring:message code="label.company"/>
-                            <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="ASC" page="${currentPage}" search="${search}" value="&laquo;"/>
-                            <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="DESC" page="${currentPage}" search="${search}" value="&raquo;"/>
+                            <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="ASC" page="${page.pageNumber}" search="${search}" value="&laquo;"/>
+                            <p:linkFilter order="company" nbComputersPage="${nbComputersPage}" type="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>
                         </th>
 
                     </tr>
