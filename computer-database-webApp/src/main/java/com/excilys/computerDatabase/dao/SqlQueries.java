@@ -1,7 +1,5 @@
 package com.excilys.computerDatabase.dao;
 
-import com.excilys.computerDatabase.page.Page;
-
 public class SqlQueries {
 
 	public static final String INSERT_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
@@ -20,22 +18,22 @@ public class SqlQueries {
 		return "SELECT COUNT(*) FROM Computer WHERE name LIKE '%" + search + "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%')";
 	}
 	
-	public static String findPage(Page page) {
-		if (page.getOrder().equals("company")) {
-			return "from Computer as computer LEFT OUTER JOIN fetch computer.company as company ORDER BY company.name " + page.getType() + ", computer.name ASC";
+	public static String findPage(String order, String type) {
+		if (order.equals("company")) {
+			return "from Computer as computer LEFT OUTER JOIN fetch computer.company as company ORDER BY company.name " + type + ", computer.name ASC";
 		}
 		else {
-			return "from Computer ORDER BY " + page.getOrder() + " " + page.getType();
+			return "from Computer ORDER BY " + order + " " + type;
 		}
 	}
 	
-	public static String search(Page page, String search) {
-		if (page.getOrder().equals("company")) {
+	public static String search(String search, String order, String type) {
+		if (order.equals("company")) {
 			return "FROM Computer as computer LEFT OUTER JOIN fetch computer.company as company WHERE computer.name LIKE '%" + search
-				+ "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY company.name " + page.getType() + ", computer.name ASC";
+				+ "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY company.name " + type + ", computer.name ASC";
 		} else {
 		return "FROM Computer WHERE name LIKE '%" + search + "%'"
-				+ " OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY " + page.getOrder() + " " + page.getType();
+				+ " OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY " + order + " " + type;
 		}
 	}
 	

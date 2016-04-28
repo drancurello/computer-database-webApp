@@ -33,7 +33,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws SQLException
 	 */
 	@Override
-	public Computer add(Computer obj){		
+	public Computer add(Computer obj) {		
 		factory.getCurrentSession().save(obj);		
 		return obj;
 	}
@@ -44,7 +44,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public Computer update(Computer obj){
+	public Computer update(Computer obj) {
 		Query query = factory.getCurrentSession().createQuery(SqlQueries.UPDATE_COMPUTER);
 		query.setParameter("name", obj.getName()).setParameter("introduced", obj.getIntroducedTime()).setParameter("discontinued", obj.getDiscontinuedTime())
 		.setParameter("company_id", obj.getCompany().getId()).setParameter("id", obj.getId());
@@ -59,7 +59,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public int delete(long id){
+	public int delete(long id) {
 		Query query = factory.getCurrentSession().createQuery(SqlQueries.DELETE_COMPUTER);
 		query.setParameter("id", id);
 		return query.executeUpdate();
@@ -70,7 +70,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @param the id of the company
 	 * @throws ConnectionException
 	 */
-	public int deleteByCompany(long id){
+	public int deleteByCompany(long id) {
 		Query query = factory.getCurrentSession().createQuery(SqlQueries.DELETE_COMPUTER_BY_COMPANY);
 		query.setParameter("id", id);
 		return query.executeUpdate();
@@ -83,7 +83,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public Computer find(long id){	
+	public Computer find(long id) {	
 		Computer computer = null;
 		
 		Query query = factory.getCurrentSession().createQuery(SqlQueries.FIND_COMPUTER);
@@ -103,17 +103,17 @@ public class ComputerDAO implements IComputerDAO {
 	 * @return the list of all computers which contains the search in their name
 	 * @throws ConnectionException
 	 */
-	public List<Computer> search(String search, Page page){
+	public List<Computer> search(String search, int nbEntriesByPage, int pageNumber, String order, String type) {
 
-		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
+		int debut = nbEntriesByPage * (pageNumber - 1);	
 		List<Computer> computers = new ArrayList<>();
 		
 		Session session = factory.getCurrentSession();
-		Query query = session.createQuery(SqlQueries.search(page, search));
+		Query query = session.createQuery(SqlQueries.search(search, order, type));
 		query.setFirstResult(debut);
-		query.setMaxResults(page.getNbEntriesByPage());
+		query.setMaxResults(nbEntriesByPage);
 		computers = query.list();
-				
+
 		return computers;
 	}
 
@@ -122,7 +122,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @return the number of result
 	 * @throws ConnectionException
 	 */
-	public int getNbComputersSearch(String search){	
+	public int getNbComputersSearch(String search) {	
 		
 		List<Long> result = factory.getCurrentSession().createQuery(SqlQueries.getNbComputerSearch(search)).list();
 		return (int) (long) result.get(0);
@@ -133,7 +133,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public List<Computer> findAll(){
+	public List<Computer> findAll() {
 		return factory.getCurrentSession().createQuery(SqlQueries.FIND_ALL).list();
 	}
 
@@ -144,15 +144,15 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public List<Computer> findPage(Page page){
+	public List<Computer> findPage(int nbEntriesByPage, int pageNumber, String order, String type) {
 		
-		int debut = page.getNbEntriesByPage() * (page.getPageNumber() - 1);	
+		int debut = nbEntriesByPage * (pageNumber - 1);	
 		List<Computer> computerList = new ArrayList<Computer>();
 		
 		Session session = factory.getCurrentSession();
-		Query query = session.createQuery(SqlQueries.findPage(page));
+		Query query = session.createQuery(SqlQueries.findPage(order, type));
 		query.setFirstResult(debut);
-		query.setMaxResults(page.getNbEntriesByPage());
+		query.setMaxResults(nbEntriesByPage);
 		computerList = query.list();
 				
 		return computerList;
@@ -163,7 +163,7 @@ public class ComputerDAO implements IComputerDAO {
 	 * @return the number of computers
 	 * @throws ConnectionException
 	 */
-	public int getNbComputers(){
+	public int getNbComputers() {
 		
 		Query query = factory.getCurrentSession().createQuery(SqlQueries.COUNT_COMPUTERS);
 		query.setMaxResults(1);

@@ -24,11 +24,11 @@ public interface IComputerDAO extends IGenericDAO<Computer> {
 	
 	public abstract int deleteByCompany(long id);
 	
-	public abstract List<Computer> search(String search, Page page);
+	public abstract List<Computer> search(String search, int nbEntriesByPage, int pageNumber, String order, String type);
 
 	public abstract int getNbComputersSearch(String search);		
 
-	public abstract List<Computer> findPage(Page page);
+	public abstract List<Computer> findPage(int nbEntriesByPage, int pageNumber, String order, String type);
 	
 	public abstract int getNbComputers();
 

@@ -32,7 +32,7 @@
                     <form id="searchForm" action="index" method="GET" class="form-inline">
 
 						<spring:message code="search.name" var="mess_search"/>
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="${mess_search}" />
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="${mess_search}" value="${search}" />
                         <input type="submit" id="searchsubmit" value=<spring:message code="label.filter"/>
                         class="btn btn-primary" />
                         <a href="?language=fr"><img src="img/france.png" width=20px height=20px/></a>
