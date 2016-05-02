@@ -1,17 +1,25 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
- 
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>com.excilys.computerDatabase</groupId>
   <artifactId>computer-database-webApp</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>computer-database-webApp Maven Webapp</name>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+
+  <name>computer-database-webApp</name>
   <url>http://maven.apache.org</url>
   
+  <modules>
+    <module>core</module>
+    <module>persistence</module>
+    <module>service</module>
+    <module>binding</module>
+    <module>webapp</module>
+    <module>console</module>
+  </modules>
+  
   <properties>
-  	<mysql>5.1.38</mysql>
   	<junit>4.12</junit>
   	<jstl>1.2</jstl>
   	<jspServlet>2.1</jspServlet>
@@ -19,24 +27,14 @@
   	<selenium>2.53.0</selenium>
   	<slf4j>1.7.21</slf4j>
   	<logback>1.1.6</logback>
-  	<sValidation>1.1.0.Final</sValidation>
   	<hibernate>5.1.0.Final</hibernate>
   	<commons>1.5.0</commons>
   	<sourceTarget>1.8</sourceTarget>
   	<build>3.0</build>
   	<springVersion>4.2.5.RELEASE</springVersion>
-  	<hikari>2.4.5</hikari>
   </properties>
  
    <dependencies>
-   <!-- Driver for mysql -->
-    <dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<version>${mysql}</version>
-		<scope>runtime</scope>
-	</dependency>
-	
 	<!-- Unit Test -->
 	<dependency>
 		<groupId>junit</groupId>
@@ -97,13 +95,6 @@
 		<scope>runtime</scope>
 	</dependency>
 	
-	<!-- pool connection -->
-	<dependency>
-		<groupId>com.zaxxer</groupId>
-		<artifactId>HikariCP</artifactId>
-		<version>${hikari}</version>
-	</dependency>
-	
 	<!-- spring -->
 	<dependency>
         <groupId>org.springframework</groupId>
@@ -130,13 +121,7 @@
 		<version>${springVersion}</version>
 	</dependency>
 	
-	<!-- JdbcTemplate,DataDource -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-		<version>${springVersion}</version>
-	</dependency>
-	
+	<!-- JdbcTemplate,DataDource -->	
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-web</artifactId>
@@ -161,36 +146,7 @@
 		<artifactId>spring-test</artifactId>
 		<version>${springVersion}</version>
 	</dependency>
-    
-    
-    <!-- spring validation -->
-    <dependency>
-		<groupId>javax.validation</groupId>
-		<artifactId>validation-api</artifactId>
-		<version>${sValidation}</version>
-    </dependency>
-    
-    <!-- annotations hibernate -->
-    <dependency>
-    	<groupId>org.hibernate</groupId>
-   		<artifactId>hibernate-validator</artifactId>
-    	<version>5.2.4.Final</version>
-    </dependency>
-    
-    <!-- Hibernate --> 
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>${hibernate}</version>
-    </dependency>
-    
-    <dependency>
-		<groupId>org.hibernate</groupId>
-		<artifactId>hibernate-java8</artifactId>
-		<version>${hibernate}</version>
-	</dependency>
-    
-    
+  
     <dependency>
 		<groupId>commons-validator</groupId>
 		<artifactId>commons-validator</artifactId>
