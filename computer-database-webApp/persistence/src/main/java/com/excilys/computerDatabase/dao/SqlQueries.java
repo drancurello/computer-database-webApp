@@ -14,6 +14,8 @@ public class SqlQueries {
 	public static final String FIND_ALL_COMPANIES = "from Company";
 	public static final String FIND_COMPANY = "from Company WHERE id = :id";
 	
+	public static final String FIND_USER = "from UserInfo WHERE username = :username";
+	
 	public static String getNbComputerSearch(String search) {
 		return "SELECT COUNT(*) FROM Computer WHERE name LIKE '%" + search + "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%')";
 	}

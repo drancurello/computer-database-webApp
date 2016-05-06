@@ -32,6 +32,7 @@
   	<sourceTarget>1.8</sourceTarget>
   	<build>3.0</build>
   	<springVersion>4.2.5.RELEASE</springVersion>
+  	<springSecurity>4.0.4.RELEASE</springSecurity>
   </properties>
  
    <dependencies>
@@ -183,5 +184,5 @@
           </configuration>
         </plugin>
   	</plugins>
-  </build>
+  </build> 
 </project>

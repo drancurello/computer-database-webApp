@@ -21,6 +21,8 @@
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index"> Application - Computer Database </a>
+            <a class="pull-right" href="?language=fr"><img src="img/france.png" width=20px height=20px/></a>
+            <a class="pull-right" href="?language=en"><img src="img/en.png" width=20px height=20px/></a>
         </div>
     </header>
 

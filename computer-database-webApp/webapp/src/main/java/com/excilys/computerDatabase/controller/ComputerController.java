@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -63,7 +64,6 @@ public class ComputerController {
 			return new ModelAndView("redirect:/index");
 		}
 	}
-	
 	
 	@RequestMapping(path = "deleteComputer", method = RequestMethod.POST) 
 	public ModelAndView deleteComputer(@RequestParam Map<String,String> requestParams) {

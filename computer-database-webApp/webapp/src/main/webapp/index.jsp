@@ -19,6 +19,8 @@
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index"> Application - Computer Database </a>
+            <a class="pull-right" href="?language=fr"><img src="img/france.png" width=20px height=20px/></a>
+            <a class="pull-right" href="?language=en"><img src="img/en.png" width=20px height=20px/></a>
         </div>
     </header>
 
@@ -30,16 +32,14 @@
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="index" method="GET" class="form-inline">
-
 						<spring:message code="search.name" var="mess_search"/>
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="${mess_search}" value="${search}" />
                         <input type="submit" id="searchsubmit" value=<spring:message code="label.filter"/>
                         class="btn btn-primary" />
-                        <a href="?language=fr"><img src="img/france.png" width=20px height=20px/></a>
-                        <a href="?language=en"><img src="img/en.png" width=20px height=20px/></a>
                     </form>
                 </div>
                 <div class="pull-right">
+                	<a href="<c:url value="/logout" />"><img src="img/logout.png" width=20px height=20px title="<spring:message code="label.disconnection"/>"/></a>	
                     <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="label.add"/></a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="but.edit"/></a>
                 </div>
@@ -47,6 +47,7 @@
         </div>
 
         <form id="deleteForm" action="deleteComputer" method="POST">
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" class="form-control" />
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -115,6 +116,7 @@
     <footer class="navbar-fixed-bottom">
     	<p:pagination currentPage="${page.pageNumber}" nbComputersPage="${page.nbEntriesByPage}" nbPage="${page.nbPage}" search="${search}" order="${page.order}" orderType="${page.type}"/>
     </footer>
+    
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">

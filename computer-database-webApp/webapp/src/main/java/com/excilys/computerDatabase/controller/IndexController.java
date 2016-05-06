@@ -63,6 +63,5 @@ public class IndexController {
 		model.addObject("page", indexPage);
 		
 		return model;
-	}
-	
+	}	
 }
