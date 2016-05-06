@@ -28,12 +28,12 @@ public class PageMapper {
 		
 		Page indexPage = new Page(pageNumber, nbComputersPage);
 		
-		if (request.getParameter("order") != null) {
-			indexPage.setOrder(request.getParameter("order"));
+		if (request.getParameter("column") != null) {
+			indexPage.setColumn(request.getParameter("column"));
 		}
 		
-		if (request.getParameter("type") != null) {
-			indexPage.setType(request.getParameter("type"));
+		if (request.getParameter("order") != null) {
+			indexPage.setOrder(request.getParameter("order"));
 		}
 		
 		return indexPage;

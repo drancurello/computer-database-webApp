@@ -102,13 +102,13 @@ public class ComputerDAO implements IComputerDAO {
 	 * @return the list of all computers which contains the search in their name
 	 * @throws ConnectionException
 	 */
-	public List<Computer> search(String search, int nbEntriesByPage, int pageNumber, String order, String type) {
+	public List<Computer> search(String search, int nbEntriesByPage, int pageNumber, String column, String order) {
 
 		int debut = nbEntriesByPage * (pageNumber - 1);	
 		List<Computer> computers = new ArrayList<>();
 		
 		Session session = factory.getCurrentSession();
-		Query query = session.createQuery(SqlQueries.search(search, order, type));
+		Query query = session.createQuery(SqlQueries.search(search, column, order));
 		query.setFirstResult(debut);
 		query.setMaxResults(nbEntriesByPage);
 		computers = query.list();
@@ -143,13 +143,13 @@ public class ComputerDAO implements IComputerDAO {
 	 * @throws ConnectionException
 	 */
 	@Override
-	public List<Computer> findPage(int nbEntriesByPage, int pageNumber, String order, String type) {
+	public List<Computer> findPage(int nbEntriesByPage, int pageNumber, String column, String order) {
 		
 		int debut = nbEntriesByPage * (pageNumber - 1);	
 		List<Computer> computerList = new ArrayList<Computer>();
 		
 		Session session = factory.getCurrentSession();
-		Query query = session.createQuery(SqlQueries.findPage(order, type));
+		Query query = session.createQuery(SqlQueries.findPage(column, order));
 		query.setFirstResult(debut);
 		query.setMaxResults(nbEntriesByPage);
 		computerList = query.list();

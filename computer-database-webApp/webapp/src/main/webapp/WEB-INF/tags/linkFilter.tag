@@ -4,11 +4,11 @@
 <%@ attribute name="page" required="true"%>
 <%@ attribute name="nbComputersPage" required="true"%>
 <%@ attribute name="order" required="true"%>
-<%@ attribute name="type" required="true"%>
+<%@ attribute name="column" required="true"%>
 <%@ attribute name="search" required="false"%>
 <%@ attribute name="value" required="false" %>
 
-<c:set var="withSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&order=${order}&type=${type}&search=${search}"/>
-<c:set var="noSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&order=${order}&type=${type}" />
+<c:set var="withSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&column=${column}&order=${order}&search=${search}"/>
+<c:set var="noSearch" value="page=${page}&nbComputersPage=${nbComputersPage}&column=${column}&order=${order}" />
 
 <a href="?${not empty search ? withSearch : noSearch}">${value}</a>

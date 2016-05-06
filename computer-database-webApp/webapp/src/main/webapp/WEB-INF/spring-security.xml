@@ -16,6 +16,7 @@
     	<intercept-url pattern="/index" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
     	<intercept-url pattern="/editComputer" access="hasRole('ROLE_ADMIN')" />
     	<intercept-url pattern="/addComputer" access="hasRole('ROLE_ADMIN')" />
+    	<intercept-url pattern="/deleteComputer" access="hasRole('ROLE_ADMIN')" />
     	<form-login 
     		login-page="/login"
 		    default-target-url="/index"

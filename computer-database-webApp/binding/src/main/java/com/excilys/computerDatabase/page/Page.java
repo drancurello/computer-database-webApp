@@ -23,10 +23,10 @@ public class Page {
 	private int pageNumber;
 	
 	/** order of the page */
-	private String order;
+	private String column;
 	
 	/** type of order */
-	private String type;
+	private String order;
 	
 	/** the list of computers contained in the page */
 	private List<ComputerDTO> computersList;
@@ -34,8 +34,8 @@ public class Page {
 	public Page(int pageNumber, int nbEntries) {
 		this.pageNumber = pageNumber;
 		this.nbEntriesByPage = nbEntries;
-		this.order = "name";
-		this.type = "ASC";
+		this.column = "name";
+		this.order = "ASC";
 	}
 	
 	/**
@@ -48,8 +48,8 @@ public class Page {
 		this.pageNumber = pageNumber;
 		this.nbEntriesByPage = nbEntries;
 		this.nbComputers = nbComputers;
-		this.order = "name";
-		this.type = "ASC";
+		this.column = "name";
+		this.order = "ASC";
 		this.computersList = new ArrayList<>();
 		update();
 	}
@@ -162,20 +162,20 @@ public class Page {
 		update();
 	}
 
+	public String getColumn() {
+		return column;
+	}
+
+	public void setColumn(String order) {
+		this.column = order;
+	}
+
 	public String getOrder() {
 		return order;
 	}
 
-	public void setOrder(String order) {
-		this.order = order;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
+	public void setOrder(String type) {
+		this.order = type;
 	}
 	
 	

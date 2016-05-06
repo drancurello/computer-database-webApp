@@ -104,7 +104,7 @@ public class ComputerService {
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();
 		
-		computers = computerDAO.search(name, page.getNbEntriesByPage(), page.getPageNumber(), page.getOrder(), page.getType());
+		computers = computerDAO.search(name, page.getNbEntriesByPage(), page.getPageNumber(), page.getColumn(), page.getOrder());
 		page.setNbComputers(getNbComputersSearch(name));
 		for (Computer c:computers) {
 			if (c.getCompany() != null) {
@@ -163,7 +163,7 @@ public class ComputerService {
 	public Page findPageComputers(Page page) {	
 		List<Computer> computers = new ArrayList<>();
 		List<ComputerDTO> computersDTO = new ArrayList<>();	
-		computers = computerDAO.findPage(page.getNbEntriesByPage(), page.getPageNumber(), page.getOrder(), page.getType());
+		computers = computerDAO.findPage(page.getNbEntriesByPage(), page.getPageNumber(), page.getColumn(), page.getOrder());
 		page.setNbComputers(getNbComputers());
 		for (Computer c:computers) {
 			if (c.getCompany() != null) {

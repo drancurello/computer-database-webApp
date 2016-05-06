@@ -20,22 +20,22 @@ public class SqlQueries {
 		return "SELECT COUNT(*) FROM Computer WHERE name LIKE '%" + search + "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%')";
 	}
 	
-	public static String findPage(String order, String type) {
+	public static String findPage(String column, String order) {
 		if (order.equals("company")) {
-			return "from Computer as computer LEFT OUTER JOIN fetch computer.company as company ORDER BY company.name " + type + ", computer.name ASC";
+			return "from Computer as computer LEFT OUTER JOIN fetch computer.company as company ORDER BY company.name " + order + ", computer.name ASC";
 		}
 		else {
-			return "from Computer ORDER BY " + order + " " + type;
+			return "from Computer ORDER BY " + column + " " + order;
 		}
 	}
 	
-	public static String search(String search, String order, String type) {
+	public static String search(String search, String column, String order) {
 		if (order.equals("company")) {
 			return "FROM Computer as computer LEFT OUTER JOIN fetch computer.company as company WHERE computer.name LIKE '%" + search
-				+ "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY company.name " + type + ", computer.name ASC";
+				+ "%' OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY company.name " + order + ", computer.name ASC";
 		} else {
 		return "FROM Computer WHERE name LIKE '%" + search + "%'"
-				+ " OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY " + order + " " + type;
+				+ " OR company_id IN ( SELECT id FROM Company WHERE name LIKE '%" + search + "%') ORDER BY " + column + " " + order;
 		}
 	}
 	

@@ -35,6 +35,7 @@
                     <h1><spring:message code="label.edit"/></h1>
 
                     <form:form action="editComputer" method="POST" id="formComputer" modelAttribute="computerDTO">
+                        <input type="hidden" name="${_csrf.parameterName}" id="_csrf.token" value="${_csrf.token}" class="form-control" />
                         <input type="hidden" value="${computerDTO.id}" name="id"/>
                         <fieldset>
                             <div class="form-group">

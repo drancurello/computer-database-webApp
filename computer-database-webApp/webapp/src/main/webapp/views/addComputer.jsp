@@ -32,6 +32,7 @@
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1><spring:message code="label.add"/></h1>
                     <form:form action="addComputer" method="POST" id="formComputer" modelAttribute="computerDTO">
+                        <input type="hidden" name="${_csrf.parameterName}" id="_csrf.token" value="${_csrf.token}" class="form-control" />
                         <fieldset>
                             <div class="form-group">
                             	<spring:message code="label.name" var="mess_name"/>

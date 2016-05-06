@@ -26,12 +26,12 @@ public class RequestMapper {
 		
 		Page indexPage = new Page(pageNumber, nbComputersPage);
 		
-		if (requestParams.get("order") != null) {
-			indexPage.setOrder(requestParams.get("order"));
+		if (requestParams.get("column") != null) {
+			indexPage.setColumn(requestParams.get("column"));
 		}
 		
-		if (requestParams.get("type") != null) {
-			indexPage.setType(requestParams.get("type"));
+		if (requestParams.get("order") != null) {
+			indexPage.setOrder(requestParams.get("order"));
 		}
 		
 		return indexPage;
