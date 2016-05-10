@@ -33,7 +33,7 @@
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="index" method="GET" class="form-inline">
-                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="_csrf.token" class="form-control" />
+                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="_csrf" class="form-control" />
 						<spring:message code="search.name" var="mess_search"/>
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="${mess_search}" value="${search}" />
                         <input type="submit" id="searchsubmit" value=<spring:message code="label.filter"/>
@@ -51,7 +51,7 @@
         </div>
 
         <form id="deleteForm" action="deleteComputer" method="POST">
-        	<input type="hidden" name="${_csrf.parameterName}" id="_csrf.token" value="${_csrf.token}" class="form-control" />
+        	<input type="hidden" name="${_csrf.parameterName}" id="_csrf" value="${_csrf.token}" class="form-control" />
             <input type="hidden" name="selection" value=""/>
         </form>
 
@@ -78,8 +78,7 @@
                         <th>
                             <spring:message code="label.introduced"/>
                             <p:linkFilter column="introduced" nbComputersPage="${nbComputersPage}" order="ASC" page="${page.pageNumber}" search="${search}" value="&laquo;"/>
-                            <p:linkFilter column="introduced" nbComputersPage="${nbComputersPage}" order="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>
-                            		
+                            <p:linkFilter column="introduced" nbComputersPage="${nbComputersPage}" order="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>     		
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
@@ -93,7 +92,6 @@
                             <p:linkFilter column="company" nbComputersPage="${nbComputersPage}" order="ASC" page="${page.pageNumber}" search="${search}" value="&laquo;"/>
                             <p:linkFilter column="company" nbComputersPage="${nbComputersPage}" order="DESC" page="${page.pageNumber}" search="${search}" value="&raquo;"/>
                         </th>
-
                     </tr>
                 </thead>
                 <!-- Browse attribute computers -->
@@ -102,10 +100,10 @@
                 	<c:forEach items="${page.computersList}" var="computer" varStatus="status" >
 	                	<tr>
 	                        <td class="editMode">
-	                            <input type="checkbox" name="cb" class="cb" value="${computer.id}" />
+	                            <input type="checkbox" name="cb" class="cb" value="${computer.id}" id="${computer.name}_id"/>
 	                        </td>
 	                        <td>
-	                            <a href="editComputer?id=${computer.id}" onclick=""><c:out value="${computer.name}"></c:out></a>
+	                            <a href="editComputer?id=${computer.id}" id="${computer.name}_name"><c:out value="${computer.name}"></c:out></a>
 	                        </td>
 	                        <td><c:out value="${computer.introduced}"></c:out></td>
 	                        <td><c:out value="${computer.discontinued}"></c:out></td>

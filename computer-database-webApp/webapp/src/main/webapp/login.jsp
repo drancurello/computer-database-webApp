@@ -41,7 +41,7 @@
 	                </div>
                     <h1><spring:message code="label.login"/></h1>
                     <form:form action="login" method="POST" id="loginForm">
-                    	<input type="hidden" name="${_csrf.parameterName}" id="_csrf.token" value="${_csrf.token}" class="form-control" />
+                    	<input type="hidden" name="${_csrf.parameterName}" id="_csrf" value="${_csrf.token}" class="form-control" />
                         <fieldset>
                             <div class="form-group">
                                 <label for="username"><spring:message code="label.username"/></label>

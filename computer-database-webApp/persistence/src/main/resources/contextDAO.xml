@@ -23,7 +23,7 @@
 	
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="close">
         <property name="dataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
-        <property name="maximumPoolSize" value="5" />
+        <property name="maximumPoolSize" value="200" />
         <property name="maxLifetime" value="30000" />
         <property name="idleTimeout" value="30000" />
         <property name="dataSourceProperties">
