@@ -15,16 +15,11 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.springframework.stereotype.Component;
-
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.UserInfo;
 
-
-
-@Component
 public class Cli {
 	
 	private static final String URL = "http://localhost:8080/computer-database-restService/";
@@ -79,7 +74,7 @@ public class Cli {
 	}
 	
 	public static void listAllComputer() {
-		WebTarget webTarget = client.target(URL + "computers");
+		WebTarget webTarget = client.target(URL).path("computers");
 		
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 		
@@ -92,7 +87,7 @@ public class Cli {
 
 	public static void listAllCompanies() {
 		
-		WebTarget webTarget = client.target(URL + "companies");
+		WebTarget webTarget = client.target(URL).path("companies");
 		
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();			
 		
@@ -125,7 +120,7 @@ public class Cli {
 
 		String rep = "";
 
-		WebTarget webTarget = client.target(URL + "page/" + pageNumber + "/" + nbEntries);
+		WebTarget webTarget = client.target(URL).path("page/" + pageNumber + "/" + nbEntries);
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();			
 		
 		computers = response.readEntity(new GenericType<List<ComputerDTO>>(){});
@@ -141,8 +136,10 @@ public class Cli {
 
 			switch (rep) {
 			case "1":
-				pageNumber = pageNumber - 1;
-				webTarget = client.target(URL + "page/" + pageNumber + "/" + nbEntries);
+				if (pageNumber != 1) {
+					pageNumber = pageNumber - 1;
+				}
+				webTarget = client.target(URL).path("page/" + pageNumber + "/" + nbEntries);
 				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();			
 				
 				computers = response.readEntity(new GenericType<List<ComputerDTO>>(){});
@@ -152,7 +149,7 @@ public class Cli {
 				break;
 			case "2":
 				pageNumber = pageNumber + 1;
-				webTarget = client.target(URL + "page/" + pageNumber + "/" + nbEntries);
+				webTarget = client.target(URL).path("page/" + pageNumber + "/" + nbEntries);
 				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();			
 				
 				computers = response.readEntity(new GenericType<List<ComputerDTO>>(){});
@@ -163,7 +160,7 @@ public class Cli {
 			case "3":
 				System.out.println("Combien d'ordinateur voulez-vous afficher par page?");
 				nbEntries = sc.nextLine();
-				webTarget = client.target(URL + "page/" + 1 + "/" + nbEntries);
+				webTarget = client.target(URL).path("page/" + 1 + "/" + nbEntries);
 				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();			
 				
 				computers = response.readEntity(new GenericType<List<ComputerDTO>>(){});
@@ -175,7 +172,7 @@ public class Cli {
 			case "4":
 				System.out.println("Quel page voulez-vous consulter ?");
 				nPage = sc.nextLine();
-				webTarget = client.target(URL + "page/" + nPage + "/" + nbEntries);
+				webTarget = client.target(URL).path("page/" + nPage + "/" + nbEntries);
 				response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();			
 				
 				computers = response.readEntity(new GenericType<List<ComputerDTO>>(){});
@@ -245,7 +242,7 @@ public class Cli {
 			aComputer.setCompanyId(Long.parseLong(aManufacturer));
 		}
 		
-		WebTarget webTarget = client.target(URL + "insert");
+		WebTarget webTarget = client.target(URL).path("insert");
 		webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(aComputer, MediaType.APPLICATION_JSON), ComputerDTO.class);		
 		
 		System.out.println("ordinateur ajoute");
@@ -258,7 +255,7 @@ public class Cli {
 		System.out.println("Entrez l'id de l'ordinateur a chercher : ");
 		id = sc.nextLine();
 		
-		WebTarget webTarget = client.target(URL + "computer/" + id);
+		WebTarget webTarget = client.target(URL).path("computer/" + id);
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 		
 		ComputerDTO fComputer = new ComputerDTO();
@@ -325,7 +322,7 @@ public class Cli {
 
 		}
 		
-		WebTarget webTarget = client.target(URL + "merge");
+		WebTarget webTarget = client.target(URL).path("merge");
 		webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(upComputer, MediaType.APPLICATION_JSON), ComputerDTO.class);		
 		
 		System.out.println("L'ordinateur a bien ete midifie");
@@ -336,7 +333,7 @@ public class Cli {
 		System.out.println("Id de l'ordinateur a supprimer : ");
 		id = sc.nextLine();
 		
-		WebTarget webTarget = client.target(URL + "delete/" + id);
+		WebTarget webTarget = client.target(URL).path("delete/" + id);
 
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 				
@@ -354,7 +351,7 @@ public class Cli {
 		System.out.println("Id de la compagnie a supprimer : ");
 		id = sc.nextLine();
 		
-		WebTarget webTarget = client.target( URL + "deleteCompany/" + id);
+		WebTarget webTarget = client.target(URL).path("deleteCompany/" + id);
 
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 				
@@ -396,7 +393,7 @@ public class Cli {
 		
 		user.setRole(role);
 		
-		WebTarget webTarget = client.target(URL + "insertUser");
+		WebTarget webTarget = client.target(URL).path("insertUser");
 		webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(user, MediaType.APPLICATION_JSON), UserInfo.class);		
 		
 		System.out.println("utilisateur ajoute");
