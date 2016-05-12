@@ -8,12 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * The Class Company.
  */
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 @Table(name="company")
 public class Company implements Serializable {
 

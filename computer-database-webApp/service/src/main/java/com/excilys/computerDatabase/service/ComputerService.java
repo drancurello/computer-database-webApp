@@ -140,15 +140,17 @@ public class ComputerService {
 	 * @throws DAOException 
 	 * @throws ConnectionException 
 	 */
-	public List<Computer> findAllComputers() {
+	public List<ComputerDTO> findAllComputers() {
 		List<Computer> computersList = new ArrayList<>();
 		computersList = computerDAO.findAll();
+		List<ComputerDTO> computersDTO = new ArrayList<>();
 		for (Computer c:computersList) {
 			if (c.getCompany() != null) {
 				c.setCompany(companyDAO.find(c.getCompany().getId()));
 			}
+			computersDTO.add(ComputerDTOMapper.toComputerDTO(c));
 		}
-		return computersList;
+		return computersDTO;
 	}
 	
 	/**

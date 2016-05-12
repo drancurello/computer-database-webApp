@@ -12,12 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * The Class Computer.
  */
 @SuppressWarnings("serial")
 @Entity
+@XmlRootElement
 @Table(name="computer")
 public class Computer implements Serializable {
 

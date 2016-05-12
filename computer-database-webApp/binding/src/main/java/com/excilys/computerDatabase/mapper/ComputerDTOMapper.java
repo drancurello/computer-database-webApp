@@ -21,6 +21,10 @@ public class ComputerDTOMapper {
 	 */
 	public static ComputerDTO toComputerDTO(Computer computer) {
 		
+		if (computer == null) {
+			return null;
+		}
+		
 		ComputerDTO.Builder builder = new ComputerDTO.Builder();
 		builder.idComputer(computer.getId());
 		builder.nameComputer(computer.getName());
@@ -45,6 +49,11 @@ public class ComputerDTOMapper {
 	 * @return A computer
 	 */
 	public static Computer toComputer(ComputerDTO computerDTO) {
+		
+		if (computerDTO == null) {
+			return null;
+		}
+		
 		Computer computer = new Computer();
 		
 		computer.setId(computerDTO.getId());

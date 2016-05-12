@@ -17,6 +17,7 @@
     <module>binding</module>
     <module>webapp</module>
     <module>console</module>
+    <module>rest</module>
   </modules>
   
   <properties>
@@ -41,37 +42,6 @@
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
 		<version>${junit}</version>
-		<scope>test</scope>
-	</dependency>
-	
-	<!-- jstl -->
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>${jstl}</version>
-	</dependency>
-	
-	<!-- servlets -->
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>${servlet}</version>
-        <scope>provided</scope>
-    </dependency>
-    
-    <!-- tags jsp -->
-	<dependency>
-	    <groupId>javax.servlet.jsp</groupId>
-	    <artifactId>jsp-api</artifactId>
-	    <version>${jspServlet}</version>
-	    <scope>provided</scope>
-	</dependency>
-    
-    <!-- selenium -->
-	<dependency>
-		<groupId>org.seleniumhq.selenium</groupId>
-		<artifactId>selenium-java</artifactId>
-		<version>${selenium}</version>
 		<scope>test</scope>
 	</dependency>
 	

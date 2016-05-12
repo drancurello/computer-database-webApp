@@ -1,6 +1,7 @@
 package com.excilys.computerDatabase.dto;
 
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -12,6 +13,7 @@ import com.excilys.computerDatabase.validation.annotations.DateBefore1970;
  * The Class ComputerDTO.
  */
 @DateBefore(message = "{error.dateBefore}")
+@XmlRootElement
 public class ComputerDTO {
 
 	/** The id. */

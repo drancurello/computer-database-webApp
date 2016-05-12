@@ -9,18 +9,18 @@
     <version>1.0</version>
   </parent>
   
-  <artifactId>webapp</artifactId>
-  <name>webapp</name>
+  <artifactId>rest</artifactId>
+  <name>rest</name>
   <packaging>war</packaging>
   <url>http://maven.apache.org</url>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <springTag>4.1.0.RELEASE</springTag>
   </properties>
+  
   <dependencies>
-       
-    <!-- service -->   
+  
+  	<!-- service -->   
   	<dependency>
   		<groupId>com.excilys.computerDatabase</groupId>
   		<artifactId>service</artifactId>
@@ -33,13 +33,6 @@
   		<artifactId>binding</artifactId>
   		<version>1.0</version>
   	</dependency>
-  	
-  		<!-- jstl -->
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>${jstl}</version>
-	</dependency>
 	
 	<!-- servlets -->
     <dependency>
@@ -48,42 +41,6 @@
         <version>${servlet}</version>
         <scope>provided</scope>
     </dependency>
-    
-    <!-- tags jsp -->
-	<dependency>
-	    <groupId>javax.servlet.jsp</groupId>
-	    <artifactId>jsp-api</artifactId>
-	    <version>${jspServlet}</version>
-	    <scope>provided</scope>
-	</dependency>
-    
-    <!-- selenium -->
-	<dependency>
-		<groupId>org.seleniumhq.selenium</groupId>
-		<artifactId>selenium-java</artifactId>
-		<version>${selenium}</version>
-		<scope>test</scope>
-	</dependency>
-  	
-  	<!-- spring security -->	
-  		
-  	<dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-config</artifactId>
-        <version>${springSecurity}</version>
-    </dependency>
-    
-    <dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-web</artifactId>
-		<version>${springSecurity}</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-taglibs</artifactId>
-		<version>${springTag}</version>
-	</dependency>
 	
 	<!-- jackson -->
 	<dependency>
@@ -103,6 +60,7 @@
 	    <artifactId>jackson-annotations</artifactId>
 	    <version>2.7.3</version>
 	</dependency>
-  	
+	
   </dependencies>
+  
 </project>

@@ -3,16 +3,21 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-4.2.xsd
 	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+	http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<context:component-scan base-package="com.excilys.computerDatabase.dao" />
 	
 	<import resource="contextCore.xml"/>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
   		<property name="location">
@@ -20,18 +25,19 @@
   		</property>
 	</bean>
 
+	<!-- datasource, sessionFactory -->
 	
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="close">
         <property name="dataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
-        <property name="maximumPoolSize" value="200" />
-        <property name="maxLifetime" value="30000" />
-        <property name="idleTimeout" value="30000" />
+        <property name="maximumPoolSize" value="1000" />
+        <property name="maxLifetime" value="5000" />
+        <property name="idleTimeout" value="5000" />
         <property name="dataSourceProperties">
             <props>
                 <prop key="url">${url}</prop>
                 <prop key="user">${user}</prop>
                 <prop key="password">${password}</prop>
-                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSize">500</prop>
                 <prop key="prepStmtCacheSqlLimit">2048</prop>
                 <prop key="cachePrepStmts">true</prop>
                 <prop key="useServerPrepStmts">true</prop>
@@ -49,18 +55,27 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.id.new_generator_mappings">false</prop>
             </props>
-        </property>       
+        </property>
     </bean>
-	
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
     
     <!-- Hibernate Transaction Manager -->
 	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 	  <property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	
+    
+    <!-- Cache -->   
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcache"/>
+    </bean>
+
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+        <property name="shared" value="true"/>
+    </bean>
+    
+    <cache:annotation-driven/>
 
 </beans>

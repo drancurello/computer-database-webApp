@@ -1,10 +1,10 @@
 package com.excilys.computerDatabase.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ public class CompanyService {
 	@Autowired
 	private ComputerDAO computerDAO;
 			
-	public int delete(long id) throws SQLException{
+	public int delete(long id) {
 		int cpany = 0, cputer = 0;
 		
 		cputer = computerDAO.deleteByCompany(id);
@@ -31,12 +31,14 @@ public class CompanyService {
 		
 	}
 	
+	@Cacheable("companiesCache")
 	public List<Company> findAllCompanies() {
 		List<Company> companies = new ArrayList<>();
 		companies = companyDAO.findAll();
 		return companies;
 	}
 	
+	@Cacheable("companyCache")
 	public Company findCompany(long id) {
 		Company company = null;
 		company = companyDAO.find(id);
