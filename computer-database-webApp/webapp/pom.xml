@@ -14,10 +14,6 @@
   <packaging>war</packaging>
   <url>http://maven.apache.org</url>
   
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <springTag>4.1.0.RELEASE</springTag>
-  </properties>
   <dependencies>
        
     <!-- service -->   
@@ -70,38 +66,38 @@
   	<dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-config</artifactId>
-        <version>${springSecurity}</version>
+        <version>${spring.security}</version>
     </dependency>
     
     <dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-web</artifactId>
-		<version>${springSecurity}</version>
+		<version>${spring.security}</version>
 	</dependency>
 	
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-taglibs</artifactId>
-		<version>${springTag}</version>
+		<version>${spring.tag}</version>
 	</dependency>
 	
 	<!-- jackson -->
 	<dependency>
 		<groupId>com.fasterxml.jackson.core</groupId>
 		<artifactId>jackson-databind</artifactId>
-		<version>2.7.4</version>
+		<version>${fasterxml.jackson}</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-annotations</artifactId>
+	    <version>${fasterxml.jackson}</version>
 	</dependency>
 	
   	<dependency>
 		<groupId>org.codehaus.jackson</groupId>
 		<artifactId>jackson-mapper-asl</artifactId>
-		<version>1.9.13</version>
-	</dependency>
-  	
-  	<dependency>
-	    <groupId>com.fasterxml.jackson.core</groupId>
-	    <artifactId>jackson-annotations</artifactId>
-	    <version>2.7.3</version>
+		<version>${jackson.mapper}</version>
 	</dependency>
   	
   </dependencies>

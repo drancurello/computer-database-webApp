@@ -14,11 +14,9 @@
   <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   
-  <properties>
-    <sValidation>1.1.0.Final</sValidation>
-  </properties>
   <dependencies>
   	
+  	<!-- core -->
   	<dependency>
   		<groupId>com.excilys.computerDatabase</groupId>
   		<artifactId>core</artifactId>
@@ -29,7 +27,7 @@
     <dependency>
 		<groupId>javax.validation</groupId>
 		<artifactId>validation-api</artifactId>
-		<version>${sValidation}</version>
+		<version>${spring.validation}</version>
     </dependency>
   
   </dependencies>

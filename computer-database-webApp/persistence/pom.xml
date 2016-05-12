@@ -14,12 +14,6 @@
   <packaging>jar</packaging>
   <url>http://maven.apache.org</url>
   
-  <properties>
-    <hibernate>5.1.0.Final</hibernate>
-    <mysql>5.1.38</mysql>
-    <hikari>2.4.5</hikari>
-  </properties>
-  
   <dependencies>
   
   	<!-- Driver for mysql -->
@@ -60,7 +54,7 @@
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context-support</artifactId>
-		<version>4.2.6.RELEASE</version>
+		<version>${spring.version}</version>
 	</dependency>
 
   </dependencies>

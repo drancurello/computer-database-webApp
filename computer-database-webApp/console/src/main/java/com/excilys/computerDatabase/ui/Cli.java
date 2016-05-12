@@ -15,18 +15,13 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.client.ClientResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.exceptions.ConnectionException;
-import com.excilys.computerDatabase.mapper.ComputerDTOMapper;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Computer;
-import com.excilys.computerDatabase.page.Page;
-import com.excilys.computerDatabase.service.CompanyService;
-import com.excilys.computerDatabase.service.ComputerService;
+import com.excilys.computerDatabase.model.UserInfo;
+
 
 
 @Component
@@ -71,6 +66,8 @@ public class Cli {
 			case "8":
 				deleteCompany();
 				break;
+			case "9":
+				addUser();
 			case "exit":
 				break;
 			default:
@@ -198,7 +195,6 @@ public class Cli {
 	}
 
 	public static void addComputer() {
-		
 		
 		System.out.println("Entrez un nom : ");
 		String aName = sc.nextLine();
@@ -369,6 +365,41 @@ public class Cli {
 		} else {
 			System.out.println("La compagnie entre n'existe pas dans la base");
 		}
+	}
+	
+	public static void addUser() {
+		System.out.println("Entrez un pseudo : ");
+		String login = sc.nextLine();
+		while (login.equals("") || login.equals("null")) {
+			System.out.println("Veuillez saisir un pseudo : ");
+			login = sc.nextLine();
+		}
+		UserInfo user = new UserInfo();
+
+		user.setUsernameame(login);
+
+		System.out.println("Entrez un mot de passe : ");
+		String password = sc.nextLine();
+		while (password.equals("") || password.equals("null")) {
+			System.out.println("Veuillez saisir un mot de passe : ");
+			password = sc.nextLine();
+		}
+		
+		user.setPassword(password);
+		
+		System.out.println("Entrez un role : ");
+		String role = sc.nextLine();
+		while (!(role.equals("ROLE_USER") || role.equals("ROLE_ADMIN"))) {
+			System.out.println("Veuillez saisir un role du type ROLE_USER ou ROLE_ADMIN ");
+			role = sc.nextLine();
+		}
+		
+		user.setRole(role);
+		
+		WebTarget webTarget = client.target(URL + "insertUser");
+		webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(user, MediaType.APPLICATION_JSON), UserInfo.class);		
+		
+		System.out.println("utilisateur ajoute");
 	}
 
 }

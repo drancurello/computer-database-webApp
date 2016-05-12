@@ -2,9 +2,9 @@ package com.excilys.computerDatabase.restController;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.UserInfo;
 import com.excilys.computerDatabase.page.Page;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
+import com.excilys.computerDatabase.service.UserService;
 
 @RestController
 public class CliRestController {
@@ -25,6 +27,9 @@ public class CliRestController {
 	
 	@Autowired
 	private ComputerService computerService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value = "/companies", method = RequestMethod.GET, produces = "application/json")
 	public List<Company> getCompanies() {
@@ -97,6 +102,19 @@ public class CliRestController {
 		int deleteResponse = companyService.delete(id);
 		
 		return deleteResponse;
+	}
+	
+	@RequestMapping(value="/insertUser",  method = RequestMethod.POST)
+	public UserInfo insertUser(@RequestBody UserInfo user) {
+
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(user.getPassword());
+		
+		user.setPassword(hashedPassword);
+		
+		userService.insertUserInfo(user);
+		
+		return user;
 	}
 	
 	

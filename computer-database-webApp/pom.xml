@@ -28,12 +28,21 @@
   	<selenium>2.53.0</selenium>
   	<slf4j>1.7.21</slf4j>
   	<logback>1.1.6</logback>
+  	<mysql>5.1.38</mysql>
+    <hikari>2.4.5</hikari>
   	<hibernate>5.1.0.Final</hibernate>
+  	<hibernate.validation>5.2.4.Final</hibernate.validation>
   	<commons>1.5.0</commons>
   	<sourceTarget>1.8</sourceTarget>
   	<build>3.0</build>
-  	<springVersion>4.2.5.RELEASE</springVersion>
-  	<springSecurity>4.0.4.RELEASE</springSecurity>
+  	<spring.version>4.2.5.RELEASE</spring.version>
+  	<spring.security>4.0.4.RELEASE</spring.security>
+  	<spring.validation>1.1.0.Final</spring.validation>
+  	<spring.tag>4.1.0.RELEASE</spring.tag>
+  	<jersey.client>2.22.2</jersey.client>
+  	<fasterxml.jackson>2.7.4</fasterxml.jackson>
+  	<jackson.mapper>1.9.13</jackson.mapper>
+  	<ws.rs.version>2.0</ws.rs.version>
   </properties>
  
    <dependencies>
@@ -70,13 +79,13 @@
 	<dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-core</artifactId>
-        <version>${springVersion}</version>
+        <version>${spring.version}</version>
     </dependency>
 	
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-context</artifactId>
-		<version>${springVersion}</version>
+		<version>${spring.version}</version>
 		<exclusions>
             <exclusion>
                 <groupId>commons-logging</groupId>
@@ -89,33 +98,33 @@
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-tx</artifactId>
-		<version>${springVersion}</version>
+		<version>${spring.version}</version>
 	</dependency>
 	
 	<!-- JdbcTemplate,DataDource -->	
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-web</artifactId>
-		<version>${springVersion}</version>
+		<version>${spring.version}</version>
 	</dependency>
 	
 	<dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-orm</artifactId>
-        <version>${springVersion}</version>
+        <version>${spring.version}</version>
     </dependency>
 	
 	<!-- Spring mvc framework -->
 	<dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
-        <version>${springVersion}</version>
+        <version>${spring.version}</version>
     </dependency>
     
     <dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-test</artifactId>
-		<version>${springVersion}</version>
+		<version>${spring.version}</version>
 	</dependency>
   
     <dependency>

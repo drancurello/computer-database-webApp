@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -56,6 +58,21 @@ public class serviceTest {
 	@Test
 	public void findComputer() throws DAOException, ConnectionException {
 		assertEquals(computerService.findComputer(574).getName(),"iPhone 4S");
+	}
+	
+	@Test 
+	public void addUser() {
+		
+		String password = "admin";
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(password);
+		
+		UserInfo user = new UserInfo("admin", hashedPassword,"ROLE_ADMIN");
+		
+		System.out.println(user.toString());
+		
+		userService.insertUserInfo(user);
+		
 	}
 	
 }
